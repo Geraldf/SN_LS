@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_data_source">
+    <sys_data_source action="INSERT_OR_UPDATE">
+        <batch_size/>
+        <category/>
+        <connection_timeout>0</connection_timeout>
+        <connection_url>jdbc:sqlserver://vmpipefishdev01;selectMethod=cursor;databaseName=lansweeperdb_gen_sm;integratedSecurity=true</connection_url>
+        <connection_url_parameters/>
+        <csv_delimiter/>
+        <data_in_single_column>false</data_in_single_column>
+        <data_loader><![CDATA[(function loadData(import_set_table) {
+
+	// Add your code here to insert data to import_set_table
+
+})(import_set_table);]]></data_loader>
+        <data_stream_action/>
+        <data_stream_action_inputs/>
+        <database_name/>
+        <database_port/>
+        <discard_arrays>true</discard_arrays>
+        <expand_node_children>false</expand_node_children>
+        <file_path/>
+        <file_retrieval_method>Attachment</file_retrieval_method>
+        <format>com.microsoft.sqlserver.jdbc.SQLServerDriver</format>
+        <glide_keystore>false</glide_keystore>
+        <header_row>0</header_row>
+        <import_set_table_label/>
+        <import_set_table_name>x_38710_lansweeper_rl_memory_module</import_set_table_name>
+        <instance_name/>
+        <jdbc_password/>
+        <jdbc_server/>
+        <jdbc_user_name/>
+        <jpath_root_node/>
+        <last_run_database_field/>
+        <last_run_datetime/>
+        <last_success_import_time/>
+        <ldap_target/>
+        <ldapprobe_result_set_rows>200</ldapprobe_result_set_rows>
+        <limit/>
+        <maximum_rows/>
+        <mid_server/>
+        <name>Lansweeper RL Memory Module</name>
+        <offset>0</offset>
+        <oracle_port>1521</oracle_port>
+        <oracle_sid>orcl</oracle_sid>
+        <parsing_script><![CDATA[// The input value can be accessed through the variables named "line", "lineNumber" and "result"
+// The function uses result variable to return parse result back. 
+(function(line,lineNumber,result) {
+	// add code here
+})(line,lineNumber,result);]]></parsing_script>
+        <properties/>
+        <query>Specific SQL</query>
+        <query_timeout>0</query_timeout>
+        <request_action/>
+        <scp_authentication>Username and Password</scp_authentication>
+        <scp_password/>
+        <scp_port/>
+        <scp_server/>
+        <scp_user_name/>
+        <sheet_number>0</sheet_number>
+        <sql_statement>SELECT&#13;
+	'Lansweeper' AS DiscoverySource&#13;
+	, CAST(tblAssets.AssetID AS VARCHAR(MAX)) + ':' + COALESCE(RTRIM(LTRIM(tblAssets.Mac)), '') Parent_CorrelationID&#13;
+	, CAST(tblAssets.AssetID AS VARCHAR(MAX)) + ':' + CAST(tblPhysicalMemory.Win32_PhysicalMemoryid AS VARCHAR(MAX)) + ':' + tblPhysicalMemory.DeviceLocator AS CorrelationID&#13;
+&#13;
+	, (SELECT MemoryName from TsysMemorytypes mt WHERE mt.MemoryType = tblPhysicalMemory.MemoryType) &#13;
+		+ ' ' + tblAssets.AssetName + ':' + tblPhysicalMemory.DeviceLocator  AS memory_name&#13;
+	, tblPhysicalMemory.TypeDetail&#13;
+	, CASE WHEN tblPhysicalMemory.Capacity IS NOT NULL THEN CAST(capacity / 1024 / 1024 AS BIGINT) ELSE NULL END Capacity&#13;
+	, tblPhysicalMemory.Speed&#13;
+	, tblPhysicalMemory.DeviceLocator&#13;
+	, tblPhysicalMemory.DataWidth&#13;
+	, tblPhysicalMemory.TotalWidth&#13;
+	, tblPhysicalMemory.PartNumber&#13;
+	, COALESCE(tblPhysicalMemory.SerialNumber, '') SerialNumber&#13;
+	, tblPhysicalMemory.FormFactor&#13;
+	, CASE tblPhysicalMemory.FormFactor&#13;
+		WHEN 0 THEN 'Unknown'&#13;
+		WHEN 1 THEN 'Other'&#13;
+		WHEN 2 THEN 'SIP'&#13;
+		WHEN 3 THEN 'DIP'&#13;
+		WHEN 4 THEN 'ZIP'&#13;
+		WHEN 5 THEN 'SOJ'&#13;
+		WHEN 6 THEN 'Proprietary'&#13;
+		WHEN 7 THEN 'SIMM'&#13;
+		WHEN 8 THEN 'DIMM'&#13;
+		WHEN 9 THEN 'TSOP'&#13;
+		WHEN 10 THEN 'PGA'&#13;
+		WHEN 11 THEN 'RIMM'&#13;
+		WHEN 12 THEN 'SODIMM'&#13;
+		WHEN 13 THEN 'SRIMM'&#13;
+		WHEN 14 THEN 'SMD'&#13;
+		WHEN 15 THEN 'SSMP'&#13;
+		WHEN 16 THEN 'QFP'&#13;
+		WHEN 17 THEN 'TQFP'&#13;
+		WHEN 18 THEN 'SOIC'&#13;
+		WHEN 19 THEN 'LCC'&#13;
+		WHEN 20 THEN 'PLCC'&#13;
+		WHEN 21 THEN 'BGA'&#13;
+		WHEN 22 THEN 'FPBGA'&#13;
+		WHEN 23 THEN 'LGA'&#13;
+		END form_factor&#13;
+	, tblPhysicalMemory.MemoryType&#13;
+	, CASE tblPhysicalMemory.MemoryType&#13;
+		WHEN 0 THEN 'Unknown'&#13;
+		WHEN 1 THEN 'Other'&#13;
+		WHEN 2 THEN 'DRAM'&#13;
+		WHEN 3 THEN 'Synchronous DRAM'&#13;
+		WHEN 4 THEN 'Cache DRAM'&#13;
+		WHEN 5 THEN 'EDO'&#13;
+		WHEN 6 THEN 'EDRAM'&#13;
+		WHEN 7 THEN 'VRAM'&#13;
+		WHEN 8 THEN 'SRAM'&#13;
+		WHEN 9 THEN 'RAM'&#13;
+		WHEN 10 THEN 'ROM'&#13;
+		WHEN 11 THEN 'Flash'&#13;
+		WHEN 12 THEN 'EEPROM'&#13;
+		WHEN 13 THEN 'FEPROM'&#13;
+		WHEN 14 THEN 'EPROM'&#13;
+		WHEN 15 THEN 'CDRAM'&#13;
+		WHEN 16 THEN '3DRAM'&#13;
+		WHEN 17 THEN 'SDRAM'&#13;
+		WHEN 18 THEN 'SGRAM'&#13;
+		WHEN 19 THEN 'RDRAM'&#13;
+		WHEN 20 THEN 'DDR'&#13;
+		WHEN 22 THEN 'DDR2 FB-DIMM' &#13;
+		WHEN 24 THEN 'DDR3'&#13;
+		WHEN 25 THEN 'FBD2'&#13;
+		END [type]&#13;
+	, 'Hardware' Category&#13;
+	, 'Memory' SubCategory	&#13;
+	, tblAssets.Firstseen AS FirstDiscovered&#13;
+	, 1 AS InstallStatus&#13;
+	, tblAssets.Lastseen AS LastDiscovered&#13;
+	, tblAssetCustom.PurchaseDate AS Purchased&#13;
+	, tblAssetCustom.Warrantydate AS Warranty_Expiration&#13;
+	, tblState.Statename AS OperationalStatus&#13;
+&#13;
+	, 'MemoryModule' AS SourceName&#13;
+	, CASE &#13;
+		WHEN tblComputersystem.Domainrole IS NULL THEN tsysAssetTypes.AssetTypename&#13;
+		WHEN tsysAssetTypes.AssetTypename = 'Windows' AND tblComputersystem.Domainrole &gt; 1 THEN 'WindowsServer'&#13;
+		WHEN tsysAssetTypes.AssetTypename = 'Windows' AND tblComputersystem.Domainrole IN (0,1) THEN 'WindowsPC'&#13;
+		END AS ParentAssetType&#13;
+&#13;
+	, tblAssets.AssetName AS ParentName&#13;
+	, tblAssets.Mac AS ParentMACAddress&#13;
+	, tblAssetCustom.Serialnumber AS ParentSerialNumber&#13;
+	, 'Contains::Contained by' AS RelationType&#13;
+FROM&#13;
+	tblPhysicalMemory&#13;
+	INNER JOIN tblAssets&#13;
+		ON tblPhysicalMemory.AssetID = tblAssets.AssetID&#13;
+	INNER JOIN tblAssetCustom &#13;
+		ON tblAssets.AssetID = tblAssetCustom.AssetID&#13;
+	INNER JOIN tsysAssetTypes&#13;
+		ON tsysAssetTypes.AssetType = tblASsets.AssetType&#13;
+	LEFT OUTER JOIN tblState &#13;
+		ON tblState.State = tblAssetCustom.State&#13;
+	LEFT OUTER JOIN tblComputersystem &#13;
+		ON tblAssets.AssetID = tblComputersystem.AssetID</sql_statement>
+        <ssh_keyfile_path/>
+        <support_pagination>false</support_pagination>
+        <sys_class_name>sys_data_source</sys_class_name>
+        <sys_created_by>scott.webster</sys_created_by>
+        <sys_created_on>2020-11-05 00:53:59</sys_created_on>
+        <sys_id>f361c799db9c2810613ecc30399619a8</sys_id>
+        <sys_mod_count>103</sys_mod_count>
+        <sys_name>Lansweeper RL Memory Module</sys_name>
+        <sys_package display_value="CI Synchronizer (Lansweeper On-Prem Edition)" source="x_38710_lansweeper">f46467d4db50a410613ecc303996191d</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="CI Synchronizer (Lansweeper On-Prem Edition)">f46467d4db50a410613ecc303996191d</sys_scope>
+        <sys_update_name>sys_data_source_f361c799db9c2810613ecc30399619a8</sys_update_name>
+        <sys_updated_by>cisync</sys_updated_by>
+        <sys_updated_on>2021-06-15 02:17:55</sys_updated_on>
+        <table_name/>
+        <type>JDBC</type>
+        <use_batch_import>false</use_batch_import>
+        <use_integrated_authentication>true</use_integrated_authentication>
+        <use_last_run_datetime>false</use_last_run_datetime>
+        <xpath_root_node/>
+        <zipped>false</zipped>
+    </sys_data_source>
+    <sys_variable_value action="delete_multiple" query="document_key=f361c799db9c2810613ecc30399619a8"/>
+</record_update>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_security_acl">
+    <sys_security_acl action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <admin_overrides>true</admin_overrides>
+        <advanced>false</advanced>
+        <condition/>
+        <description/>
+        <name>x.38710.workspace.ci_synchronizer_la</name>
+        <operation display_value="read">read</operation>
+        <script/>
+        <sys_class_name>sys_security_acl</sys_class_name>
+        <sys_created_by>mario.quinones</sys_created_by>
+        <sys_created_on>2020-11-19 01:28:21</sys_created_on>
+        <sys_id>6f8f8fb5db64a850613ecc3039961977</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>x.38710.workspace.ci_synchronizer_la</sys_name>
+        <sys_package display_value="CI Synchronizer (Lansweeper On-Prem Edition)" source="x_38710_lansweeper">f46467d4db50a410613ecc303996191d</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="CI Synchronizer (Lansweeper On-Prem Edition)">f46467d4db50a410613ecc303996191d</sys_scope>
+        <sys_update_name>sys_security_acl_6f8f8fb5db64a850613ecc3039961977</sys_update_name>
+        <sys_updated_by>mario.quinones</sys_updated_by>
+        <sys_updated_on>2020-11-19 01:28:21</sys_updated_on>
+        <type display_value="ux_page">b9eb8a1b873303002941b53046cb0b18</type>
+    </sys_security_acl>
+</record_update>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_transform_script">
+    <sys_transform_script action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <map display_value="Lansweeper RL Storage Device">31a1dec3dbd4ec10613ecc30399619d9</map>
+        <order>100</order>
+        <script><![CDATA[(function runTransformScript(source, map, log, target /*undefined onStart*/ ) {
+
+	var util = new x_38710_lansweeper.LansweeperIntegrationUtils();
+
+	ignore = (!util.checkParentClassIsSupported(null, source.getValue('u_parentassettype')));
+	
+	if (!ignore){
+		ignore = util.runTransformRelated(source, map, log, target);	
+	}
+
+
+})(source, map, log, target);]]></script>
+        <sys_class_name>sys_transform_script</sys_class_name>
+        <sys_created_by>scott.webster</sys_created_by>
+        <sys_created_on>2020-11-27 06:35:01</sys_created_on>
+        <sys_id>26426d2cdbf8a090613ecc3039961953</sys_id>
+        <sys_mod_count>5</sys_mod_count>
+        <sys_name>onBefore</sys_name>
+        <sys_package display_value="CI Synchronizer (Lansweeper On-Prem Edition)" source="x_38710_lansweeper">f46467d4db50a410613ecc303996191d</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="CI Synchronizer (Lansweeper On-Prem Edition)">f46467d4db50a410613ecc303996191d</sys_scope>
+        <sys_update_name>sys_transform_script_26426d2cdbf8a090613ecc3039961953</sys_update_name>
+        <sys_updated_by>scott.webster</sys_updated_by>
+        <sys_updated_on>2021-01-22 03:14:17</sys_updated_on>
+        <when>onBefore</when>
+    </sys_transform_script>
+</record_update>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element extends="sys_import_set_row" label="Lansweeper rship Cluster::ClusterOf" max_length="40" name="x_38710_lansweeper_rship_cluster_clusterof" type="collection">
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=Base_CorrelationID" label="Base_CorrelationID" max_length="286" name="u_base_correlationid" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="Base_Name" max_length="40" name="u_base_name" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=Dependant_CorrelationID" label="Dependant_CorrelationID" max_length="317" name="u_dependant_correlationid" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="Dependant_Name" max_length="40" name="u_dependant_name" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=relationship" label="relationship" max_length="40" name="u_relationship" type="string"/>
+    </element>
+</database>

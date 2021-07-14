@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="content_block_programmatic">
+    <content_block_programmatic action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <category>general</category>
+        <condition/>
+        <conditional>false</conditional>
+        <frame/>
+        <logged_on>false</logged_on>
+        <name>Dashboard Application Info</name>
+        <programmatic_content><![CDATA[<?xml version="1.0" encoding="utf-8" ?>
+<j:jelly trim="false" xmlns:j="jelly:core" xmlns:g="glide" xmlns:j2="null" xmlns:g2="null">
+<style>
+  .wrapper {
+	padding-left: 5px;
+	padding-right: 5px;
+	overflow: hidden;
+	}	
+</style>
+	
+<div class="wrapper">
+	<div id="appDetails">	
+	</div>					
+</div>	
+<script>
+	var ga = new GlideAjax('LansweeperIntegrationAjax');
+	ga.addParam('sysparm_name', 'getIntegrationAppInfo');
+	ga.getXML(appInfoResponse);
+
+	function appInfoResponse(response) {
+		var result = response.responseXML.documentElement.getAttribute("answer");
+		var appinfo = JSON.parse(result);
+		var appEdition = '';
+		var previewlink = '';
+	
+		var html = [];
+		if (appinfo.product != '') 
+			html.push('<h4 align="left" style="font-weight: bold;text-align:left;">' + appinfo.product + '</h4>');
+	
+		if (!appinfo.isFullVersion) {
+			appEdition = '<h5 align="left" style="font-weight: bold;">' + appinfo.displayName + '</h5>';
+			previewlink = '<a href="' + appinfo.url + '" target="_blank" rel="noopener noreferrer">' + appinfo.urlText + '</a>';
+		} else {
+			appEdition = '<h4 align="left" style="font-weight: bold;">' + appinfo.displayName + '</h4>';
+			previewlink = '';
+		}
+	
+		html.push(appEdition);
+		
+		if (previewlink != '')
+			html.push(previewlink);
+
+		appDetails.innerHTML = html.join("");
+	}
+</script>	
+		
+</j:jelly>]]></programmatic_content>
+        <sys_class_name>content_block_programmatic</sys_class_name>
+        <sys_created_by>luis.cyrillo</sys_created_by>
+        <sys_created_on>2020-12-11 02:17:07</sys_created_on>
+        <sys_id>322de049dbc160d0613ecc3039961976</sys_id>
+        <sys_mod_count>40</sys_mod_count>
+        <sys_name>Dashboard Application Info</sys_name>
+        <sys_package display_value="CI Synchronizer (Lansweeper On-Prem Edition)" source="x_38710_lansweeper">f46467d4db50a410613ecc303996191d</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="CI Synchronizer (Lansweeper On-Prem Edition)">f46467d4db50a410613ecc303996191d</sys_scope>
+        <sys_update_name>content_block_programmatic_322de049dbc160d0613ecc3039961976</sys_update_name>
+        <sys_updated_by>luis.cyrillo</sys_updated_by>
+        <sys_updated_on>2021-01-18 02:59:01</sys_updated_on>
+        <two_phase>false</two_phase>
+    </content_block_programmatic>
+</record_update>

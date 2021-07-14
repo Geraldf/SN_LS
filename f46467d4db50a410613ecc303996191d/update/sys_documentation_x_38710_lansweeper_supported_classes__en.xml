@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_documentation element="" label="Supported Classes" language="en" table="x_38710_lansweeper_supported_classes">
+        <sys_documentation action="INSERT_OR_UPDATE">
+            <element/>
+            <help/>
+            <hint/>
+            <label>Supported Classes</label>
+            <language>en</language>
+            <name>x_38710_lansweeper_supported_classes</name>
+            <plural>Supported Classes</plural>
+            <sys_class_name>sys_documentation</sys_class_name>
+            <sys_created_by>luis.cyrillo</sys_created_by>
+            <sys_created_on>2020-11-03 00:56:34</sys_created_on>
+            <sys_id>42de647cdbdca410613ecc3039961946</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>Supported Classes</sys_name>
+            <sys_package display_value="CI Synchronizer (Lansweeper On-Prem Edition)" source="x_38710_lansweeper">f46467d4db50a410613ecc303996191d</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="CI Synchronizer (Lansweeper On-Prem Edition)">f46467d4db50a410613ecc303996191d</sys_scope>
+            <sys_update_name>sys_documentation_x_38710_lansweeper_supported_classes__en</sys_update_name>
+            <sys_updated_by>luis.cyrillo</sys_updated_by>
+            <sys_updated_on>2020-11-03 00:56:34</sys_updated_on>
+            <url/>
+            <url_target/>
+        </sys_documentation>
+    </sys_documentation>
+</record_update>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_documentation element="u_parentmacaddress" label="ParentMACAddress" language="en" table="x_38710_lansweeper_win_cluster_node">
+        <sys_documentation action="INSERT_OR_UPDATE">
+            <element>u_parentmacaddress</element>
+            <help/>
+            <hint/>
+            <label>ParentMACAddress</label>
+            <language>en</language>
+            <name>x_38710_lansweeper_win_cluster_node</name>
+            <plural>ParentMACAddress</plural>
+            <sys_class_name>sys_documentation</sys_class_name>
+            <sys_created_by>scott.webster</sys_created_by>
+            <sys_created_on>2021-01-05 00:54:18</sys_created_on>
+            <sys_id>c77ac941db252c10613ecc30399619ab</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>ParentMACAddress</sys_name>
+            <sys_package display_value="CI Synchronizer (Lansweeper On-Prem Edition)" source="x_38710_lansweeper">f46467d4db50a410613ecc303996191d</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="CI Synchronizer (Lansweeper On-Prem Edition)">f46467d4db50a410613ecc303996191d</sys_scope>
+            <sys_update_name>sys_documentation_x_38710_lansweeper_win_cluster_node_u_parentmacaddress_en</sys_update_name>
+            <sys_updated_by>scott.webster</sys_updated_by>
+            <sys_updated_on>2021-01-05 00:54:18</sys_updated_on>
+            <url/>
+            <url_target/>
+        </sys_documentation>
+    </sys_documentation>
+</record_update>

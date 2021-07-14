@@ -1,0 +1,393 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_ui_section caption="" section_id="1096236fdbd46050613ecc3039961931" sys_domain="global" table="x_38710_lansweeper_rl_storage_device" version="3" view="">
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>.begin_split</element>
+            <position>0</position>
+            <sys_created_by>mario.quinones</sys_created_by>
+            <sys_created_on>2020-11-12 03:22:33</sys_created_on>
+            <sys_id>5496236fdbd46050613ecc3039961937</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_38710_lansweeper_rl_storage_device" sys_domain="global" view="Default view">1096236fdbd46050613ecc3039961931</sys_ui_section>
+            <sys_updated_by>mario.quinones</sys_updated_by>
+            <sys_updated_on>2020-11-12 03:22:33</sys_updated_on>
+            <sys_user/>
+            <type>.begin_split</type>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>u_storage_type</element>
+            <position>1</position>
+            <sys_created_by>mario.quinones</sys_created_by>
+            <sys_created_on>2020-11-12 03:22:33</sys_created_on>
+            <sys_id>d896236fdbd46050613ecc3039961937</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_38710_lansweeper_rl_storage_device" sys_domain="global" view="Default view">1096236fdbd46050613ecc3039961931</sys_ui_section>
+            <sys_updated_by>mario.quinones</sys_updated_by>
+            <sys_updated_on>2020-11-12 03:22:33</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>u_assetid</element>
+            <position>2</position>
+            <sys_created_by>mario.quinones</sys_created_by>
+            <sys_created_on>2020-11-12 03:22:33</sys_created_on>
+            <sys_id>5c96236fdbd46050613ecc3039961937</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_38710_lansweeper_rl_storage_device" sys_domain="global" view="Default view">1096236fdbd46050613ecc3039961931</sys_ui_section>
+            <sys_updated_by>mario.quinones</sys_updated_by>
+            <sys_updated_on>2020-11-12 03:22:33</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>u_serial_number</element>
+            <position>3</position>
+            <sys_created_by>mario.quinones</sys_created_by>
+            <sys_created_on>2020-11-12 03:22:33</sys_created_on>
+            <sys_id>dc96236fdbd46050613ecc3039961937</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_38710_lansweeper_rl_storage_device" sys_domain="global" view="Default view">1096236fdbd46050613ecc3039961931</sys_ui_section>
+            <sys_updated_by>mario.quinones</sys_updated_by>
+            <sys_updated_on>2020-11-12 03:22:33</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>.split</element>
+            <position>4</position>
+            <sys_created_by>mario.quinones</sys_created_by>
+            <sys_created_on>2020-11-12 03:22:33</sys_created_on>
+            <sys_id>5096236fdbd46050613ecc3039961938</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_38710_lansweeper_rl_storage_device" sys_domain="global" view="Default view">1096236fdbd46050613ecc3039961931</sys_ui_section>
+            <sys_updated_by>mario.quinones</sys_updated_by>
+            <sys_updated_on>2020-11-12 03:22:33</sys_updated_on>
+            <sys_user/>
+            <type>.split</type>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>u_correlationd</element>
+            <position>5</position>
+            <sys_created_by>mario.quinones</sys_created_by>
+            <sys_created_on>2020-11-12 03:22:33</sys_created_on>
+            <sys_id>d096236fdbd46050613ecc3039961938</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_38710_lansweeper_rl_storage_device" sys_domain="global" view="Default view">1096236fdbd46050613ecc3039961931</sys_ui_section>
+            <sys_updated_by>mario.quinones</sys_updated_by>
+            <sys_updated_on>2020-11-12 03:22:33</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>u_parent_correlationid</element>
+            <position>6</position>
+            <sys_created_by>mario.quinones</sys_created_by>
+            <sys_created_on>2020-11-12 03:22:33</sys_created_on>
+            <sys_id>5496236fdbd46050613ecc3039961938</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_38710_lansweeper_rl_storage_device" sys_domain="global" view="Default view">1096236fdbd46050613ecc3039961931</sys_ui_section>
+            <sys_updated_by>mario.quinones</sys_updated_by>
+            <sys_updated_on>2020-11-12 03:22:33</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>.end_split</element>
+            <position>7</position>
+            <sys_created_by>mario.quinones</sys_created_by>
+            <sys_created_on>2020-11-12 03:22:33</sys_created_on>
+            <sys_id>d496236fdbd46050613ecc3039961938</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_38710_lansweeper_rl_storage_device" sys_domain="global" view="Default view">1096236fdbd46050613ecc3039961931</sys_ui_section>
+            <sys_updated_by>mario.quinones</sys_updated_by>
+            <sys_updated_on>2020-11-12 03:22:33</sys_updated_on>
+            <sys_user/>
+            <type>.end_split</type>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>u_assettypename</element>
+            <position>8</position>
+            <sys_created_by>mario.quinones</sys_created_by>
+            <sys_created_on>2020-11-12 03:22:33</sys_created_on>
+            <sys_id>5896236fdbd46050613ecc3039961938</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_38710_lansweeper_rl_storage_device" sys_domain="global" view="Default view">1096236fdbd46050613ecc3039961931</sys_ui_section>
+            <sys_updated_by>mario.quinones</sys_updated_by>
+            <sys_updated_on>2020-11-12 03:22:33</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>u_discoverysource</element>
+            <position>9</position>
+            <sys_created_by>mario.quinones</sys_created_by>
+            <sys_created_on>2020-11-12 03:22:33</sys_created_on>
+            <sys_id>d896236fdbd46050613ecc3039961938</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_38710_lansweeper_rl_storage_device" sys_domain="global" view="Default view">1096236fdbd46050613ecc3039961931</sys_ui_section>
+            <sys_updated_by>mario.quinones</sys_updated_by>
+            <sys_updated_on>2020-11-12 03:22:33</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>u_name</element>
+            <position>10</position>
+            <sys_created_by>mario.quinones</sys_created_by>
+            <sys_created_on>2020-11-12 03:22:33</sys_created_on>
+            <sys_id>5c96236fdbd46050613ecc3039961938</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_38710_lansweeper_rl_storage_device" sys_domain="global" view="Default view">1096236fdbd46050613ecc3039961931</sys_ui_section>
+            <sys_updated_by>mario.quinones</sys_updated_by>
+            <sys_updated_on>2020-11-12 03:22:33</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>.begin_split</element>
+            <position>11</position>
+            <sys_created_by>mario.quinones</sys_created_by>
+            <sys_created_on>2020-11-12 03:22:33</sys_created_on>
+            <sys_id>dc96236fdbd46050613ecc3039961938</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_38710_lansweeper_rl_storage_device" sys_domain="global" view="Default view">1096236fdbd46050613ecc3039961931</sys_ui_section>
+            <sys_updated_by>mario.quinones</sys_updated_by>
+            <sys_updated_on>2020-11-12 03:22:33</sys_updated_on>
+            <sys_user/>
+            <type>.begin_split</type>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>u_size_bytes</element>
+            <position>12</position>
+            <sys_created_by>mario.quinones</sys_created_by>
+            <sys_created_on>2020-11-12 03:22:33</sys_created_on>
+            <sys_id>5096236fdbd46050613ecc3039961939</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_38710_lansweeper_rl_storage_device" sys_domain="global" view="Default view">1096236fdbd46050613ecc3039961931</sys_ui_section>
+            <sys_updated_by>mario.quinones</sys_updated_by>
+            <sys_updated_on>2020-11-12 03:22:33</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>u_correlationid</element>
+            <position>13</position>
+            <sys_created_by>mario.quinones</sys_created_by>
+            <sys_created_on>2020-11-12 03:22:33</sys_created_on>
+            <sys_id>d096236fdbd46050613ecc3039961939</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_38710_lansweeper_rl_storage_device" sys_domain="global" view="Default view">1096236fdbd46050613ecc3039961931</sys_ui_section>
+            <sys_updated_by>mario.quinones</sys_updated_by>
+            <sys_updated_on>2020-11-12 03:22:33</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>u_firstdiscovered</element>
+            <position>14</position>
+            <sys_created_by>mario.quinones</sys_created_by>
+            <sys_created_on>2020-11-12 03:22:33</sys_created_on>
+            <sys_id>5496236fdbd46050613ecc3039961939</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_38710_lansweeper_rl_storage_device" sys_domain="global" view="Default view">1096236fdbd46050613ecc3039961931</sys_ui_section>
+            <sys_updated_by>mario.quinones</sys_updated_by>
+            <sys_updated_on>2020-11-12 03:22:33</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>u_warranty_expiration</element>
+            <position>15</position>
+            <sys_created_by>mario.quinones</sys_created_by>
+            <sys_created_on>2020-11-12 03:22:33</sys_created_on>
+            <sys_id>d496236fdbd46050613ecc3039961939</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_38710_lansweeper_rl_storage_device" sys_domain="global" view="Default view">1096236fdbd46050613ecc3039961931</sys_ui_section>
+            <sys_updated_by>mario.quinones</sys_updated_by>
+            <sys_updated_on>2020-11-12 03:22:33</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>u_category</element>
+            <position>16</position>
+            <sys_created_by>mario.quinones</sys_created_by>
+            <sys_created_on>2020-11-12 03:22:33</sys_created_on>
+            <sys_id>5896236fdbd46050613ecc3039961939</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_38710_lansweeper_rl_storage_device" sys_domain="global" view="Default view">1096236fdbd46050613ecc3039961931</sys_ui_section>
+            <sys_updated_by>mario.quinones</sys_updated_by>
+            <sys_updated_on>2020-11-12 03:22:33</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>u_purchased</element>
+            <position>17</position>
+            <sys_created_by>mario.quinones</sys_created_by>
+            <sys_created_on>2020-11-12 03:22:33</sys_created_on>
+            <sys_id>d896236fdbd46050613ecc3039961939</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_38710_lansweeper_rl_storage_device" sys_domain="global" view="Default view">1096236fdbd46050613ecc3039961931</sys_ui_section>
+            <sys_updated_by>mario.quinones</sys_updated_by>
+            <sys_updated_on>2020-11-12 03:22:33</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>.split</element>
+            <position>18</position>
+            <sys_created_by>mario.quinones</sys_created_by>
+            <sys_created_on>2020-11-12 03:22:33</sys_created_on>
+            <sys_id>5c96236fdbd46050613ecc3039961939</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_38710_lansweeper_rl_storage_device" sys_domain="global" view="Default view">1096236fdbd46050613ecc3039961931</sys_ui_section>
+            <sys_updated_by>mario.quinones</sys_updated_by>
+            <sys_updated_on>2020-11-12 03:22:33</sys_updated_on>
+            <sys_user/>
+            <type>.split</type>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>u_operationalstatus</element>
+            <position>19</position>
+            <sys_created_by>mario.quinones</sys_created_by>
+            <sys_created_on>2020-11-12 03:22:33</sys_created_on>
+            <sys_id>dc96236fdbd46050613ecc3039961939</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_38710_lansweeper_rl_storage_device" sys_domain="global" view="Default view">1096236fdbd46050613ecc3039961931</sys_ui_section>
+            <sys_updated_by>mario.quinones</sys_updated_by>
+            <sys_updated_on>2020-11-12 03:22:33</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>u_department</element>
+            <position>20</position>
+            <sys_created_by>mario.quinones</sys_created_by>
+            <sys_created_on>2020-11-12 03:22:33</sys_created_on>
+            <sys_id>5c96676fdbd46050613ecc3039961915</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_38710_lansweeper_rl_storage_device" sys_domain="global" view="Default view">1096236fdbd46050613ecc3039961931</sys_ui_section>
+            <sys_updated_by>mario.quinones</sys_updated_by>
+            <sys_updated_on>2020-11-12 03:22:33</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>u_subcategory</element>
+            <position>21</position>
+            <sys_created_by>mario.quinones</sys_created_by>
+            <sys_created_on>2020-11-12 03:22:33</sys_created_on>
+            <sys_id>dc96676fdbd46050613ecc3039961915</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_38710_lansweeper_rl_storage_device" sys_domain="global" view="Default view">1096236fdbd46050613ecc3039961931</sys_ui_section>
+            <sys_updated_by>mario.quinones</sys_updated_by>
+            <sys_updated_on>2020-11-12 03:22:33</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>u_lastdiscovered</element>
+            <position>22</position>
+            <sys_created_by>mario.quinones</sys_created_by>
+            <sys_created_on>2020-11-12 03:22:33</sys_created_on>
+            <sys_id>5096676fdbd46050613ecc3039961916</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_38710_lansweeper_rl_storage_device" sys_domain="global" view="Default view">1096236fdbd46050613ecc3039961931</sys_ui_section>
+            <sys_updated_by>mario.quinones</sys_updated_by>
+            <sys_updated_on>2020-11-12 03:22:33</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>u_location</element>
+            <position>23</position>
+            <sys_created_by>mario.quinones</sys_created_by>
+            <sys_created_on>2020-11-12 03:22:33</sys_created_on>
+            <sys_id>d096676fdbd46050613ecc3039961916</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_38710_lansweeper_rl_storage_device" sys_domain="global" view="Default view">1096236fdbd46050613ecc3039961931</sys_ui_section>
+            <sys_updated_by>mario.quinones</sys_updated_by>
+            <sys_updated_on>2020-11-12 03:22:33</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>u_installstatus</element>
+            <position>24</position>
+            <sys_created_by>mario.quinones</sys_created_by>
+            <sys_created_on>2020-11-12 03:22:33</sys_created_on>
+            <sys_id>5496676fdbd46050613ecc3039961916</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_38710_lansweeper_rl_storage_device" sys_domain="global" view="Default view">1096236fdbd46050613ecc3039961931</sys_ui_section>
+            <sys_updated_by>mario.quinones</sys_updated_by>
+            <sys_updated_on>2020-11-12 03:22:33</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>.end_split</element>
+            <position>25</position>
+            <sys_created_by>mario.quinones</sys_created_by>
+            <sys_created_on>2020-11-12 03:22:33</sys_created_on>
+            <sys_id>d496676fdbd46050613ecc3039961916</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_38710_lansweeper_rl_storage_device" sys_domain="global" view="Default view">1096236fdbd46050613ecc3039961931</sys_ui_section>
+            <sys_updated_by>mario.quinones</sys_updated_by>
+            <sys_updated_on>2020-11-12 03:22:33</sys_updated_on>
+            <sys_user/>
+            <type>.end_split</type>
+        </sys_ui_element>
+        <sys_ui_section action="INSERT_OR_UPDATE">
+            <caption/>
+            <header>false</header>
+            <name>x_38710_lansweeper_rl_storage_device</name>
+            <roles/>
+            <sys_class_name>sys_ui_section</sys_class_name>
+            <sys_created_by>mario.quinones</sys_created_by>
+            <sys_created_on>2020-11-12 03:22:33</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>1096236fdbd46050613ecc3039961931</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>x_38710_lansweeper_rl_storage_device</sys_name>
+            <sys_overrides/>
+            <sys_package display_value="CI Synchronizer (Lansweeper On-Prem Edition)" source="x_38710_lansweeper">f46467d4db50a410613ecc303996191d</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="CI Synchronizer (Lansweeper On-Prem Edition)">f46467d4db50a410613ecc303996191d</sys_scope>
+            <sys_update_name>sys_ui_section_1096236fdbd46050613ecc3039961931</sys_update_name>
+            <sys_updated_by>mario.quinones</sys_updated_by>
+            <sys_updated_on>2020-11-12 03:22:33</sys_updated_on>
+            <sys_user/>
+            <title>true</title>
+            <view display_value="Default view" name="NULL">Default view</view>
+            <view_name/>
+        </sys_ui_section>
+    </sys_ui_section>
+</record_update>

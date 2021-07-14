@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element extends="sys_import_set_row" label="Lansweeper Software Instance" max_length="40" name="x_38710_lansweeper_cmdb_software_instance" type="collection">
+        <element attributes="edge_encryption_enabled=true" label="AssetName" max_length="40" name="u_assetname" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="AssetType" max_length="40" name="u_assettype" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=installed_on" label="installed_on" max_length="51" name="u_installed_on" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=install_date" label="install_date" max_length="40" name="u_install_date" type="datetime"/>
+        <element attributes="edge_encryption_enabled=true" label="key" max_length="40" name="u_key" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="MacAddress" max_length="40" name="u_macaddress" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=name" label="name" max_length="300" name="u_name" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="SerialNumber" max_length="40" name="u_serialnumber" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=software" label="software" max_length="61" name="u_software" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="software_correlation_id" max_length="40" name="u_software_correlation_id" type="string"/>
+    </element>
+</database>

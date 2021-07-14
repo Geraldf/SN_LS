@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="content_block_programmatic">
+    <content_block_programmatic action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <category>general</category>
+        <condition/>
+        <conditional>false</conditional>
+        <frame/>
+        <logged_on>false</logged_on>
+        <name>Last Integration Run</name>
+        <programmatic_content><![CDATA[<?xml version="1.0" encoding="utf-8" ?>
+<j:jelly trim="false" xmlns:j="jelly:core" xmlns:g="glide" xmlns:j2="null" xmlns:g2="null">
+<style>
+	
+.styled-table {
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 0.9em;
+    font-family: sans-serif;
+    min-width: 400px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}	
+	
+.styled-table thead tr {
+    background-color: #009879;
+    color: #ffffff;
+    text-align: left;
+}
+	
+.styled-table th {
+    padding: 6px 6px;
+	background-color: #1db8d9;	
+}	
+	
+.styled-table td {
+    padding: 6px 6px;
+}	
+	
+.styled-table tbody tr {
+    border-bottom: thin solid #dddddd;
+}
+
+.styled-table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+.styled-table tbody tr:last-of-type {
+    border-bottom: 2px solid #1db8d9;
+}	
+	
+.styled-table tbody tr.active-row {
+    font-weight: bold;
+    color: #009879;
+}	
+	
+</style>
+	<div class="container">
+		<div id="recDetails">	
+		</div>					
+	</div>		
+	<script>
+		
+		
+		setTimeout(refreshList, 1000);			
+	
+
+		function refreshList(){
+			var container = document.querySelector('.container');
+		    var incDetails = container.querySelector('.list-group');
+		
+			var ga = new GlideAjax('LansweeperIntegrationAjax');
+			ga.addParam('sysparm_name', 'getIntegrationDetails');
+			ga.getXML(integrationData);
+
+			function integrationData(response) {
+				var result = response.responseXML.documentElement.getAttribute("answer");
+				var details = JSON.parse(result);
+				var records = details[0];
+				var keys = Object.keys(records[0]);
+				var html = [];
+				html.push('<table class="styled-table"  width="100%">');		
+
+				html.push('<thead><tr>');
+		
+
+				keys.forEach(function(key){
+					var label = key.replaceAll("_", " ");
+					if (label == 'CI Class'){
+						html.push('<th style="text-align:left;">'+ label + '</th>');		
+					}
+					else{
+						html.push('<th style="text-align:center;">'+ label + '</th>');
+					}
+				});
+
+				html.push('</tr></thead>');
+		
+				html.push('<tbody>');
+				records.forEach(function(detail){
+					html.push('<tr>');		
+					var text = detail['CI Class'];
+					html.push('<td style="text-align:left;">' + text + '</td>');	
+					var text = detail['Last Run'];
+					html.push('<td style="text-align:center;">' + text + '</td>');		
+					var text = detail['Processed'];
+					html.push('<td style="text-align:center;">' + text + '</td>');		
+					var text = detail['Inserted'];
+					html.push('<td style="text-align:center;">' + text + '</td>');		
+					var text = detail['Ignored'];
+					html.push('<td style="text-align:center;">' + text + '</td>');		
+					var text = detail['Errors'];
+					html.push('<td style="text-align:center;">' + text + '</td>');		
+					var text = detail['Updated'];
+					html.push('<td style="text-align:center;">' + text + '</td>');		
+		
+					html.push('</tr>');		
+				});		
+				html.push('</tbody>');
+				html.push('</table>');		
+
+				recDetails.innerHTML = html.join("");
+			}
+			setTimeout(refreshList,  ${gs.getMessage(gs.getProperty('x_38710_lansweeper.integration.dasboard.refresh.rate'))} * 1000);	
+
+
+		}	
+
+	</script>
+
+</j:jelly>]]></programmatic_content>
+        <sys_class_name>content_block_programmatic</sys_class_name>
+        <sys_created_by>mario.quinones</sys_created_by>
+        <sys_created_on>2020-11-06 06:24:12</sys_created_on>
+        <sys_id>8e86ddb5dbd4a810613ecc3039961902</sys_id>
+        <sys_mod_count>117</sys_mod_count>
+        <sys_name>Last Integration Run</sys_name>
+        <sys_package display_value="CI Synchronizer (Lansweeper On-Prem Edition)" source="x_38710_lansweeper">f46467d4db50a410613ecc303996191d</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="CI Synchronizer (Lansweeper On-Prem Edition)">f46467d4db50a410613ecc303996191d</sys_scope>
+        <sys_update_name>content_block_programmatic_8e86ddb5dbd4a810613ecc3039961902</sys_update_name>
+        <sys_updated_by>luis.cyrillo</sys_updated_by>
+        <sys_updated_on>2020-12-12 22:01:55</sys_updated_on>
+        <two_phase>false</two_phase>
+    </content_block_programmatic>
+</record_update>

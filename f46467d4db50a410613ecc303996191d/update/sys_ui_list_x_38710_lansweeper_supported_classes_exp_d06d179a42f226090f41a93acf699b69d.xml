@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_ui_list parent="" relationship="" sys_domain="global" table="x_38710_lansweeper_supported_classes" version="2" view="exp_d06d179a42f226090f41a93acf699b69d">
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>last_run_updated</element>
+            <list_id display_value="x_38710_lansweeper_supported_classes" element="NULL" name="x_38710_lansweeper_supported_classes" parent="NULL" relationship="NULL" sys_domain="global" view="c5e1f5a42f226090f41a93acf699b603">c956bb052fa2e090f41a93acf699b64f</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>0</position>
+            <sum>false</sum>
+            <sys_created_by>scott.webster</sys_created_by>
+            <sys_created_on>2021-02-24 06:27:53</sys_created_on>
+            <sys_id>5956bb052fa2e090f41a93acf699b650</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>scott.webster</sys_updated_by>
+            <sys_updated_on>2021-02-24 06:27:53</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>ci_name</element>
+            <list_id display_value="x_38710_lansweeper_supported_classes" element="NULL" name="x_38710_lansweeper_supported_classes" parent="NULL" relationship="NULL" sys_domain="global" view="c5e1f5a42f226090f41a93acf699b603">c956bb052fa2e090f41a93acf699b64f</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>1</position>
+            <sum>false</sum>
+            <sys_created_by>scott.webster</sys_created_by>
+            <sys_created_on>2021-02-24 06:27:53</sys_created_on>
+            <sys_id>d956bb052fa2e090f41a93acf699b650</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>scott.webster</sys_updated_by>
+            <sys_updated_on>2021-02-24 06:27:53</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>last_run_skipped</element>
+            <list_id display_value="x_38710_lansweeper_supported_classes" element="NULL" name="x_38710_lansweeper_supported_classes" parent="NULL" relationship="NULL" sys_domain="global" view="c5e1f5a42f226090f41a93acf699b603">c956bb052fa2e090f41a93acf699b64f</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>2</position>
+            <sum>false</sum>
+            <sys_created_by>scott.webster</sys_created_by>
+            <sys_created_on>2021-02-24 06:27:53</sys_created_on>
+            <sys_id>5d56bb052fa2e090f41a93acf699b650</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>scott.webster</sys_updated_by>
+            <sys_updated_on>2021-02-24 06:27:53</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>last_run_end</element>
+            <list_id display_value="x_38710_lansweeper_supported_classes" element="NULL" name="x_38710_lansweeper_supported_classes" parent="NULL" relationship="NULL" sys_domain="global" view="c5e1f5a42f226090f41a93acf699b603">c956bb052fa2e090f41a93acf699b64f</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>3</position>
+            <sum>false</sum>
+            <sys_created_by>scott.webster</sys_created_by>
+            <sys_created_on>2021-02-24 06:27:53</sys_created_on>
+            <sys_id>dd56bb052fa2e090f41a93acf699b650</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>scott.webster</sys_updated_by>
+            <sys_updated_on>2021-02-24 06:27:53</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>last_run_processed</element>
+            <list_id display_value="x_38710_lansweeper_supported_classes" element="NULL" name="x_38710_lansweeper_supported_classes" parent="NULL" relationship="NULL" sys_domain="global" view="c5e1f5a42f226090f41a93acf699b603">c956bb052fa2e090f41a93acf699b64f</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>4</position>
+            <sum>false</sum>
+            <sys_created_by>scott.webster</sys_created_by>
+            <sys_created_on>2021-02-24 06:27:53</sys_created_on>
+            <sys_id>5156bb052fa2e090f41a93acf699b651</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>scott.webster</sys_updated_by>
+            <sys_updated_on>2021-02-24 06:27:53</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>class_name</element>
+            <list_id display_value="x_38710_lansweeper_supported_classes" element="NULL" name="x_38710_lansweeper_supported_classes" parent="NULL" relationship="NULL" sys_domain="global" view="c5e1f5a42f226090f41a93acf699b603">c956bb052fa2e090f41a93acf699b64f</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>5</position>
+            <sum>false</sum>
+            <sys_created_by>scott.webster</sys_created_by>
+            <sys_created_on>2021-02-24 06:27:53</sys_created_on>
+            <sys_id>d156bb052fa2e090f41a93acf699b651</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>scott.webster</sys_updated_by>
+            <sys_updated_on>2021-02-24 06:27:53</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>last_run_ignored</element>
+            <list_id display_value="x_38710_lansweeper_supported_classes" element="NULL" name="x_38710_lansweeper_supported_classes" parent="NULL" relationship="NULL" sys_domain="global" view="c5e1f5a42f226090f41a93acf699b603">c956bb052fa2e090f41a93acf699b64f</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>6</position>
+            <sum>false</sum>
+            <sys_created_by>scott.webster</sys_created_by>
+            <sys_created_on>2021-02-24 06:27:53</sys_created_on>
+            <sys_id>5556bb052fa2e090f41a93acf699b651</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>scott.webster</sys_updated_by>
+            <sys_updated_on>2021-02-24 06:27:53</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>last_run_start</element>
+            <list_id display_value="x_38710_lansweeper_supported_classes" element="NULL" name="x_38710_lansweeper_supported_classes" parent="NULL" relationship="NULL" sys_domain="global" view="c5e1f5a42f226090f41a93acf699b603">c956bb052fa2e090f41a93acf699b64f</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>7</position>
+            <sum>false</sum>
+            <sys_created_by>scott.webster</sys_created_by>
+            <sys_created_on>2021-02-24 06:27:53</sys_created_on>
+            <sys_id>d556bb052fa2e090f41a93acf699b651</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>scott.webster</sys_updated_by>
+            <sys_updated_on>2021-02-24 06:27:53</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>last_run_errors</element>
+            <list_id display_value="x_38710_lansweeper_supported_classes" element="NULL" name="x_38710_lansweeper_supported_classes" parent="NULL" relationship="NULL" sys_domain="global" view="c5e1f5a42f226090f41a93acf699b603">c956bb052fa2e090f41a93acf699b64f</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>8</position>
+            <sum>false</sum>
+            <sys_created_by>scott.webster</sys_created_by>
+            <sys_created_on>2021-02-24 06:27:53</sys_created_on>
+            <sys_id>5956bb052fa2e090f41a93acf699b651</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>scott.webster</sys_updated_by>
+            <sys_updated_on>2021-02-24 06:27:53</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>last_run_state</element>
+            <list_id display_value="x_38710_lansweeper_supported_classes" element="NULL" name="x_38710_lansweeper_supported_classes" parent="NULL" relationship="NULL" sys_domain="global" view="c5e1f5a42f226090f41a93acf699b603">c956bb052fa2e090f41a93acf699b64f</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>9</position>
+            <sum>false</sum>
+            <sys_created_by>scott.webster</sys_created_by>
+            <sys_created_on>2021-02-24 06:27:53</sys_created_on>
+            <sys_id>d956bb052fa2e090f41a93acf699b651</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>scott.webster</sys_updated_by>
+            <sys_updated_on>2021-02-24 06:27:53</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>last_run_inserts</element>
+            <list_id display_value="x_38710_lansweeper_supported_classes" element="NULL" name="x_38710_lansweeper_supported_classes" parent="NULL" relationship="NULL" sys_domain="global" view="c5e1f5a42f226090f41a93acf699b603">c956bb052fa2e090f41a93acf699b64f</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>10</position>
+            <sum>false</sum>
+            <sys_created_by>scott.webster</sys_created_by>
+            <sys_created_on>2021-02-24 06:27:53</sys_created_on>
+            <sys_id>5d56bb052fa2e090f41a93acf699b651</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>scott.webster</sys_updated_by>
+            <sys_updated_on>2021-02-24 06:27:53</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>add_to_counters</element>
+            <list_id display_value="x_38710_lansweeper_supported_classes" element="NULL" name="x_38710_lansweeper_supported_classes" parent="NULL" relationship="NULL" sys_domain="global" view="c5e1f5a42f226090f41a93acf699b603">c956bb052fa2e090f41a93acf699b64f</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>11</position>
+            <sum>false</sum>
+            <sys_created_by>scott.webster</sys_created_by>
+            <sys_created_on>2021-02-24 06:27:53</sys_created_on>
+            <sys_id>dd56bb052fa2e090f41a93acf699b651</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>scott.webster</sys_updated_by>
+            <sys_updated_on>2021-02-24 06:27:53</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>default_method</element>
+            <list_id display_value="x_38710_lansweeper_supported_classes" element="NULL" name="x_38710_lansweeper_supported_classes" parent="NULL" relationship="NULL" sys_domain="global" view="c5e1f5a42f226090f41a93acf699b603">c956bb052fa2e090f41a93acf699b64f</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>12</position>
+            <sum>false</sum>
+            <sys_created_by>scott.webster</sys_created_by>
+            <sys_created_on>2021-02-24 06:27:53</sys_created_on>
+            <sys_id>5156bb052fa2e090f41a93acf699b652</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>scott.webster</sys_updated_by>
+            <sys_updated_on>2021-02-24 06:27:53</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>identification_method</element>
+            <list_id display_value="x_38710_lansweeper_supported_classes" element="NULL" name="x_38710_lansweeper_supported_classes" parent="NULL" relationship="NULL" sys_domain="global" view="c5e1f5a42f226090f41a93acf699b603">c956bb052fa2e090f41a93acf699b64f</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>13</position>
+            <sum>false</sum>
+            <sys_created_by>scott.webster</sys_created_by>
+            <sys_created_on>2021-02-24 06:27:53</sys_created_on>
+            <sys_id>d156bb052fa2e090f41a93acf699b652</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>scott.webster</sys_updated_by>
+            <sys_updated_on>2021-02-24 06:27:53</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>identifier_metric</element>
+            <list_id display_value="x_38710_lansweeper_supported_classes" element="NULL" name="x_38710_lansweeper_supported_classes" parent="NULL" relationship="NULL" sys_domain="global" view="c5e1f5a42f226090f41a93acf699b603">c956bb052fa2e090f41a93acf699b64f</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>14</position>
+            <sum>false</sum>
+            <sys_created_by>scott.webster</sys_created_by>
+            <sys_created_on>2021-02-24 06:27:53</sys_created_on>
+            <sys_id>5556bb052fa2e090f41a93acf699b652</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>scott.webster</sys_updated_by>
+            <sys_updated_on>2021-02-24 06:27:53</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>last_run_date</element>
+            <list_id display_value="x_38710_lansweeper_supported_classes" element="NULL" name="x_38710_lansweeper_supported_classes" parent="NULL" relationship="NULL" sys_domain="global" view="c5e1f5a42f226090f41a93acf699b603">c956bb052fa2e090f41a93acf699b64f</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>15</position>
+            <sum>false</sum>
+            <sys_created_by>scott.webster</sys_created_by>
+            <sys_created_on>2021-02-24 06:27:53</sys_created_on>
+            <sys_id>d556bb052fa2e090f41a93acf699b652</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>scott.webster</sys_updated_by>
+            <sys_updated_on>2021-02-24 06:27:53</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element/>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <name>x_38710_lansweeper_supported_classes</name>
+            <parent/>
+            <position/>
+            <relationship/>
+            <sum>false</sum>
+            <sys_class_name>sys_ui_list</sys_class_name>
+            <sys_created_by>scott.webster</sys_created_by>
+            <sys_created_on>2021-02-24 06:27:53</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>c956bb052fa2e090f41a93acf699b64f</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>x_38710_lansweeper_supported_classes</sys_name>
+            <sys_package display_value="CI Synchronizer (Lansweeper On-Prem Edition)" source="x_38710_lansweeper">f46467d4db50a410613ecc303996191d</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="CI Synchronizer (Lansweeper On-Prem Edition)">f46467d4db50a410613ecc303996191d</sys_scope>
+            <sys_update_name>sys_ui_list_x_38710_lansweeper_supported_classes_exp_d06d179a42f226090f41a93acf699b69d</sys_update_name>
+            <sys_updated_by>scott.webster</sys_updated_by>
+            <sys_updated_on>2021-02-24 06:27:53</sys_updated_on>
+            <sys_user/>
+            <view display_value="Exp_d06d179a42f226090f41a93acf699b69d" name="exp_d06d179a42f226090f41a93acf699b69d">c5e1f5a42f226090f41a93acf699b603</view>
+            <view_name/>
+        </sys_ui_list>
+    </sys_ui_list>
+</record_update>

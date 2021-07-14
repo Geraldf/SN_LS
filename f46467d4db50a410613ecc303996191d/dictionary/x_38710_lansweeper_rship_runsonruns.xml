@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element extends="sys_import_set_row" label="Lansweeper rship RunsOn::Runs" max_length="40" name="x_38710_lansweeper_rship_runsonruns" type="collection">
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=Base_CorrelationID" label="Base_CorrelationID" max_length="61" name="u_base_correlationid" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=Dependant_CorrelationID" label="Dependant_CorrelationID" max_length="51" name="u_dependant_correlationid" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=relationship" label="relationship" max_length="40" name="u_relationship" type="string"/>
+    </element>
+</database>

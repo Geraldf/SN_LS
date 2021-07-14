@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_page">
+    <sys_ui_page action="INSERT_OR_UPDATE">
+        <category>general</category>
+        <client_script><![CDATA[function updateNow(value) {	
+	spin(true);
+	
+	// supported classes
+	var checked = [];
+	var unchecked = [];
+	var list = document.getElementsByClassName("checkbox");
+	for (i in list) {
+		if (list[i].type == "checkbox") {
+			if (list[i].checked) { 
+				checked.push(list[i].id);
+			} else {
+				unchecked.push(list[i].id);
+			}
+		}		
+	}
+
+	var updObj = {
+		'classes': {
+			'active': checked,
+			'inactive': unchecked
+		}
+	};
+	
+	//alert("Classes update object: " + JSON.stringify(updObj));
+	var ajax = new GlideAjax('LansweeperIntegrationAjax');
+	ajax.addParam('sysparm_name', 'updateSupportedClasses');
+	ajax.addParam('sysparm_obj', JSON.stringify(updObj));
+	ajax.getXML(processUpdateResponse);
+	
+}
+function processUpdateResponse(response){	
+	var answer =  response.responseXML.documentElement.getAttribute("answer");
+	// disable update
+	var btnUpd = document.getElementById("btn_upd");
+	btnUpd.disabled = true;
+	btnUpd.style.backgroundColor = "#E8E8E8";
+	// enable run
+	var btnRun = document.getElementById("btn_run");
+	btnRun.disabled = false;
+	btnRun.style.backgroundColor = "#1db8d9";	
+	
+	spin(false);				
+}
+
+function runNow(value) {
+	updateNow();
+	spin(true);
+	var ajax = new GlideAjax('LansweeperIntegrationAjax');
+	ajax.addParam('sysparm_name', 'runNow');
+	ajax.getXML(processRunResponse);
+}
+
+function processRunResponse(response){
+	var answer =  response.responseXML.documentElement.getAttribute("answer");
+	// only used to stop spinner	
+	spin(false);			
+	if (answer.evalJSON(true)) 
+		viewDashboard();
+	else
+		alert('There is no active class to synchronize.');
+}
+
+function spin(spinActive) {
+	var spinner = document.getElementById("spinner");
+	if (spinActive) {
+		spinner.style.display = '';
+	} else {
+		spinner.style.display = 'none';
+	}
+}
+
+function changes() {	
+	// enable update
+	var btnUpd = document.getElementById("btn_upd");
+	btnUpd.disabled = false;
+	btnUpd.style.backgroundColor = "#1db8d9";
+	// no need to disable run as it will call save before running
+	/*var btnRun = document.getElementById("btn_run");
+	btnRun.disabled = true;
+	btnRun.style.backgroundColor = "#E8E8E8";*/
+} 
+
+function viewDashboard() {
+	var host = window.location.host;
+    g_navigation.open('https://' + host + '/$pa_dashboard.do?sysparm_dashboard=3a518b99db9c2810613ecc303996192a&sysparm_tab=ef718799db9c2810613ecc30399619c5&sysparm_cancelable=true&sysparm_editable=undefined&sysparm_active_panel=false');
+}]]></client_script>
+        <description/>
+        <direct>false</direct>
+        <endpoint>x_38710_lansweeper_lansweeper_execution.do</endpoint>
+        <html><![CDATA[<?xml version="1.0" encoding="utf-8" ?>
+<j:jelly trim="false" xmlns:j="jelly:core" xmlns:g="glide" xmlns:j2="null" xmlns:g2="null">
+<style>
+  .wrapper {
+	padding-left: 5px;
+	padding-right: 5px;
+	}	
+	
+	.listTable {
+		width: 100%;
+		border: 1px solid;
+	}
+		
+	.listTable td {
+		padding: 2px 6px;
+	}
+	
+	.listTable th {
+		padding: 2px 6px;
+	}	
+		
+	.listTable th[scope=col1] {
+		padding-top: 12px;
+		padding-bottom: 12px;
+		text-align: left;
+		background-color: #1db8d9;
+		color: white;
+		width: 10px;
+	}
+	
+	.listTable th[scope=col2] {
+		padding-top: 12px;
+		padding-bottom: 12px;
+		text-align: left;
+		background-color: #1db8d9;
+		color: white;
+	}
+		
+	.listTable tr {
+		height:2px;	
+	}	
+		
+	.listTable tr:nth-child(even) {
+		background-color: #f2f2f2;
+	}
+		
+	.listTable tr:hover {
+		background-color: #ddd; 
+	}
+	
+	.listTable tbody tr:last-of-type {
+		border-bottom: 2px solid #1db8d9;
+	}	
+		
+	.icon-loading {
+		display: block;
+		margin-left: auto;
+		margin-right: auto;
+	}
+	
+	.select-all	 {
+		padding: 1px 1px;	
+	}		
+</style>	
+	
+<script>
+	document.title = "Pipefish CI Synchronizer for Enterprise - Lansweeper On-Premise Edition";		
+	
+	$j(document).ready(function() {	
+		// initialises checkbox header
+		var selected = true;
+		$j('.checkbox').each(function() { 
+			if (!this.checked)
+				selected = false;
+			});
+		$j("#select-all").prop("checked", selected);
+
+		// handle checkbox single selection
+		$j('.checkbox').click(function(event) { 
+			var s = true;
+			$j('.checkbox').each(function() { 
+				if (!this.checked)
+					s = false;
+			});
+			$j("#select-all").prop("checked", s);
+		});
+	
+		// handle checkbox all selection
+		$j('#select-all').click(function(event) { 
+            if (this.checked) { 
+                $j('.checkbox').each(function() { 
+	              if (!this.disabled)
+					  this.checked = true;      
+                 });
+             } else {
+                 $j('.checkbox').each(function() { 
+					if (!this.disabled)
+						this.checked = false; 
+				 });
+              }
+        });
+	});
+		
+</script>	
+	
+<div class="wrapper">	
+<g:ui_form>		
+	
+<g2:evaluate var="jvar_app_info" object="true">
+	var util = new x_38710_lansweeper.LansweeperIntegrationUtils();
+	var appinfo = util.appInfo();
+	appinfo
+</g2:evaluate>	
+<img src="pf_logo.png" width="80" height="80" align="right"/>
+<h4 align="left" style="font-weight: bold;">$[jvar_app_info.product]</h4>
+<h4 align="left" style="font-weight: bold;">$[jvar_app_info.displayName]</h4>	
+<j2:if test="$[!jvar_app_info.isFullVersion]">
+	<a href="$[jvar_app_info.url]" target="_blank" rel="noopener noreferrer">$[jvar_app_info.urlText]</a>
+</j2:if>
+<br></br>
+			
+<h4>Assets to Synchronize</h4>	
+		
+<g2:evaluate var="jvar_items" object="true">
+	var full = $[jvar_app_info.isFullVersion];
+	var items = [];
+	var dtmNow = new GlideDateTime();
+	var util = new x_38710_lansweeper.LansweeperIntegrationUtils();
+	var grListQuery = new GlideRecord('x_38710_lansweeper_supported_classes');
+	grListQuery.addQuery('sys_class_name', 'x_38710_lansweeper_supported_classes');
+	grListQuery.addQuery('scheduled_data_import.pre_script_bool', true);
+	grListQuery.orderBy('class_name');
+	grListQuery.query();
+	
+	while(grListQuery.next()) {
+	    var pi = util.isPreviewItem(grListQuery.sys_id);
+		var pre_script = grListQuery.scheduled_data_import.getRefRecord().getValue('pre_script');
+		var duration = '-';	
+		var dtmLastRun = new GlideDateTime(grListQuery.getValue('last_run_end'));
+	    var dur = GlideDateTime.subtract(dtmLastRun,dtmNow); 
+	    if (grListQuery.getDisplayValue('last_run_end') != '') 
+			duration = dur.getDisplayValue() + ' ago';
+	    
+		if (!full ${AND} !pi) {
+			duration = 'Available on full version';
+	
+		}
+	
+		items[items.length] = {
+			name: grListQuery.getValue('class_name'),
+			ci_name: grListQuery.getValue('ci_name'),
+			checked:util.isPreScriptActive(pre_script),
+			sys_id: grListQuery.scheduled_data_import.getRefRecord().getValue('sys_id'),
+			last_sync: duration,
+			enabled: (full || pi)
+		}
+	}
+	items
+</g2:evaluate>		
+	
+<table id="listTableItems" class="listTable">
+	<thead>
+		<tr>
+			<th scope="col1" aria-label="class_name">
+				<input type="checkBox" class="select-all" id="select-all" onchange="changes();"/></th>
+			<th scope="col2">Class</th>
+			<th scope="col2">CI Name</th>
+			<th scope="col2">Last Syncronized</th>
+		</tr>
+	</thead>
+		
+	
+<tbody>		
+		<j2:forEach items="$[jvar_items]" var="jvar_item">	
+			<j2:if test="$[jvar_item.enabled]">
+			<tr data-sysid="$[jvar_item.sys_id]">
+				
+					<j2:if test="$[jvar_item.checked]">
+					<td><label for="$[jvar_item.sys_id]"><input type="checkbox" id="$[jvar_item.sys_id]" name="$[jvar_item.name]" class="checkbox" checked="true" value="cbx" onchange="changes();"/></label></td></j2:if>
+					<j2:if test="$[!jvar_item.checked]">
+					<td><label for="$[jvar_item.sys_id]">
+<input type="checkbox" id="$[jvar_item.sys_id]" name="$[jvar_item.name]" class="checkbox" value="cbx" onchange="changes();"/> </label></td></j2:if>
+
+				<td scope="row">$[jvar_item.name]</td>
+				<td scope="row">$[jvar_item.ci_name]</td>
+				<td scope="row">$[jvar_item.last_sync]</td>
+				
+			   </tr>
+			</j2:if>
+		</j2:forEach>	
+	
+	    <j2:forEach items="$[jvar_items]" var="jvar_item">
+			<j2:if test="$[!jvar_item.enabled]">
+			<tr data-sysid="$[jvar_item.sys_id]">
+				
+					<td><label for="$[jvar_item.sys_id]">
+						<input type="checkbox" id="$[jvar_item.sys_id]" name="$[jvar_item.name]" class="checkbox" value="cbx" disabled=""/> </label></td>
+				
+					<td style="color:grey;" scope="row">$[jvar_item.name]</td>
+					<td scope="row">$[jvar_item.ci_name]</td>
+					<td scope="row">$[jvar_item.last_sync]</td>
+				</tr> </j2:if>
+		</j2:forEach>	
+	
+</tbody>
+</table>
+
+<br></br>	
+ 
+<button id="btn_upd" style="background-color: #E8E8E8;color:#ffffff" class="button" onclick="updateNow();" type="button"><span>Update</span></button>
+
+<button id="btn_run" style="background-color: #1db8d9;color:#ffffff" class="button" onclick="runNow();" type="button"><span>Synchronize</span></button>
+<img id="spinner" src="images/loading_anim2.gifx" class="loading-spinner" style="display: none;"/>	
+</g:ui_form>
+</div>
+</j:jelly>]]></html>
+        <name>lansweeper_execution</name>
+        <processing_script/>
+        <sys_class_name>sys_ui_page</sys_class_name>
+        <sys_created_by>luis.cyrillo</sys_created_by>
+        <sys_created_on>2020-11-23 04:08:16</sys_created_on>
+        <sys_id>958a109bdba8ac50613ecc30399619a6</sys_id>
+        <sys_mod_count>102</sys_mod_count>
+        <sys_name>lansweeper_execution</sys_name>
+        <sys_package display_value="CI Synchronizer (Lansweeper On-Prem Edition)" source="x_38710_lansweeper">f46467d4db50a410613ecc303996191d</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="CI Synchronizer (Lansweeper On-Prem Edition)">f46467d4db50a410613ecc303996191d</sys_scope>
+        <sys_update_name>sys_ui_page_958a109bdba8ac50613ecc30399619a6</sys_update_name>
+        <sys_updated_by>luis.cyrillo</sys_updated_by>
+        <sys_updated_on>2021-01-29 03:15:44</sys_updated_on>
+    </sys_ui_page>
+</record_update>

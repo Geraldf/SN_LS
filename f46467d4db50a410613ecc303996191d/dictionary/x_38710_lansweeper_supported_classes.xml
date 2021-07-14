@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element label="Supported Classes" max_length="40" name="x_38710_lansweeper_supported_classes" type="collection">
+        <element attributes="edge_encryption_enabled=true" default="True" label="Add to Counters" max_length="40" name="add_to_counters" type="boolean"/>
+        <element label="CI Name" mandatory="true" max_length="80" name="ci_name" type="string"/>
+        <element label="Class Name" mandatory="true" max_length="255" name="class_name" type="string"/>
+        <element attributes="edge_encryption_enabled=true" choice="3" default="ire" label="Default Method" max_length="40" name="default_method" read_only="true" type="choice">
+            <choice>
+                <element inactive_on_update="false" label="IRE" sequence="10" value="ire"/>
+                <element inactive_on_update="false" label="Custom" sequence="20" value="custom"/>
+            </choice>
+        </element>
+        <element attributes="edge_encryption_enabled=true" choice="3" default="ire" label="Identification Method" mandatory="true" max_length="40" name="identification_method" type="choice">
+            <choice>
+                <element inactive_on_update="false" label="IRE" sequence="10" value="ire"/>
+                <element inactive_on_update="false" label="Custom" sequence="20" value="custom"/>
+            </choice>
+        </element>
+        <element label="Identifier metric" max_length="65000" name="identifier_metric" read_only="true" type="string"/>
+        <element label="Last Run Date" max_length="40" name="last_run_date" read_only="true" type="glide_date"/>
+        <element label="Last Run End" max_length="40" name="last_run_end" read_only="true" type="glide_date_time"/>
+        <element attributes="edge_encryption_enabled=true" label="Last Run Errors" max_length="40" name="last_run_errors" read_only="true" type="integer"/>
+        <element attributes="edge_encryption_enabled=true" label="Last Run Ignored" max_length="40" name="last_run_ignored" read_only="true" type="integer"/>
+        <element attributes="edge_encryption_enabled=true" label="Last Run Inserted" max_length="40" name="last_run_inserts" read_only="true" type="integer"/>
+        <element attributes="edge_encryption_enabled=true" label="Last Run Processed" max_length="40" name="last_run_processed" read_only="true" type="integer"/>
+        <element attributes="edge_encryption_enabled=true" label="Last Run Skipped" max_length="40" name="last_run_skipped" read_only="true" type="integer"/>
+        <element label="Last Run Start" max_length="40" name="last_run_start" read_only="true" type="glide_date_time"/>
+        <element label="Last Run State" max_length="40" name="last_run_state" read_only="true" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="Last Run Updated" max_length="40" name="last_run_updated" read_only="true" type="integer"/>
+        <element attributes="edge_encryption_enabled=true,encode_utf8=false" label="Scheduled Data Import" mandatory="true" max_length="32" name="scheduled_data_import" reference="scheduled_import_set" reference_qual="sys_package=f46467d4db50a410613ecc303996191d^data_sourceISNOTEMPTY^EQ" reference_qual_condition="sys_package=f46467d4db50a410613ecc303996191d^data_sourceISNOTEMPTY^EQ" type="reference"/>
+        <element attributes="edge_encryption_enabled=true" default="javascript:current.getTableName();" label="Class" max_length="80" name="sys_class_name" type="sys_class_name"/>
+        <index name="index">
+            <element name="scheduled_data_import"/>
+        </index>
+        <index name="index2">
+            <element name="sys_class_name"/>
+        </index>
+    </element>
+</database>

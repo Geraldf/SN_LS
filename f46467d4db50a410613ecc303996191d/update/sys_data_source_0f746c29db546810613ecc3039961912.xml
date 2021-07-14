@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_data_source">
+    <sys_data_source action="INSERT_OR_UPDATE">
+        <batch_size/>
+        <category/>
+        <connection_timeout>0</connection_timeout>
+        <connection_url>jdbc:sqlserver://vmpipefishdev01;selectMethod=cursor;databaseName=lansweeperdb_gen_sm;integratedSecurity=true</connection_url>
+        <connection_url_parameters/>
+        <csv_delimiter/>
+        <data_in_single_column>false</data_in_single_column>
+        <data_loader><![CDATA[(function loadData(import_set_table) {
+
+	// Add your code here to insert data to import_set_table
+
+})(import_set_table);]]></data_loader>
+        <data_stream_action/>
+        <data_stream_action_inputs/>
+        <database_name/>
+        <database_port/>
+        <discard_arrays>true</discard_arrays>
+        <expand_node_children>false</expand_node_children>
+        <file_path/>
+        <file_retrieval_method>Attachment</file_retrieval_method>
+        <format>com.microsoft.sqlserver.jdbc.SQLServerDriver</format>
+        <glide_keystore>false</glide_keystore>
+        <header_row>0</header_row>
+        <import_set_table_label/>
+        <import_set_table_name>x_38710_lansweeper_rl_network_adapter</import_set_table_name>
+        <instance_name/>
+        <jdbc_password/>
+        <jdbc_server/>
+        <jdbc_user_name/>
+        <jpath_root_node/>
+        <last_run_database_field/>
+        <last_run_datetime/>
+        <last_success_import_time/>
+        <ldap_target/>
+        <ldapprobe_result_set_rows>200</ldapprobe_result_set_rows>
+        <limit/>
+        <maximum_rows/>
+        <mid_server/>
+        <name>Lansweeper RL Network Adapter</name>
+        <offset>0</offset>
+        <oracle_port>1521</oracle_port>
+        <oracle_sid>orcl</oracle_sid>
+        <parsing_script><![CDATA[// The input value can be accessed through the variables named "line", "lineNumber" and "result"
+// The function uses result variable to return parse result back. 
+(function(line,lineNumber,result) {
+	// add code here
+})(line,lineNumber,result);]]></parsing_script>
+        <properties/>
+        <query>Specific SQL</query>
+        <query_timeout>0</query_timeout>
+        <request_action/>
+        <scp_authentication>Username and Password</scp_authentication>
+        <scp_password/>
+        <scp_port/>
+        <scp_server/>
+        <scp_user_name/>
+        <sheet_number>0</sheet_number>
+        <sql_statement>SELECT&#13;
+&#13;
+	tsysAssetTypes.AssetTypename&#13;
+	, tblAssets.AssetID&#13;
+	, 'Lansweeper' AS DiscoverySource&#13;
+	, CAST(tblAssets.AssetID AS VARCHAR(MAX)) + ':' + COALESCE(RTRIM(LTRIM(tblAssets.Mac)), '') Parent_CorrelationID&#13;
+	, CAST(tblAssets.AssetID AS VARCHAR(MAX)) + ':' + CAST(tblNetworkAdapter.networkadapterid AS VARCHAR(MAX)) + ':' + COALESCE(RTRIM(LTRIM(tblNetworkAdapter.MACAddress)), '') AS CorrelationID&#13;
+	, COALESCE(RTRIM(LTRIM(tblNetworkAdapter.MACAddress)), '') MACAddress&#13;
+	, tblNetworkAdapter.Name&#13;
+	, tblNetworkAdapter.Manufacturer&#13;
+	, tblNetworkAdapter.NetConnectionID&#13;
+	, tblNetworkAdapter.NetEnabled&#13;
+	, tblNetworkAdapter.Speed&#13;
+	, tblNetwork.DefaultIPGateway&#13;
+	, tblNetwork.DNSHostname&#13;
+	, tblNetwork.IPAddress&#13;
+	, tblNetwork.IPSubnet&#13;
+	, tblNetwork.DHCPenabled&#13;
+	, 'Hardware' Category&#13;
+	, 'Network' SubCategory	&#13;
+	, tblAssets.Firstseen AS FirstDiscovered&#13;
+	, 1 AS InstallStatus&#13;
+	, tblAssets.Lastseen AS LastDiscovered&#13;
+	, tblAssetCustom.PurchaseDate AS Purchased&#13;
+	, tblAssetCustom.Warrantydate AS Warranty_Expiration&#13;
+	, tblState.Statename AS OperationalStatus&#13;
+&#13;
+	, tblAssets.AssetName AS Parent_Name&#13;
+&#13;
+	, 'NetworkAdapter' AS SourceName&#13;
+	, CASE &#13;
+		WHEN tblComputersystem.Domainrole IS NULL THEN tsysAssetTypes.AssetTypename&#13;
+		WHEN tsysAssetTypes.AssetTypename = 'Windows' AND tblComputersystem.Domainrole &gt; 1 THEN 'WindowsServer'&#13;
+		WHEN tsysAssetTypes.AssetTypename = 'Windows' AND tblComputersystem.Domainrole IN (0,1) THEN 'WindowsPC'&#13;
+		END AS ParentAssetType&#13;
+&#13;
+	, tblAssets.AssetName AS ParentName&#13;
+	, tblAssets.Mac AS ParentMACAddress&#13;
+	, tblAssetCustom.Serialnumber AS ParentSerialNumber&#13;
+	, 'Owns::Owned by' AS RelationType&#13;
+FROM&#13;
+	tblAssets&#13;
+	INNER JOIN tblAssetCustom &#13;
+		ON tblAssets.AssetID = tblAssetCustom.AssetID&#13;
+	INNER JOIN tsysAssetTypes&#13;
+		ON tsysAssetTypes.AssetType = tblASsets.AssetType&#13;
+	INNER JOIN tblNetworkAdapter&#13;
+		ON tblAssets.AssetID = tblNetworkAdapter.AssetID&#13;
+		AND tblNetworkAdapter.NetEnabled = 1&#13;
+	INNER JOIN tblNetwork&#13;
+		ON tblAssets.AssetID = tblNetwork.AssetID &#13;
+		AND tblNetworkAdapter.MACAddress = tblNetwork.MACaddress&#13;
+		AND IPEnabled = 1&#13;
+    LEFT OUTER JOIN tblState &#13;
+		ON tblState.State = tblAssetCustom.State&#13;
+	LEFT OUTER JOIN tblComputersystem &#13;
+		ON tblAssets.AssetID = tblComputersystem.AssetID</sql_statement>
+        <ssh_keyfile_path/>
+        <support_pagination>false</support_pagination>
+        <sys_class_name>sys_data_source</sys_class_name>
+        <sys_created_by>scott.webster</sys_created_by>
+        <sys_created_on>2020-11-05 08:06:44</sys_created_on>
+        <sys_id>0f746c29db546810613ecc3039961912</sys_id>
+        <sys_mod_count>106</sys_mod_count>
+        <sys_name>Lansweeper RL Network Adapter</sys_name>
+        <sys_package display_value="CI Synchronizer (Lansweeper On-Prem Edition)" source="x_38710_lansweeper">f46467d4db50a410613ecc303996191d</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="CI Synchronizer (Lansweeper On-Prem Edition)">f46467d4db50a410613ecc303996191d</sys_scope>
+        <sys_update_name>sys_data_source_0f746c29db546810613ecc3039961912</sys_update_name>
+        <sys_updated_by>cisync</sys_updated_by>
+        <sys_updated_on>2021-06-15 02:17:56</sys_updated_on>
+        <table_name/>
+        <type>JDBC</type>
+        <use_batch_import>false</use_batch_import>
+        <use_integrated_authentication>true</use_integrated_authentication>
+        <use_last_run_datetime>false</use_last_run_datetime>
+        <xpath_root_node/>
+        <zipped>false</zipped>
+    </sys_data_source>
+    <sys_variable_value action="delete_multiple" query="document_key=0f746c29db546810613ecc3039961912"/>
+</record_update>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="scheduled_import_set">
+    <scheduled_import_set action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <business_calendar/>
+        <concurrent_import>false</concurrent_import>
+        <condition/>
+        <conditional>false</conditional>
+        <data_source display_value="Lansweeper Peripheral - Monitor">a4d69872dbd86c10613ecc3039961941</data_source>
+        <entered_time/>
+        <map/>
+        <name>Lansweeper Peripheral - Monitor</name>
+        <offset/>
+        <offset_type>0</offset_type>
+        <order>160</order>
+        <parent display_value="Lansweeper Peripheral - Scanner">9c4868bedb1c6c10613ecc30399619dd</parent>
+        <partition_method>roundRobin</partition_method>
+        <partition_script><![CDATA[(function partitionHash(import_set_row) {
+
+	// Add your code here
+	
+	// eg:
+	// return import_set_row.u_important_category;
+	// This would ensure all rows with the same 'u_important_category' value will be in the same Import Set.
+
+	 return import_set_row.sys_import_row;
+
+})(import_set_row);]]></partition_script>
+        <partition_size/>
+        <post_script><![CDATA[var util = new x_38710_lansweeper.LansweeperIntegrationUtils();
+util.postRunTransform('d07864fedb1c6c10613ecc30399619c1',import_set.sys_id);]]></post_script>
+        <post_script_bool>true</post_script_bool>
+        <pre_script><![CDATA[cancel=true;
+if (!cancel) {
+	var util = new x_38710_lansweeper.LansweeperIntegrationUtils();
+	util.preRunTransform('d07864fedb1c6c10613ecc30399619c1');
+}]]></pre_script>
+        <pre_script_bool>true</pre_script_bool>
+        <run_as/>
+        <run_as_tz/>
+        <run_dayofmonth>1</run_dayofmonth>
+        <run_dayofweek>1</run_dayofweek>
+        <run_period/>
+        <run_start>2020-11-05 06:56:32</run_start>
+        <run_time>1970-01-01 08:00:00</run_time>
+        <run_type>parent</run_type>
+        <synchronize_inserts>true</synchronize_inserts>
+        <sys_class_name>scheduled_import_set</sys_class_name>
+        <sys_created_by>mario.quinones</sys_created_by>
+        <sys_created_on>2020-11-09 05:36:27</sys_created_on>
+        <sys_id>d07864fedb1c6c10613ecc30399619c1</sys_id>
+        <sys_mod_count>84</sys_mod_count>
+        <sys_name>Lansweeper Peripheral - Monitor</sys_name>
+        <sys_package display_value="CI Synchronizer (Lansweeper On-Prem Edition)" source="x_38710_lansweeper">f46467d4db50a410613ecc303996191d</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="CI Synchronizer (Lansweeper On-Prem Edition)">f46467d4db50a410613ecc303996191d</sys_scope>
+        <sys_update_name>scheduled_import_set_d07864fedb1c6c10613ecc30399619c1</sys_update_name>
+        <sys_updated_by>cisync</sys_updated_by>
+        <sys_updated_on>2021-04-30 03:02:11</sys_updated_on>
+        <time_zone/>
+        <upgrade_safe>false</upgrade_safe>
+    </scheduled_import_set>
+</record_update>

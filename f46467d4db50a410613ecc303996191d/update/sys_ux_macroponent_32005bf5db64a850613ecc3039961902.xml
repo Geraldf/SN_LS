@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ux_macroponent">
+    <sys_ux_macroponent action="INSERT_OR_UPDATE">
+        <associated_types/>
+        <category/>
+        <component_dependencies/>
+        <composition>[ {
+  "elementId" : "ckhoiijyapaaaaaaeeddbhhffsezkfmvx",
+  "elementLabel" : "Container",
+  "propertyValues" : {
+    "label" : "Trend",
+    "bare" : false,
+    "type" : "default",
+    "bgvar" : "neutral-1",
+    "border" : true,
+    "canCollapse" : true,
+    "collapsed" : false
+  },
+  "slot" : "ckho8jyap00053b75u5m3jac5",
+  "definition" : {
+    "id" : "80653115e23949b501e719ae9b0b42a6",
+    "type" : "MACROPONENT"
+  },
+  "overrides" : {
+    "composition" : [ {
+      "elementId" : "ckhoffsljiaaaaaahhddbhhffrcccahjaii",
+      "elementLabel" : "Report/PA Widget",
+      "propertyValues" : {
+        "label" : "CI Operations/day",
+        "reportSysId" : "a7365991db2ca450613ecc3039961953",
+        "paWidgetSysId" : "",
+        "variant" : "auto",
+        "border" : true,
+        "refreshInterval" : "",
+        "isRealtime" : true,
+        "refreshFrequency" : "0",
+        "kpiDetailsNavigation" : false
+      },
+      "slot" : "ckho5sljj00083b755fe2t7wo",
+      "definition" : {
+        "id" : "7dbc62b27efa88d6d910579a68c7a65d",
+        "type" : "MACROPONENT"
+      },
+      "overrides" : null
+    } ],
+    "layout" : {
+      "default" : {
+        "type" : "rowColumn",
+        "root" : {"type":"column","id":"ckho8k7qj00093b75qa02alzj","size":"12","rows":[{"type":"row","id":"ckho8k7qj000a3b75ovi8eba7","slotName":"ckho5sljj00083b755fe2t7wo"}]},
+        "items" : null,
+        "rules" : null,
+        "styles" : null
+      }
+    }
+  }
+}, {
+  "elementId" : "ckhoiioaffjaaaaaakddbhhfftggzwoaiiz",
+  "elementLabel" : "Container",
+  "propertyValues" : {
+    "label" : "",
+    "bare" : false,
+    "type" : "default",
+    "bgvar" : "",
+    "border" : true,
+    "canCollapse" : true,
+    "collapsed" : false
+  },
+  "slot" : "ckho8oa5j000l3b75rfwg6wcy",
+  "definition" : {
+    "id" : "80653115e23949b501e719ae9b0b42a6",
+    "type" : "MACROPONENT"
+  },
+  "overrides" : {
+    "composition" : [ {
+      "elementId" : "ckhoffrcfnaaaaaaccddbhhffqknriifwo",
+      "elementLabel" : "Report/PA Widget",
+      "propertyValues" : {
+        "label" : "Total Lansweeper CIs",
+        "reportSysId" : "193ef475db54a810613ecc3039961921",
+        "paWidgetSysId" : "",
+        "variant" : "auto",
+        "border" : true,
+        "refreshInterval" : "",
+        "isRealtime" : true,
+        "refreshFrequency" : "0",
+        "kpiDetailsNavigation" : false
+      },
+      "slot" : "ckho5rcfo00033b75i8t8ydle",
+      "definition" : {
+        "id" : "7dbc62b27efa88d6d910579a68c7a65d",
+        "type" : "MACROPONENT"
+      },
+      "overrides" : null
+    } ],
+    "layout" : {
+      "default" : {
+        "type" : "rowColumn",
+        "root" : {"type":"row","id":"ckho8oclx000p3b75pwlgikkb","columns":[{"type":"column","id":"ckho8oclx000q3b75wbgciz68","slotName":"ckho5rcfo00033b75i8t8ydle","size":"12"}]},
+        "items" : null,
+        "rules" : null,
+        "styles" : null
+      }
+    }
+  }
+}, {
+  "elementId" : "ckhojjiiluggaaaaaaeeddbhhfffklrhjhx",
+  "elementLabel" : "Container",
+  "propertyValues" : {
+    "label" : "",
+    "bare" : false,
+    "type" : "default",
+    "bgvar" : "",
+    "border" : true,
+    "canCollapse" : false,
+    "collapsed" : false
+  },
+  "slot" : "ckho98lu700053b7599jtlbm5",
+  "definition" : {
+    "id" : "80653115e23949b501e719ae9b0b42a6",
+    "type" : "MACROPONENT"
+  },
+  "overrides" : null
+}, {
+  "elementId" : "ckhojjbnrccaaaabbffddbhhffviiiplwfp",
+  "elementLabel" : "Container",
+  "propertyValues" : {
+    "label" : "",
+    "bare" : false,
+    "type" : "default",
+    "bgvar" : "",
+    "border" : false,
+    "canCollapse" : false,
+    "collapsed" : false
+  },
+  "slot" : "ckho9bnr300163b750m430kw1",
+  "definition" : {
+    "id" : "80653115e23949b501e719ae9b0b42a6",
+    "type" : "MACROPONENT"
+  },
+  "overrides" : {
+    "composition" : [ {
+      "elementId" : "ckhojjcaavnaaaabbcddbhhffwzeerbbggggb",
+      "elementLabel" : "Image",
+      "propertyValues" : {
+        "alt" : "",
+        "src" : "/pf_logo_small.png",
+        "fit" : "none",
+        "position" : "center center",
+        "height" : ""
+      },
+      "slot" : "ckho9c0vn001d3b75joygx9j2",
+      "definition" : {
+        "id" : "15fe506403f8a98575b6df59008ea8f1",
+        "type" : "MACROPONENT"
+      },
+      "overrides" : null
+    } ],
+    "layout" : {
+      "default" : {
+        "type" : "rowColumn",
+        "root" : {"type":"row","columns":[{"type":"column","slotName":"ckho9c0vn001d3b75joygx9j2","size":"12","rows":[],"id":"ckhocr8sl000r3b75gfkmu0d9"}],"id":"ckhocr8sl000q3b7594i9n49b"},
+        "items" : null,
+        "rules" : null,
+        "styles" : null
+      }
+    }
+  }
+}, {
+  "elementId" : "ckhojjgfkaaaaaaaffddbhhffjjylioatf",
+  "elementLabel" : "Container",
+  "propertyValues" : {
+    "label" : "Servers",
+    "bare" : false,
+    "type" : "default",
+    "bgvar" : "",
+    "border" : true,
+    "canCollapse" : true,
+    "collapsed" : false
+  },
+  "slot" : "ckho9gfkb00063b75645kdtwo",
+  "definition" : {
+    "id" : "80653115e23949b501e719ae9b0b42a6",
+    "type" : "MACROPONENT"
+  },
+  "overrides" : {
+    "composition" : [ {
+      "elementId" : "ckhojjgjxbbaaaaaajjddbhhffkmcwtbeejj",
+      "elementLabel" : "Data Visualization",
+      "propertyValues" : {
+        "label" : "Windows Servers",
+        "chartType" : "single_score",
+        "dataConfigurations" : "[{\"aggregate_function\":\"COUNT\",\"filter_query\":\"discovery_source=Lansweeper\",\"show_other\":true,\"start_time\":\"P3M\",\"source_type\":\"table\",\"source_id\":\"cmdb_ci_win_server\"}]",
+        "styleConfigurations" : "{\"width\":\"auto\",\"height\":\"auto\",\"showDataLabels\":false,\"dataLabelConfig\":{}}",
+        "isRealtime" : false,
+        "variant" : "auto",
+        "border" : true,
+        "refreshInterval" : "0",
+        "kpiDetailsNavigation" : false
+      },
+      "slot" : "ckho9gjx2000a3b750dgw3iva",
+      "definition" : {
+        "id" : "67cf18a377c70010cb834a2a6910619a",
+        "type" : "MACROPONENT"
+      },
+      "overrides" : null
+    }, {
+      "elementId" : "ckhojjhivwaaaaaaeddbhhffxhhiisxccik",
+      "elementLabel" : "Data Visualization",
+      "propertyValues" : {
+        "label" : "Unix Servers",
+        "chartType" : "single_score",
+        "dataConfigurations" : "[{\"aggregate_function\":\"COUNT\",\"filter_query\":\"discovery_source=Lansweeper\",\"show_other\":true,\"start_time\":\"P3M\",\"source_type\":\"table\",\"source_id\":\"cmdb_ci_unix_server\"}]",
+        "styleConfigurations" : "{\"width\":\"auto\",\"height\":\"auto\",\"showDataLabels\":false,\"dataLabelConfig\":{}}",
+        "isRealtime" : false,
+        "variant" : "auto",
+        "border" : true,
+        "refreshInterval" : "0",
+        "kpiDetailsNavigation" : false
+      },
+      "slot" : "ckho9hivw000f3b75pzfzea7t",
+      "definition" : {
+        "id" : "67cf18a377c70010cb834a2a6910619a",
+        "type" : "MACROPONENT"
+      },
+      "overrides" : null
+    } ],
+    "layout" : {
+      "default" : {
+        "type" : "rowColumn",
+        "root" : {"type":"row","id":"ckho9gjx2000b3b75yyxf2s35","columns":[{"type":"column","id":"ckho9gjx2000c3b75t7tq1k9b","slotName":"ckho9gjx2000a3b750dgw3iva","size":"6"},{"type":"column","id":"ckho9hivx000g3b75fgmvqjoa","slotName":"ckho9hivw000f3b75pzfzea7t","size":"6"}]},
+        "items" : null,
+        "rules" : null,
+        "styles" : null
+      }
+    }
+  }
+} ]</composition>
+        <da_relay_models/>
+        <data/>
+        <dispatched_events/>
+        <extends display_value="Page Template">19be392623033300f4b4c50947bf65ba</extends>
+        <handled_events/>
+        <interactions/>
+        <interfaces/>
+        <internal_event_mappings/>
+        <layout>{
+  "default" : {
+    "type" : "rowColumn",
+    "root" : {"id":"ckhocxk17000b3b75lgjxbpc2","type":"row","columns":[{"type":"column","id":"ckhocxk17000a3b7551kevmr8","slotName":"ckho9bnr300163b750m430kw1","size":2},{"type":"column","id":"ckho9b2p0000z3b753xn2efr3","size":10,"rows":[{"type":"row","id":"ckhocw68x00083b75oufwr09o","slotName":"ckho8oa5j000l3b75rfwg6wcy"},{"type":"row","id":"ckhocvyec00073b75rhqz7xpa","slotName":"ckho9gfkb00063b75645kdtwo"},{"type":"row","id":"ckho8ozqz000x3b75ur81j0t7","slotName":"ckho8jyap00053b75u5m3jac5"}]}]},
+    "items" : null,
+    "rules" : null,
+    "styles" : null
+  }
+}</layout>
+        <macroponent_dependencies/>
+        <name>CI Synchronizer (Lansweeper On-Prem Ed.)</name>
+        <props/>
+        <required_translations/>
+        <root_component/>
+        <root_component_config/>
+        <root_component_definition/>
+        <schema_version>1.0.0</schema_version>
+        <state_properties/>
+        <sys_class_name>sys_ux_macroponent</sys_class_name>
+        <sys_created_by>mario.quinones</sys_created_by>
+        <sys_created_on>2020-11-19 01:30:28</sys_created_on>
+        <sys_id>32005bf5db64a850613ecc3039961902</sys_id>
+        <sys_mod_count>33</sys_mod_count>
+        <sys_name>CI Synchronizer (Lansweeper On-Prem Ed.)</sys_name>
+        <sys_package display_value="CI Synchronizer (Lansweeper On-Prem Edition)" source="x_38710_lansweeper">f46467d4db50a410613ecc303996191d</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="CI Synchronizer (Lansweeper On-Prem Edition)">f46467d4db50a410613ecc303996191d</sys_scope>
+        <sys_update_name>sys_ux_macroponent_32005bf5db64a850613ecc3039961902</sys_update_name>
+        <sys_updated_by>mario.quinones</sys_updated_by>
+        <sys_updated_on>2020-11-19 04:54:32</sys_updated_on>
+    </sys_ux_macroponent>
+</record_update>

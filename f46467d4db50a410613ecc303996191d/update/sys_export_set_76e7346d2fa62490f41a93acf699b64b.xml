@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_export_set">
+    <sys_export_set action="INSERT_OR_UPDATE">
+        <append_timestamp>false</append_timestamp>
+        <export_definition display_value="sys_db_object">2a97b82d2fa62490f41a93acf699b6f8</export_definition>
+        <export_target display_value="CI Synch Analysis Collection">57b73a782fee6090f41a93acf699b6d6</export_target>
+        <file_name>sys_db_object.csv</file_name>
+        <format>CSV</format>
+        <max_rows>0</max_rows>
+        <name>sys_db_object</name>
+        <sys_class_name>sys_export_set</sys_class_name>
+        <sys_created_by>scott.webster</sys_created_by>
+        <sys_created_on>2021-02-25 05:53:38</sys_created_on>
+        <sys_id>76e7346d2fa62490f41a93acf699b64b</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>sys_db_object</sys_name>
+        <sys_package display_value="CI Synchronizer (Lansweeper On-Prem Edition)" source="x_38710_lansweeper">f46467d4db50a410613ecc303996191d</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="CI Synchronizer (Lansweeper On-Prem Edition)">f46467d4db50a410613ecc303996191d</sys_scope>
+        <sys_update_name>sys_export_set_76e7346d2fa62490f41a93acf699b64b</sys_update_name>
+        <sys_updated_by>scott.webster</sys_updated_by>
+        <sys_updated_on>2021-02-25 05:53:38</sys_updated_on>
+        <use_display_value>true</use_display_value>
+        <use_label>false</use_label>
+    </sys_export_set>
+</record_update>

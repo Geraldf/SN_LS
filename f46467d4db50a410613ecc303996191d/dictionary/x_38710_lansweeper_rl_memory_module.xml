@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element extends="sys_import_set_row" label="Lansweeper RL Memory Module" max_length="40" name="x_38710_lansweeper_rl_memory_module" type="collection">
+        <element attributes="edge_encryption_enabled=true" label="AssetName" max_length="40" name="u_assetname" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=AssetTypename" label="AssetTypename" max_length="100" name="u_assettypename" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=Capacity" label="Capacity" max_length="15" name="u_capacity" type="decimal"/>
+        <element attributes="edge_encryption_enabled=true" label="Category" max_length="40" name="u_category" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=CorrelationD" label="CorrelationD" max_length="400" name="u_correlationd" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="CorrelationID" max_length="40" name="u_correlationid" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=DataWidth" label="DataWidth" max_length="15" name="u_datawidth" type="decimal"/>
+        <element attributes="edge_encryption_enabled=true" label="Department" max_length="40" name="u_department" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=DeviceLocator" label="DeviceLocator" max_length="400" name="u_devicelocator" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="Discoveryource" max_length="40" name="u_discoveryource" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="DiscoverySource" max_length="40" name="u_discoverysource" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="FirstDiscovered" max_length="40" name="u_firstdiscovered" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="FormFactor" max_length="40" name="u_formfactor" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="form_factor" max_length="40" name="u_form_factor" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="InstallStatus" max_length="40" name="u_installstatus" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="LastDiscovered" max_length="40" name="u_lastdiscovered" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="Location" max_length="40" name="u_location" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="MACAddress" max_length="40" name="u_macaddress" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=MemoryType" label="MemoryType" max_length="40" name="u_memorytype" type="integer"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=memory_name" label="memory_name" max_length="255" name="u_memory_name" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="OperationalStatus" max_length="40" name="u_operationalstatus" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="ParentAssetType" max_length="40" name="u_parentassettype" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="ParentMACAddress" max_length="40" name="u_parentmacaddress" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="ParentName" max_length="40" name="u_parentname" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="ParentSerialNumber" max_length="40" name="u_parentserialnumber" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=Parent_CorrelationID" label="Parent_CorrelationID" max_length="51" name="u_parent_correlationid" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=PartNumber" label="PartNumber" max_length="200" name="u_partnumber" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="Purchased" max_length="40" name="u_purchased" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="RelationType" max_length="40" name="u_relationtype" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=SerialNumber" label="SerialNumber" max_length="200" name="u_serialnumber" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="SourceName" max_length="40" name="u_sourcename" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=Speed" label="Speed" max_length="15" name="u_speed" type="decimal"/>
+        <element attributes="edge_encryption_enabled=true" label="SubCategory" max_length="40" name="u_subcategory" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=TotalWidth" label="TotalWidth" max_length="15" name="u_totalwidth" type="decimal"/>
+        <element attributes="edge_encryption_enabled=true" label="type" max_length="40" name="u_type" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=TypeDetail" label="TypeDetail" max_length="15" name="u_typedetail" type="decimal"/>
+        <element attributes="edge_encryption_enabled=true" label="Warranty_Expiration" max_length="40" name="u_warranty_expiration" type="string"/>
+    </element>
+</database>

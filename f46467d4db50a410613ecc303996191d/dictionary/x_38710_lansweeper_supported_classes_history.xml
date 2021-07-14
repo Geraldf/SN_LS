@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element extends="x_38710_lansweeper_supported_classes" label="Supported Classes History" max_length="40" name="x_38710_lansweeper_supported_classes_history" type="collection"/>
+</database>

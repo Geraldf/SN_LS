@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_ui_form_sections form_id="bc3a951a0704f010477bffa08c1ed0b7" sys_domain="global" table="cmdb_ci_personal_printer" version="3">
+        <sys_ui_form_section action="INSERT_OR_UPDATE">
+            <position>0</position>
+            <sys_created_by>cisync</sys_created_by>
+            <sys_created_on>2021-05-13 05:52:21</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>c13a951a0704f010477bffa08c1ed0be</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_overrides/>
+            <sys_ui_form display_value="cmdb_ci_personal_printer" name="cmdb_ci_personal_printer" sys_domain="global" view="d62ead22df100100cd7da5f59bf26356">bc3a951a0704f010477bffa08c1ed0b7</sys_ui_form>
+            <sys_ui_section display_value="">7c3a951a0704f010477bffa08c1ed0b9</sys_ui_section>
+            <sys_updated_by>cisync</sys_updated_by>
+            <sys_updated_on>2021-05-13 05:52:21</sys_updated_on>
+        </sys_ui_form_section>
+        <sys_ui_form_section action="INSERT_OR_UPDATE">
+            <position>1</position>
+            <sys_created_by>cisync</sys_created_by>
+            <sys_created_on>2021-05-13 05:52:21</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>0d3a951a0704f010477bffa08c1ed0c1</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_overrides/>
+            <sys_ui_form display_value="cmdb_ci_personal_printer" name="cmdb_ci_personal_printer" sys_domain="global" view="d62ead22df100100cd7da5f59bf26356">bc3a951a0704f010477bffa08c1ed0b7</sys_ui_form>
+            <sys_ui_section display_value="">c53a951a0704f010477bffa08c1ed0be</sys_ui_section>
+            <sys_updated_by>cisync</sys_updated_by>
+            <sys_updated_on>2021-05-13 05:52:21</sys_updated_on>
+        </sys_ui_form_section>
+        <sys_ui_form action="INSERT_OR_UPDATE">
+            <name>cmdb_ci_personal_printer</name>
+            <roles/>
+            <sys_class_name>sys_ui_form</sys_class_name>
+            <sys_created_by>cisync</sys_created_by>
+            <sys_created_on>2021-05-13 05:52:20</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>bc3a951a0704f010477bffa08c1ed0b7</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>cmdb_ci_personal_printer</sys_name>
+            <sys_overrides/>
+            <sys_package display_value="CI Synchronizer (Lansweeper On-Prem Edition)" source="x_38710_lansweeper">f46467d4db50a410613ecc303996191d</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="CI Synchronizer (Lansweeper On-Prem Edition)">f46467d4db50a410613ecc303996191d</sys_scope>
+            <sys_update_name>sys_ui_form_sections_bc3a951a0704f010477bffa08c1ed0b7</sys_update_name>
+            <sys_updated_by>cisync</sys_updated_by>
+            <sys_updated_on>2021-05-13 05:52:20</sys_updated_on>
+            <sys_user/>
+            <view display_value="Compliance" name="certification">d62ead22df100100cd7da5f59bf26356</view>
+            <view_name/>
+        </sys_ui_form>
+    </sys_ui_form_sections>
+</record_update>

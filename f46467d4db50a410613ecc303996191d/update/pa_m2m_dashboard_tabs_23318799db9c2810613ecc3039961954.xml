@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="pa_m2m_dashboard_tabs">
+    <pa_m2m_dashboard_tabs action="INSERT_OR_UPDATE">
+        <dashboard display_value="MID Server Dashboard">d3310399db9c2810613ecc303996192c</dashboard>
+        <home>false</home>
+        <homepage display_value="MID Server Dashboard">a765d88aeb022100d636a20fa206feca</homepage>
+        <order>1</order>
+        <sys_class_name>pa_m2m_dashboard_tabs</sys_class_name>
+        <sys_created_by>mario.quinones</sys_created_by>
+        <sys_created_on>2020-11-05 00:53:08</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>23318799db9c2810613ecc3039961954</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name>d3310399db9c2810613ecc303996192c</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="CI Synchronizer (Lansweeper On-Prem Edition)" source="x_38710_lansweeper">f46467d4db50a410613ecc303996191d</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="CI Synchronizer (Lansweeper On-Prem Edition)">f46467d4db50a410613ecc303996191d</sys_scope>
+        <sys_update_name>pa_m2m_dashboard_tabs_23318799db9c2810613ecc3039961954</sys_update_name>
+        <sys_updated_by>mario.quinones</sys_updated_by>
+        <sys_updated_on>2020-11-05 00:53:09</sys_updated_on>
+        <tab display_value="MID Server Dashboard - New Tab">d3318799db9c2810613ecc3039961951</tab>
+    </pa_m2m_dashboard_tabs>
+</record_update>

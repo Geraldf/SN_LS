@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_data_source">
+    <sys_data_source action="INSERT_OR_UPDATE">
+        <batch_size/>
+        <category/>
+        <connection_timeout>0</connection_timeout>
+        <connection_url>jdbc:sqlserver://vmpipefishdev01;selectMethod=cursor;databaseName=lansweeperdb_gen_sm;integratedSecurity=true</connection_url>
+        <connection_url_parameters/>
+        <csv_delimiter/>
+        <data_in_single_column>false</data_in_single_column>
+        <data_loader><![CDATA[(function loadData(import_set_table) {
+
+	// Add your code here to insert data to import_set_table
+
+})(import_set_table);]]></data_loader>
+        <data_stream_action/>
+        <data_stream_action_inputs/>
+        <database_name/>
+        <database_port/>
+        <discard_arrays>true</discard_arrays>
+        <expand_node_children>false</expand_node_children>
+        <file_path/>
+        <file_retrieval_method>Attachment</file_retrieval_method>
+        <format>com.microsoft.sqlserver.jdbc.SQLServerDriver</format>
+        <glide_keystore>false</glide_keystore>
+        <header_row>0</header_row>
+        <import_set_table_label/>
+        <import_set_table_name>x_38710_lansweeper_rship_ipip</import_set_table_name>
+        <instance_name/>
+        <jdbc_password/>
+        <jdbc_server/>
+        <jdbc_user_name/>
+        <jpath_root_node/>
+        <last_run_database_field/>
+        <last_run_datetime/>
+        <last_success_import_time/>
+        <ldap_target/>
+        <ldapprobe_result_set_rows>200</ldapprobe_result_set_rows>
+        <limit/>
+        <maximum_rows/>
+        <mid_server/>
+        <name>Lansweeper rship IP:IP</name>
+        <offset>0</offset>
+        <oracle_port>1521</oracle_port>
+        <oracle_sid>orcl</oracle_sid>
+        <parsing_script><![CDATA[// The input value can be accessed through the variables named "line", "lineNumber" and "result"
+// The function uses result variable to return parse result back. 
+(function(line,lineNumber,result) {
+	// add code here
+})(line,lineNumber,result);]]></parsing_script>
+        <properties/>
+        <query>Specific SQL</query>
+        <query_timeout>0</query_timeout>
+        <request_action/>
+        <scp_authentication>Username and Password</scp_authentication>
+        <scp_password/>
+        <scp_port/>
+        <scp_server/>
+        <scp_user_name/>
+        <sheet_number>0</sheet_number>
+        <sql_statement>SELECT&#13;
+	Base_CorrelationID&#13;
+	, 'Switch' AS Base_AssetType&#13;
+	, Base_Name&#13;
+	, Base_SerialNumber&#13;
+	, Base_MACAddress&#13;
+	, relationship&#13;
+	, Dependant_CorrelationID&#13;
+	, Dependant_Name&#13;
+	, Dependant_SerialNumber&#13;
+	, Dependant_MACAddress&#13;
+	, CASE  &#13;
+&#13;
+		WHEN Dependant_AssetType = 'Citrix XenServer' THEN 'Citrix'&#13;
+		WHEN Dependant_AssetType = 'ESXi server' THEN 'ESX'&#13;
+		WHEN Dependant_AssetType = 'Firewall' THEN 'Firewall'&#13;
+		WHEN Dependant_AssetType = 'Linux' THEN 'Linux'&#13;
+		WHEN Dependant_AssetType = 'Music system' THEN 'Music system'&#13;
+		WHEN Dependant_AssetType = 'NAS' THEN 'NAS'&#13;
+		WHEN Dependant_AssetType = 'Network device' THEN 'Network device'&#13;
+		WHEN Dependant_AssetType = 'Printer' THEN 'Printer'&#13;
+		WHEN Dependant_AssetType = 'Switch' THEN 'Switch'&#13;
+		WHEN Dependant_AssetType = 'Webserver' THEN 'Webserver'&#13;
+		WHEN Dependant_AssetType = 'Windows' AND rships.Domainrole &gt; 1 THEN 'WindowsServer'&#13;
+		WHEN Dependant_AssetType = 'Windows' AND rships.Domainrole IN (0,1) THEN 'WindowsPC'&#13;
+		ELSE Dependant_AssetType&#13;
+		END AS Dependant_AssetType&#13;
+FROM&#13;
+	(&#13;
+&#13;
+		--(cmdb_ci_win_server / cmdb_ci_ip_switch)&#13;
+		SELECT  &#13;
+		    DISTINCT&#13;
+			CAST(switch.AssetID AS VARCHAR(MAX)) + ':' + COALESCE(RTRIM(LTRIM(switch.Mac)), '') AS Base_CorrelationID&#13;
+			, switch.AssetName AS Base_Name&#13;
+			, (SELECT SerialNumber FROM tblAssetCustom tac WHERE tac.AssetID = switch.AssetID) Base_SerialNumber&#13;
+			, switch.Mac AS Base_MACAddress&#13;
+			--, tblSNMPInfo.AssetMacAddress&#13;
+			, 'IP Connection::IP Connection' relationship&#13;
+			, CAST(Connected.AssetID AS VARCHAR(MAX)) + ':' + COALESCE(RTRIM(LTRIM(Connected.Mac)), '') AS Dependant_CorrelationID&#13;
+			, connectedType.AssetTypename AS Dependant_AssetType&#13;
+			, connected.AssetName AS Dependant_Name&#13;
+			, (SELECT SerialNumber FROM tblAssetCustom tac WHERE tac.AssetID = connected.AssetID) Dependant_SerialNumber&#13;
+			, connected.Mac AS Dependant_MACAddress&#13;
+			, tblComputersystem.Domainrole&#13;
+		FROM&#13;
+			tblSNMPAssetMac tblSNMPInfo &#13;
+			INNER JOIN tblAssets Connected on tblSNMPInfo.AssetMacAddress = Connected.Mac&#13;
+			INNER JOIN tsysAssetTypes connectedType on connected.AssetType = connectedType.AssetType&#13;
+			LEFT OUTER JOIN tblComputersystem &#13;
+				ON Connected.AssetID = tblComputersystem.AssetID&#13;
+			INNER JOIN tblAssets Switch on tblSNMPInfo.assetId =  switch.AssetID&#13;
+			INNER JOIN tsysAssetTypes switchType on switch.AssetType = switchType.AssetType&#13;
+		WHERE&#13;
+			tblSNMPInfo.AssetMacAddress IS NOT NULL AND tblSNMPInfo.AssetMacAddress &lt;&gt; ''&#13;
+			AND connected.mac IS NOT NULL AND connected.mac &lt;&gt; ''&#13;
+			AND switch.Mac &lt;&gt; connected.mac&#13;
+	)rships&#13;
+&#13;
+where &#13;
+	Dependant_AssetType NOT IN ('ESXi server', 'Webserver', 'Music system', 'NAS', 'Network device', 'Citrix XenServer')</sql_statement>
+        <ssh_keyfile_path/>
+        <support_pagination>false</support_pagination>
+        <sys_class_name>sys_data_source</sys_class_name>
+        <sys_created_by>scott.webster</sys_created_by>
+        <sys_created_on>2020-11-05 06:02:02</sys_created_on>
+        <sys_id>58f70ce1dbd06810613ecc30399619ce</sys_id>
+        <sys_mod_count>97</sys_mod_count>
+        <sys_name>Lansweeper rship IP:IP</sys_name>
+        <sys_package display_value="CI Synchronizer (Lansweeper On-Prem Edition)" source="x_38710_lansweeper">f46467d4db50a410613ecc303996191d</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="CI Synchronizer (Lansweeper On-Prem Edition)">f46467d4db50a410613ecc303996191d</sys_scope>
+        <sys_update_name>sys_data_source_58f70ce1dbd06810613ecc30399619ce</sys_update_name>
+        <sys_updated_by>cisync</sys_updated_by>
+        <sys_updated_on>2021-06-15 02:17:56</sys_updated_on>
+        <table_name/>
+        <type>JDBC</type>
+        <use_batch_import>false</use_batch_import>
+        <use_integrated_authentication>true</use_integrated_authentication>
+        <use_last_run_datetime>false</use_last_run_datetime>
+        <xpath_root_node/>
+        <zipped>false</zipped>
+    </sys_data_source>
+    <sys_variable_value action="delete_multiple" query="document_key=58f70ce1dbd06810613ecc30399619ce"/>
+</record_update>

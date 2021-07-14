@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element extends="sys_import_set_row" label="Lansweeper MSSQL Database" max_length="40" name="x_38710_lansweeper_mssql_database" type="collection">
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=AssetID" label="AssetID" max_length="40" name="u_assetid" type="integer"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=Category" label="Category" max_length="40" name="u_category" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=CorrelationID" label="CorrelationID" max_length="61" name="u_correlationid" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=database" label="database" max_length="255" name="u_database" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=DiscoverySource" label="DiscoverySource" max_length="40" name="u_discoverysource" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=InstallStatus" label="InstallStatus" max_length="40" name="u_installstatus" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=is_clustered" label="is_clustered" max_length="40" name="u_is_clustered" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=Name" label="Name" max_length="255" name="u_name" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=OperationalStatus" label="OperationalStatus" max_length="300" name="u_operationalstatus" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=short_description" label="short_description" max_length="255" name="u_short_description" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=sqlServerId" label="sqlServerId" max_length="40" name="u_sqlserverid" type="long"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=Subcategory" label="Subcategory" max_length="40" name="u_subcategory" type="string"/>
+    </element>
+</database>

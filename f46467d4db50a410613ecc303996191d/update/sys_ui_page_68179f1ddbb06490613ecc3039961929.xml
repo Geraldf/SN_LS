@@ -1,0 +1,600 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_page">
+    <sys_ui_page action="INSERT_OR_UPDATE">
+        <category>general</category>
+        <client_script><![CDATA[function updateNow(value) {	
+	spin(true);
+	
+	// connection..
+	var srv = document.getElementById("server").value;
+	var dba = document.getElementById("database").value;
+	var aut = document.getElementById("int_auth").checked.toString();
+	var usr = document.getElementById("user").value;
+	var pwd = document.getElementById("pwd").value;
+	var mid = document.getElementById("mid_server").value;
+	
+	// general..
+	var sta = document.getElementById("syncstatus").checked.toString();
+	
+	// dashboard..
+	var rat = document.getElementById("refresh_rate").value;
+	
+	// schedule..
+	var schedule_active = document.getElementById("activeSchedule").checked;
+	var runType = document.getElementById("frequency").value;
+		
+	// weekly value
+	var dayWeek = document.getElementById("week-day");
+	if (dayWeek) 
+		dayWeek = dayWeek.value;
+	else
+		dayWeek = 1;
+	
+	// monthly value
+	var dayMonth = document.getElementById("month_day");
+	if (dayMonth)
+		dayMonth = dayMonth.value;
+	else
+		dayMonth = 1;
+	
+	// add seconds to the time 
+	var runtime = document.getElementById("time").value + ":00";
+	
+	// periodically values
+	var days = document.getElementById("per-days").value;
+	var hours = document.getElementById("per-hours").value;
+	var min = document.getElementById("per-min").value;
+	var durationDisplay = ''; 
+	if (days > 0) {
+		var sufD = ((days == 1) ? ' Day' : ' Days');
+		durationDisplay = days + sufD;
+	}
+	if (hours > 0) {
+		var sufH = ((hours == 1) ? ' Hour' : ' Hours');		
+		durationDisplay = ((durationDisplay == '') ? hours + sufH : durationDisplay + ' ' + hours + sufH);
+	}
+	if (min > 0) {
+		var sufM = ((min == 1) ? ' Minute' : ' Minutes');		
+		durationDisplay = ((durationDisplay == '') ? min + sufM : durationDisplay + ' ' + min + sufM);
+	}
+	
+	if (runType == 'periodically' && durationDisplay == '') {
+		alert('At least one of the periodic values (days, hours or minutes) must be set');
+		spin(false);
+		return;
+	}
+	
+	var startOn = document.getElementById("per-start").value;
+	startOn = startOn.split('T');
+	var period_start = startOn[0] + ' ' + startOn[1] + ':00';
+	
+	var updObj = {
+		'sv': srv,
+		'db': dba,
+		'au': aut,
+		'ur': usr,
+        'pw': pwd,
+        'mid': mid,
+		'rt': rat,
+		'sta': sta,
+		'schedule': {
+			'active': schedule_active,
+			'run_type': runType,
+			'day_of_week': dayWeek,
+			'day_of_month': dayMonth,
+			'run_time': runtime,
+			'period_days': days,
+			'period_hours': hours,
+			'period_min': min,
+			'duration_display': durationDisplay,
+			'period_start': period_start
+		}
+	};
+	//alert("Settings update object: " + JSON.stringify(updObj));
+	var ajax = new GlideAjax('LansweeperIntegrationAjax');
+	ajax.addParam('sysparm_name', 'updateSettings');
+	ajax.addParam('sysparm_obj', JSON.stringify(updObj));
+	ajax.getXML(processUpdateResponse);
+	
+}
+function processUpdateResponse(response){	
+	var answer =  response.responseXML.documentElement.getAttribute("answer");
+	// disable update
+	document.getElementById("pwd").value = '';
+	var btnUpd = document.getElementById("btn_upd");
+	btnUpd.disabled = true;
+	btnUpd.style.backgroundColor = "#E8E8E8";	
+	spin(false);				
+}
+
+function spin(spinActive) {
+	var spinner = document.getElementById("spinner");
+	if (spinActive) {
+		spinner.style.display = '';
+	} else {
+		spinner.style.display = 'none';
+	}
+}
+
+function changes() {	
+	// enable update
+	var btnUpd = document.getElementById("btn_upd");
+	btnUpd.disabled = false;
+	btnUpd.style.backgroundColor = "#1db8d9";
+} ]]></client_script>
+        <description/>
+        <direct>false</direct>
+        <endpoint>x_38710_lansweeper_lansweeper_settings_v2.do</endpoint>
+        <html><![CDATA[<?xml version="1.0" encoding="utf-8" ?>
+<j:jelly trim="false" xmlns:j="jelly:core" xmlns:g="glide" xmlns:j2="null" xmlns:g2="null">
+<style>
+	
+  .wrapper {
+	padding-left: 5px;
+	padding-right: 5px;
+	}
+
+  .input_field {
+    text-align: left;
+    padding-left: 2px;
+	width: 700px;
+	margin-bottom: 25px;
+	height: 25px;
+  }	
+	
+  .input_field_label {
+    width: 40px;
+	margin-bottom: 15px;
+  }	
+	
+  .checkbox_label {
+	margin-top: 10px;
+	margin-right: 8px;
+	margin-bottom: 25px;
+  }		
+	
+  .checkbx {
+	vertical-align: middle;
+	margin-bottom: 25px;    
+	margin-top: 0px;
+  }	
+	
+  .input_pwd {
+    text-align: left;
+    padding-left: 2px;
+	width: 300px;
+	margin-bottom: 25px;
+  }		
+  .input_mid_server {
+    text-align: left;
+    padding-left: 2px;
+	width: 300px;
+	margin-bottom: 25px;
+    height: 25px;
+  }		
+	
+</style>	
+	
+<script>
+	
+	document.title = "Pipefish CI Synchronizer for Enterprise - Lansweeper On-Premise Edition";		
+	
+	$j(document).ready(function() {	
+		// initialises choice visibility
+		var startFreq = $j("#frequency").val();
+		if (startFreq == 'weekly') {
+				$j('#week-ctrl').show();
+				$j('#time-ctrl').show();
+				$j('#month-ctrl').hide();	
+				$j('#period-ctrl').hide();
+			} else if (startFreq == 'monthly') {
+				$j('#week-ctrl').hide();
+				$j('#month-ctrl').show();
+				$j('#time-ctrl').show();
+				$j('#period-ctrl').hide();
+			} else if (startFreq == 'periodically') {
+				$j('#week-ctrl').hide();
+				$j('#month-ctrl').hide();
+				$j('#time-ctrl').hide();
+				$j('#period-ctrl').show();	
+			} else {
+				$j('#time-ctrl').show();
+				$j('#week-ctrl').hide();
+				$j('#month-ctrl').hide();
+				$j('#period-ctrl').hide();
+			}
+	
+		// initialise range values (did not work on html)
+		$j('#per-min').attr({"max": 59,"min": 0});
+	    $j('#per-hours').attr({"max": 23,"min": 0});
+        $j('#per-days').attr({"max": 365,"min": 0});
+        
+        // initialise user/pwd credentials visibility
+        var integrated_auth = $j("#int_auth").prop('checked');
+        if (integrated_auth) {
+            $j('#credentials').hide();
+        } else {
+            $j('#credentials').show();
+        }
+
+        // handle user/pwd credentials visibilit`y
+        $j('#int_auth').change(function(event) {
+            if (this.checked) {
+                $j('#credentials').hide();
+            } else {
+                $j('#credentials').show();
+            }
+        });
+	
+		// handle frequency change 
+		$j('#frequency').change(function(event) {
+			if (this.value == 'weekly') {
+				$j('#week-ctrl').show();
+				$j('#time-ctrl').show();
+				$j('#month-ctrl').hide();	
+				$j('#period-ctrl').hide();
+			} else if (this.value == 'monthly') {
+				$j('#week-ctrl').hide();
+				$j('#month-ctrl').show();
+				$j('#time-ctrl').show();
+				$j('#period-ctrl').hide();
+			} else if (this.value == 'periodically') {
+				$j('#week-ctrl').hide();
+				$j('#month-ctrl').hide();
+				$j('#time-ctrl').hide();
+				$j('#period-ctrl').show();	
+			} else {
+				$j('#time-ctrl').show();
+				$j('#week-ctrl').hide();
+				$j('#month-ctrl').hide();
+				$j('#period-ctrl').hide();
+			}
+		});	
+	});
+		
+</script>	
+
+<div class="wrapper">
+<g:ui_form style="padding-left:30px;">		
+		
+<g2:evaluate var="jvar_app_info" object="true">
+	var util = new x_38710_lansweeper.LansweeperIntegrationUtils();
+	var appinfo = util.appInfo();
+	appinfo
+</g2:evaluate>	
+<img src="pf_logo.png" width="80" height="80" align="right"/>
+<h4 align="left" style="font-weight: bold;">$[jvar_app_info.product]</h4>
+<h4 align="left" style="font-weight: bold;">$[jvar_app_info.displayName]</h4>	
+<j2:if test="$[!jvar_app_info.isFullVersion]">
+	<a href="$[jvar_app_info.url]" target="_blank" rel="noopener noreferrer">$[jvar_app_info.urlText]</a>
+</j2:if>
+<br></br>
+	
+<table>
+<tbody>
+	<j2:if test="$[jvar_app_info.appSelectionRequired]">
+		<tr><td><label style="color:red;">The CI Synchronizer application must be selected in order to be configured</label></td></tr>
+	</j2:if>
+	
+	<g2:evaluate var="jvar_adm">
+		var util2 = new x_38710_lansweeper.LansweeperIntegrationUtils();
+		var adm = util2.isAdmin; 
+		adm;
+	</g2:evaluate>		
+	<tr><td><h4>Connection Settings</h4></td></tr>
+	
+	<j2:if test="$[!jvar_adm]">
+		<tr><td><label style="color:red;">The CI Synchronizer Admin role (x_38710_lansweeper.admin) is required to alter Connection Settings</label></td></tr>
+	</j2:if>
+	
+	<tr><td><label for="servername">Server name</label></td></tr>
+	<j2:if test="$[jvar_app_info.allowSettingsUpdate]">
+		<tr><td><input class="input_field" name="servername" id="server"  value="${gs.getProperty('x_38710_lansweeper.integration.config.server_name')}" onchange="changes();"></input></td></tr></j2:if>
+	<j2:if test="$[!jvar_app_info.allowSettingsUpdate]">
+		<tr><td><input class="input_field" name="servername" id="server"  value="${gs.getProperty('x_38710_lansweeper.integration.config.server_name')}" disabled=""></input></td></tr></j2:if>
+
+	<tr><td><label for="databasename">Database name</label></td></tr>
+	<j2:if test="$[jvar_app_info.allowSettingsUpdate]">
+		<tr><td><input class="input_field" name="databasename" id="database" value="${gs.getProperty('x_38710_lansweeper.integration.config.db_name')}" onchange="changes();"/></td></tr></j2:if>
+	<j2:if test="$[!jvar_app_info.allowSettingsUpdate]">
+		<tr><td><input class="input_field" name="databasename" id="database" value="${gs.getProperty('x_38710_lansweeper.integration.config.db_name')}" disabled=""/></td></tr></j2:if>
+    
+</tbody>
+</table>
+		
+<table>
+<body>
+    <tr><td valign="top" style="text-align: left" width="100%">
+        <label for="int_auth" class="checkbox_label">Use integrated authentication</label>	
+        <j2:if test="$[jvar_app_info.allowSettingsUpdate]">
+            <j2:if test="$[gs.getProperty('x_38710_lansweeper.application.integrated.auth') == 'true']">
+                <input class="checkbx" type="checkbox" id="int_auth" name="int_auth" checked="true" onchange="changes();"/></j2:if>	
+            <j2:if test="$[gs.getProperty('x_38710_lansweeper.application.integrated.auth') == 'false']">
+                <input class="checkbx" type="checkbox" id="int_auth" name="int_auth" onchange="changes();"/></j2:if> 
+        </j2:if>
+        <j2:if test="$[!jvar_app_info.allowSettingsUpdate]">
+            <j2:if test="$[gs.getProperty('x_38710_lansweeper.application.integrated.auth') == 'true']">
+                <input class="checkbx" type="checkbox" id="int_auth" name="int_auth" checked="true" disabled=""/></j2:if>	
+            <j2:if test="$[gs.getProperty('x_38710_lansweeper.application.integrated.auth') == 'false']">
+                <input class="checkbx" type="checkbox" id="int_auth" name="int_auth" disabled=""/></j2:if> 
+        </j2:if>
+    </td></tr>   
+</body>
+</table> 
+
+<table id="credentials">
+<tbody>	
+    <tr><td><label for="user">User name</label></td></tr>
+    <j2:if test="$[jvar_app_info.allowSettingsUpdate]">
+        <tr><td><input class="input_field" name="user" id="user"  value="${gs.getProperty('x_38710_lansweeper.integration.config.user_name')}" onchange="changes();"></input></td></tr></j2:if>
+    <j2:if test="$[!jvar_app_info.allowSettingsUpdate]">
+        <tr><td><input class="input_field" name="user" id="user"  value="${gs.getProperty('x_38710_lansweeper.integration.config.user_name')}" disabled=""></input></td></tr></j2:if>
+    
+    <tr><td><label for="password">Password</label></td></tr>
+    <j2:if test="$[jvar_app_info.allowSettingsUpdate]">
+        <tr><td><input class="input_pwd" type="password" name="password" id="pwd" value="" onchange="changes();"></input></td></tr></j2:if>
+    <j2:if test="$[!jvar_app_info.allowSettingsUpdate]">
+        <tr><td><input class="input_pwd" type="password" name="password" id="pwd" value="" disabled=""></input></td></tr></j2:if>
+</tbody>
+</table>    
+
+<!-- mid server select: start -->
+<table>
+<tbody>	    
+    <g2:evaluate var="jvar_midServers" object="true">
+    var grMidServer = new GlideRecord('ecc_agent');
+    grMidServer.query();
+    var midServers = [];
+    while(grMidServer.next()){
+        midServers.push({
+            "id": grMidServer.sys_id + "",
+            "name": grMidServer.name + ""
+        }); 
+    }
+    var result = {
+        "isMidServers": midServers.length > 0,
+        "midServers": midServers
+    }
+    gs.info(JSON.stringify(midServers))
+    result;
+    </g2:evaluate>
+    <g2:evaluate var="jvar_midServerCurrent">
+        var midServerCurrent = gs.getProperty('x_38710_lansweeper.integration.config.mid_server');
+        midServerCurrent;
+    </g2:evaluate>
+    <j2:if test="$[jvar_app_info.allowSettingsUpdate]">
+    <tr><td><label for="mid_server">MID Server</label></td></tr>
+<tr><td><select class="input_mid_server" id="mid_server" name="mid_server" onchange="changes();">
+    <j2:if test="$[jvar_midServers.isMidServers]">
+        <j2:if test="$[jvar_midServer.id != jvar_midServerCurrent]">    
+                <option value="" selected="">Please Select</option> 
+        </j2:if>
+        <j2:forEach items="$[jvar_midServers.midServers]" var="jvar_midServer">
+            <j2:if test="$[jvar_midServer.id == jvar_midServerCurrent]">    
+                <option value="$[jvar_midServer.id]" selected="">$[jvar_midServer.name]</option> 
+            </j2:if>
+            <j2:if test="$[jvar_midServer.id != jvar_midServerCurrent]">    
+                <option value="$[jvar_midServer.id]">$[jvar_midServer.name]</option> 
+            </j2:if>
+        </j2:forEach>
+    </j2:if>
+    ><j2:if test="$[!jvar_midServers.isMidServers]">
+        <option value="">None Available</option> 
+    </j2:if>
+</select></td></tr></j2:if>
+
+    <j2:if test="$[!jvar_app_info.allowSettingsUpdate]">
+    <tr><td><label for="mid_server">MID Server</label></td></tr>
+<tr><td><select class="input_mid_server" id="mid_server" name="mid_server" disabled="">	
+    <j2:if test="$[jvar_midServers.isMidServers]">
+        <j2:if test="$[jvar_midServer.id != jvar_midServerCurrent]">    
+                <option value="" selected="">Please Select</option> 
+        </j2:if>
+        <j2:forEach items="$[jvar_midServers.midServers]" var="jvar_midServer">
+            <j2:if test="$[jvar_midServer.id == jvar_midServerCurrent]">    
+                <option value="$[jvar_midServer.id]" selected="">$[jvar_midServer.name]</option> 
+            </j2:if>
+            <j2:if test="$[jvar_midServer.id != jvar_midServerCurrent]">    
+                <option value="$[jvar_midServer.id]">$[jvar_midServer.name]</option> 
+            </j2:if>
+        </j2:forEach>
+    </j2:if>
+    ><j2:if test="$[!jvar_midServers.isMidServers]">
+        <option value="">None Available</option> 
+    </j2:if>
+</select><br></br></td></tr></j2:if>
+</tbody>
+</table> 
+<!-- Mid server select: end -->
+
+<table>
+<tbody>
+<tr><td><h4>General Settings</h4></td></tr>
+
+<tr><td>
+    <label for="syncstatus" class="checkbox_label">Synchronize Status Fields</label>	
+    <j2:if test="$[jvar_app_info.allowSettingsUpdate]">
+        <j2:if test="$[gs.getProperty('x_38710_lansweeper.application.synchronize.status') == 'true']">
+            <input class="checkbx" type="checkbox" id="syncstatus" name="syncstatus" checked="true" onchange="changes();"/></j2:if>	
+        <j2:if test="$[gs.getProperty('x_38710_lansweeper.application.synchronize.status') == 'false']">
+            <input class="checkbx" type="checkbox" id="syncstatus" name="syncstatus" onchange="changes();"/></j2:if> 
+    </j2:if>
+    <j2:if test="$[!jvar_app_info.allowSettingsUpdate]">
+        <j2:if test="$[gs.getProperty('x_38710_lansweeper.application.synchronize.status') == 'true']">
+            <input class="checkbx" type="checkbox" id="syncstatus" name="syncstatus" checked="true" disabled=""/></j2:if>	
+        <j2:if test="$[gs.getProperty('x_38710_lansweeper.application.synchronize.status') == 'false']">
+            <input class="checkbx" type="checkbox" id="syncstatus" name="syncstatus" disabled=""/></j2:if> 
+    </j2:if>
+</td></tr>	
+</tbody>
+</table>
+    
+<table>
+<tbody>
+    <tr><td><h4>Dashboard</h4></td></tr>
+    
+    <tr><td><label for="password">Refresh every (seconds)</label></td></tr>
+    <tr><td>
+		<j2:if test="$[jvar_app_info.allowSettingsUpdate]">
+			<input class="input_field" type="number" name="refreshrate" id="refresh_rate" value="${gs.getProperty('x_38710_lansweeper.integration.dasboard.refresh.rate')}" onchange="changes();"></input>
+		</j2:if>
+		<j2:if test="$[!jvar_app_info.allowSettingsUpdate]">
+			<input class="input_field" type="number" name="refreshrate" id="refresh_rate" value="${gs.getProperty('x_38710_lansweeper.integration.dasboard.refresh.rate')}" disabled=""></input>
+		</j2:if>			
+		
+	</td></tr>
+</tbody>
+</table>
+
+<g2:evaluate var="jvar_schedule" object="true">
+	var grSch = new GlideRecord('scheduled_import_set');
+	grSch.get('sys_id', '008cfb61db10a810613ecc30399619c6');
+	
+	var freq_choices = [{"v":"daily","d":"Daily"},{"v":"weekly","d":"Weekly"},{"v":"monthly","d":"Monthly"},{"v":"periodically","d":"Periodically"}];
+	var week_choices = [{"v":"1","d":"Monday"},{"v":"2","d":"Tuesday"},{"v":"3","d":"Wednesday"},{"v":"4","d":"Thursday"},{"v":"5","d":"Friday"},{"v":"6","d":"Saturday"},{"v":"7","d":"Sunday"}];
+	var month_choices = ['1',2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31];
+	
+	// get periodically values in days, hours and minutes 
+	var p_d = '0';
+	var p_h = '0';
+	var p_m = '0';
+	var start_run =  '2021-01-01T00:00:00';
+	if (grSch.getValue('run_type') == 'periodically') {
+		var v = grSch.getDisplayValue('run_period');
+		var v = v.replace('Days','D').replace('Day','D').replace('Hours','H').replace('Hour','H').replace('Minutes','M').replace('Minute','M');
+
+		p_d = ((v.split(' ').indexOf('D') > -1) ? v.split(' ')[v.split(' ').indexOf('D')-1] : '0');
+		p_h = ((v.split(' ').indexOf('H') > -1) ? v.split(' ')[v.split(' ').indexOf('H')-1] : '0');
+		p_m = ((v.split(' ').indexOf('M') > -1) ? v.split(' ')[v.split(' ').indexOf('M')-1] : '0');
+	
+		// format start run datetime to fit ui field 
+		start_run = grSch.getValue('run_start').split(' ');
+		start_run = start_run[0] + 'T' + start_run[1].substring(0, 5);
+	} 
+	
+	var schedule = {
+	    active: (grSch.getValue('active') == true), 
+		run_type: grSch.getValue('run_type'),
+		run_dayofweek: grSch.getValue('run_dayofweek'),
+		run_dayofmonth: grSch.getValue('run_dayofmonth'),
+		run_time: grSch.getDisplayValue('run_time'), 
+	    frequency_choices: freq_choices,
+		week_choices: week_choices,
+		month_choices: month_choices,
+		run_period_day: p_d,
+		run_period_hour: p_h,
+	    run_period_min: p_m,
+		run_start: start_run,
+		run_period_display: grSch.getDisplayValue('run_period'),
+		run_period_value: grSch.getValue('run_period')
+	};
+	schedule
+</g2:evaluate>		
+
+<table>
+<tbody>
+	<tr><td><h4>Schedule</h4></td></tr>
+	
+	<tr><td>
+	<label class="checkbox_label" for="activeSchedule">Active</label>	
+	<j2:if test="$[jvar_schedule.active]">
+		<input class="checkbx" type="checkbox" label="" id="activeSchedule" name="activeSchedule" checked="true" onchange="changes();"/></j2:if>	
+	<j2:if test="$[!jvar_schedule.active]">
+		<input class="checkbx" type="checkbox" id="activeSchedule" name="activeSchedule" onchange="changes();"/></j2:if> 
+	</td></tr>
+	
+</tbody>
+</table>	
+	
+<table>
+<tbody>	
+	<tr><td><label for="frequency">Frequency</label></td></tr>
+	<tr><td><select class="input_field" id="frequency" name="frequency" onchange="changes();">	
+		<j2:forEach items="$[jvar_schedule.frequency_choices]" var="jvar_freq">
+			<j2:if test="$[jvar_freq.v == jvar_schedule.run_type]">
+				<option value="$[jvar_freq.v]" selected="">$[jvar_freq.d]</option> 
+			</j2:if>	
+			<j2:if test="$[jvar_freq.v != jvar_schedule.run_type]">
+				<option value="$[jvar_freq.v]">$[jvar_freq.d]</option> 
+			</j2:if>
+		</j2:forEach>	
+	</select></td></tr>	
+</tbody>
+</table>
+
+<table id="week-ctrl" class="week-ctrl">
+<tbody>	
+	<tr><td><label for="week-day">Day</label></td></tr>
+	<tr><td><select class="input_field" id="week-day" name="week-day" onchange="changes();">
+		<j2:forEach items="$[jvar_schedule.week_choices]" var="jvar_week_day">
+			<j2:if test="$[jvar_week_day.v == jvar_schedule.run_dayofweek]">
+				<option value="$[jvar_week_day.v]" selected="">$[jvar_week_day.d]</option> 
+			</j2:if>	
+			<j2:if test="$[jvar_week_day.v != jvar_schedule.run_dayofweek]">
+				<option value="$[jvar_week_day.v]">$[jvar_week_day.d]</option> 
+			</j2:if>
+		</j2:forEach>	
+	</select></td></tr>	
+</tbody>
+</table>	
+	
+<table id="month-ctrl" class="month-ctrl">
+<tbody>		
+	<tr><td><label for="month_day">Day</label></td></tr>		
+	<tr><td><select class="input_field" id="month_day" name="month_day" onchange="changes();">
+		<j2:forEach items="$[jvar_schedule.month_choices]" var="jvar_month_day">
+			<j2:if test="$[jvar_month_day == jvar_schedule.run_dayofmonth]">
+				<option value="$[jvar_month_day]" selected="">$[jvar_month_day]</option> 
+			</j2:if>	
+			<j2:if test="$[jvar_month_day != jvar_schedule.run_dayofmonth]">
+				<option value="$[jvar_month_day]">$[jvar_month_day]</option> 
+			</j2:if>
+		</j2:forEach>		
+	</select></td></tr>
+</tbody>
+</table>	
+		
+<table id="time-ctrl" class="time-ctrl">
+<body>	
+	<tr><td><label for="time_field">Time</label></td></tr>
+	<tr><td><input class="input_field" type="time" id="time" name="time_field" value="$[jvar_schedule.run_time;]" onchange="changes();"/></td></tr>	
+</body>
+</table>		
+	
+<table id="period-ctrl" class="period-ctrl">	
+<tbody>
+	<tr><td><label for="per-days">Days</label></td></tr>
+	<tr><td><input class="input_field" type="number" id="per-days" name="per-days" value="$[jvar_schedule.run_period_day;]" onchange="changes();"></input></td></tr>	
+	<tr><td><label for="per-hours">Hours</label></td></tr>	
+	<tr><td><input class="input_field" type="number" id="per-hours" name="per-hours" value = "$[jvar_schedule.run_period_hour;]" onchange="changes();"></input></td></tr>	
+	<tr><td><label for="per-min">Minutes</label></td></tr>	
+	<tr><td><input class="input_field" type="number" id="per-min" name="per-min" value="$[jvar_schedule.run_period_min;]" min="0" max="59" onchange="changes();"></input>
+	</td></tr>
+
+	<tr><td><label for="per-start">Repeat starts on</label></td></tr>
+	<tr><td><input class="per-start" type="datetime-local" id="per-start" name="per-start" text-align="left" value="$[jvar_schedule.run_start;]" onchange="changes();" style="width: 180px;height: 22px;">		
+	</input></td></tr>	
+</tbody>
+</table>	
+	
+<br></br>	
+<button id="btn_upd" style="background-color: #E8E8E8;color:#ffffff" onclick="updateNow();" type="button" disabled="true"><span>Update</span></button>
+<img id="spinner" src="images/loading_anim2.gifx" class="loading-spinner" style="display: none;"/>	
+</g:ui_form>
+</div>
+</j:jelly>]]></html>
+        <name>lansweeper_settings_v2</name>
+        <processing_script/>
+        <sys_class_name>sys_ui_page</sys_class_name>
+        <sys_created_by>luis.cyrillo</sys_created_by>
+        <sys_created_on>2020-11-29 22:59:55</sys_created_on>
+        <sys_id>68179f1ddbb06490613ecc3039961929</sys_id>
+        <sys_mod_count>421</sys_mod_count>
+        <sys_name>lansweeper_settings_v2</sys_name>
+        <sys_package display_value="CI Synchronizer (Lansweeper On-Prem Edition)" source="x_38710_lansweeper">f46467d4db50a410613ecc303996191d</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="CI Synchronizer (Lansweeper On-Prem Edition)">f46467d4db50a410613ecc303996191d</sys_scope>
+        <sys_update_name>sys_ui_page_68179f1ddbb06490613ecc3039961929</sys_update_name>
+        <sys_updated_by>luis.cyrillo</sys_updated_by>
+        <sys_updated_on>2021-02-22 03:52:45</sys_updated_on>
+    </sys_ui_page>
+</record_update>

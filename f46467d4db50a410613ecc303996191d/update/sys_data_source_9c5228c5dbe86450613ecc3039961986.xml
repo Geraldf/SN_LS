@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_data_source">
+    <sys_data_source action="INSERT_OR_UPDATE">
+        <batch_size/>
+        <category/>
+        <connection_timeout>0</connection_timeout>
+        <connection_url>jdbc:sqlserver://vmpipefishdev01;selectMethod=cursor;databaseName=lansweeperdb_gen_sm;integratedSecurity=true</connection_url>
+        <connection_url_parameters/>
+        <csv_delimiter/>
+        <data_in_single_column>false</data_in_single_column>
+        <data_loader><![CDATA[(function loadData(import_set_table) {
+
+	// Add your code here to insert data to import_set_table
+
+})(import_set_table);]]></data_loader>
+        <data_stream_action/>
+        <data_stream_action_inputs/>
+        <database_name/>
+        <database_port/>
+        <discard_arrays>true</discard_arrays>
+        <expand_node_children>false</expand_node_children>
+        <file_path/>
+        <file_retrieval_method>Attachment</file_retrieval_method>
+        <format>com.microsoft.sqlserver.jdbc.SQLServerDriver</format>
+        <glide_keystore>false</glide_keystore>
+        <header_row>0</header_row>
+        <import_set_table_label/>
+        <import_set_table_name>x_38710_lansweeper_win_cluster_node</import_set_table_name>
+        <instance_name/>
+        <jdbc_password/>
+        <jdbc_server/>
+        <jdbc_user_name/>
+        <jpath_root_node/>
+        <last_run_database_field/>
+        <last_run_datetime/>
+        <last_success_import_time/>
+        <ldap_target/>
+        <ldapprobe_result_set_rows>200</ldapprobe_result_set_rows>
+        <limit/>
+        <maximum_rows/>
+        <mid_server/>
+        <name>Lansweeper Win Cluster Node</name>
+        <offset>0</offset>
+        <oracle_port>1521</oracle_port>
+        <oracle_sid>orcl</oracle_sid>
+        <parsing_script><![CDATA[// The input value can be accessed through the variables named "line", "lineNumber" and "result"
+// The function uses result variable to return parse result back. 
+(function(line,lineNumber,result) {
+	// add code here
+})(line,lineNumber,result);]]></parsing_script>
+        <properties/>
+        <query>Specific SQL</query>
+        <query_timeout>0</query_timeout>
+        <request_action/>
+        <scp_authentication>Username and Password</scp_authentication>
+        <scp_password/>
+        <scp_port/>
+        <scp_server/>
+        <scp_user_name/>
+        <sheet_number>0</sheet_number>
+        <sql_statement>SELECT &#13;
+	tblSqlServerCluster.Id&#13;
+	, 'Lansweeper' AS DiscoverySource&#13;
+	, 'Resource' AS Category&#13;
+	, CAST(tblSqlServerCluster.Id AS VARCHAR) + ':' + COALESCE(RTRIM(LTRIM(tblSqlServerCluster.Name)), '') AS Cluster_ID&#13;
+	, CAST(tblSqlServerCluster.Id AS VARCHAR) + ':' + COALESCE(RTRIM(TRIM(tblSqlServerCluster.Name)), '') AS Parent_CorrelationID&#13;
+	, CAST(tblSqlServerCluster.Id AS VARCHAR) + ':' + CAST(NodeInfo.NodeId AS VARCHAR) + ':' + COALESCE(RTRIM(LTRIM(NodeInfo.Name)), '') AS CorrelationID&#13;
+	, 'Cluster' AS Subcategory&#13;
+	, NodeInfo.Name AS [Name]&#13;
+	, NodeInfo.Name AS ShortDescription&#13;
+&#13;
+	, NodeInfo.ClusterId&#13;
+	, NodeInfo.AssetID&#13;
+	, NodeInfo.Comments&#13;
+	, NodeInfo.OperationalStatus&#13;
+	, NodeInfo.DNSDomain&#13;
+	, 'WinClusterNode' AS SourceName&#13;
+&#13;
+	, 'WinCluster' AS ParentAssetType&#13;
+	, tblSqlServerCluster.Name AS ParentName&#13;
+	, null AS ParentMACAddress&#13;
+	, null AS ParentSerialNumber&#13;
+	, 'Cluster of::Cluster' AS RelationType&#13;
+FROM&#13;
+	tblSqlServerCluster&#13;
+	INNER JOIN (&#13;
+		SELECT&#13;
+			tblSqlServerClusterNOde.ClusterId&#13;
+			, tblSqlServerClusterNode.Id NodeId&#13;
+			, tblSqlServerClusterNode.Name&#13;
+			, tblAssets.AssetID&#13;
+			, tAssetComments.Comment AS Comments&#13;
+			, tblState.Statename AS OperationalStatus&#13;
+			, tNetwork.DNSDomain AS DNSDomain&#13;
+		FROM&#13;
+			tblSqlServerClusterNOde&#13;
+			LEFT OUTER JOIN tblSqlServers&#13;
+				ON tblSqlServerClusterNOde.ID = tblSqlServers.ClusterId&#13;
+			LEFT OUTER JOIN tblAssets&#13;
+				ON tblAssets.AssetID = tblSqlServers.AssetID&#13;
+&#13;
+			LEFT OUTER JOIN (&#13;
+				SELECT &#13;
+					AssetID&#13;
+					, MAX(Added) AS Added&#13;
+					, MAX(Comment) AS Comment&#13;
+				FROM&#13;
+					tblAssetComments &#13;
+				GROUP BY&#13;
+					AssetId&#13;
+			)tAssetComments&#13;
+				ON tAssetComments.AssetID = tblAssets.AssetID&#13;
+			LEFT OUTER JOIN tblAssetCustom &#13;
+				ON tblAssets.AssetID = tblAssetCustom.AssetID&#13;
+			LEFT OUTER JOIN tblState &#13;
+				ON tblState.State = tblAssetCustom.State&#13;
+			LEFT OUTER JOIN (&#13;
+				SELECT &#13;
+					tblNetwork.AssetID&#13;
+					, tblNetwork.Description&#13;
+					, DefaultIPGateway&#13;
+					, DNSDomain&#13;
+				FROM &#13;
+					tblNetwork&#13;
+				WHERE &#13;
+					tblNetwork.IPEnabled = 1&#13;
+					and tblNetwork.DHCPenabled = 1 /* check this */&#13;
+					and (tblNetwork.DefaultIPGateway IS NOT NULL OR tblNetwork.DNSDomain IS NOT NULL)&#13;
+				) tNetwork &#13;
+					ON tblAssets.AssetID = tNetwork.AssetID&#13;
+	)NodeInfo&#13;
+		ON tblSqlServerCluster.Id = NodeInfo.ClusterId&#13;
+&#13;
+UNION ALL&#13;
+&#13;
+SELECT &#13;
+	tblWindowsCluster.WindowsClusterId&#13;
+	, 'Lansweeper' AS DiscoverySource&#13;
+	, 'Resource' AS Category&#13;
+	, CAST(tblWindowsCluster.WindowsClusterId AS VARCHAR) + ':' + COALESCE(RTRIM(LTRIM(tblWindowsCluster.Name)), '') AS Cluster_ID&#13;
+	, CAST(tblWindowsCluster.WindowsClusterId AS VARCHAR) + ':' + COALESCE(RTRIM(LTRIM(tblWindowsCluster.Name)), '') AS Parent_CorrelationID&#13;
+	, CAST(tblWindowsCluster.WindowsClusterId AS VARCHAR) + ':' + CAST(NodeInfo.NodeId AS VARCHAR) + ':' + COALESCE(RTRIM(LTRIM(NodeInfo.Name)), '') AS CorrelationID&#13;
+	, 'Cluster' AS Subcategory&#13;
+	, NodeInfo.Name AS [Name]&#13;
+	, NodeInfo.Name AS ShortDescription&#13;
+&#13;
+	, NodeInfo.WindowsClusterId&#13;
+	, NodeInfo.AssetID&#13;
+	, NodeInfo.Comments&#13;
+	, NodeInfo.OperationalStatus&#13;
+	, NodeInfo.DNSDomain&#13;
+	, 'WinClusterNode' AS SourceName&#13;
+&#13;
+	, 'WinCluster' AS ParentAssetType&#13;
+	, tblWindowsCluster.Name AS ParentName&#13;
+	, null AS ParentMACAddress&#13;
+	, null AS ParentSerialNumber&#13;
+	, 'Cluster of::Cluster' AS RelationType&#13;
+FROM&#13;
+	tblWindowsCluster&#13;
+	INNER JOIN (&#13;
+		SELECT&#13;
+			tblWindowsClusterNode.WindowsClusterId&#13;
+			, tblWindowsClusterNode.WindowsClusterNodeId NodeId&#13;
+			, tblWindowsClusterNode.AssetName as Name&#13;
+			, tblAssets.AssetID&#13;
+			, tAssetComments.Comment AS Comments&#13;
+			, tblState.Statename AS OperationalStatus&#13;
+			, tNetwork.DNSDomain AS DNSDomain&#13;
+		FROM&#13;
+			tblWindowsClusterNode&#13;
+			LEFT OUTER JOIN tblAssets&#13;
+				ON tblAssets.AssetID = tblWindowsClusterNode.AssetID&#13;
+&#13;
+			LEFT OUTER JOIN (&#13;
+				SELECT &#13;
+					AssetID&#13;
+					, MAX(Added) AS Added&#13;
+					, MAX(Comment) AS Comment&#13;
+				FROM&#13;
+					tblAssetComments &#13;
+				GROUP BY&#13;
+					AssetId&#13;
+			)tAssetComments&#13;
+				ON tAssetComments.AssetID = tblAssets.AssetID&#13;
+			LEFT OUTER JOIN tblAssetCustom &#13;
+				ON tblAssets.AssetID = tblAssetCustom.AssetID&#13;
+			LEFT OUTER JOIN tblState &#13;
+				ON tblState.State = tblAssetCustom.State&#13;
+			LEFT OUTER JOIN (&#13;
+				SELECT &#13;
+					tblNetwork.AssetID&#13;
+					, tblNetwork.Description&#13;
+					, DefaultIPGateway&#13;
+					, DNSDomain&#13;
+				FROM &#13;
+					tblNetwork&#13;
+				WHERE &#13;
+					tblNetwork.IPEnabled = 1&#13;
+					and tblNetwork.DHCPenabled = 1 /* check this */&#13;
+					and (tblNetwork.DefaultIPGateway IS NOT NULL OR tblNetwork.DNSDomain IS NOT NULL)&#13;
+				) tNetwork &#13;
+					ON tblAssets.AssetID = tNetwork.AssetID&#13;
+	)NodeInfo&#13;
+		ON tblWindowsCluster.WindowsClusterId = NodeInfo.WindowsClusterId&#13;
+</sql_statement>
+        <ssh_keyfile_path/>
+        <support_pagination>false</support_pagination>
+        <sys_class_name>sys_data_source</sys_class_name>
+        <sys_created_by>scott.webster</sys_created_by>
+        <sys_created_on>2020-11-16 04:56:00</sys_created_on>
+        <sys_id>9c5228c5dbe86450613ecc3039961986</sys_id>
+        <sys_mod_count>87</sys_mod_count>
+        <sys_name>Lansweeper Win Cluster Node</sys_name>
+        <sys_package display_value="CI Synchronizer (Lansweeper On-Prem Edition)" source="x_38710_lansweeper">f46467d4db50a410613ecc303996191d</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="CI Synchronizer (Lansweeper On-Prem Edition)">f46467d4db50a410613ecc303996191d</sys_scope>
+        <sys_update_name>sys_data_source_9c5228c5dbe86450613ecc3039961986</sys_update_name>
+        <sys_updated_by>cisync</sys_updated_by>
+        <sys_updated_on>2021-06-15 02:17:55</sys_updated_on>
+        <table_name/>
+        <type>JDBC</type>
+        <use_batch_import>false</use_batch_import>
+        <use_integrated_authentication>true</use_integrated_authentication>
+        <use_last_run_datetime>false</use_last_run_datetime>
+        <xpath_root_node/>
+        <zipped>false</zipped>
+    </sys_data_source>
+    <sys_variable_value action="delete_multiple" query="document_key=9c5228c5dbe86450613ecc3039961986"/>
+</record_update>

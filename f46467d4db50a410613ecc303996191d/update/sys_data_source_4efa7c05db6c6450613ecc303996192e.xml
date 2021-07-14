@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_data_source">
+    <sys_data_source action="INSERT_OR_UPDATE">
+        <batch_size/>
+        <category/>
+        <connection_timeout>0</connection_timeout>
+        <connection_url>jdbc:sqlserver://vmpipefishdev01;selectMethod=cursor;databaseName=lansweeperdb_gen_sm;integratedSecurity=true</connection_url>
+        <connection_url_parameters/>
+        <csv_delimiter/>
+        <data_in_single_column>false</data_in_single_column>
+        <data_loader><![CDATA[(function loadData(import_set_table) {
+
+	// Add your code here to insert data to import_set_table
+
+})(import_set_table);]]></data_loader>
+        <data_stream_action/>
+        <data_stream_action_inputs/>
+        <database_name/>
+        <database_port/>
+        <discard_arrays>true</discard_arrays>
+        <expand_node_children>false</expand_node_children>
+        <file_path/>
+        <file_retrieval_method>Attachment</file_retrieval_method>
+        <format>com.microsoft.sqlserver.jdbc.SQLServerDriver</format>
+        <glide_keystore>false</glide_keystore>
+        <header_row>0</header_row>
+        <import_set_table_label/>
+        <import_set_table_name>x_38710_lansweeper_msft_sql_instance</import_set_table_name>
+        <instance_name/>
+        <jdbc_password/>
+        <jdbc_server/>
+        <jdbc_user_name/>
+        <jpath_root_node/>
+        <last_run_database_field/>
+        <last_run_datetime/>
+        <last_success_import_time/>
+        <ldap_target/>
+        <ldapprobe_result_set_rows>200</ldapprobe_result_set_rows>
+        <limit/>
+        <maximum_rows/>
+        <mid_server/>
+        <name>Lansweeper MSFT SQL Instance</name>
+        <offset>0</offset>
+        <oracle_port>1521</oracle_port>
+        <oracle_sid>orcl</oracle_sid>
+        <parsing_script><![CDATA[// The input value can be accessed through the variables named "line", "lineNumber" and "result"
+// The function uses result variable to return parse result back. 
+(function(line,lineNumber,result) {
+	// add code here
+})(line,lineNumber,result);]]></parsing_script>
+        <properties/>
+        <query>Specific SQL</query>
+        <query_timeout>0</query_timeout>
+        <request_action/>
+        <scp_authentication>Username and Password</scp_authentication>
+        <scp_password/>
+        <scp_port/>
+        <scp_server/>
+        <scp_user_name/>
+        <sheet_number>0</sheet_number>
+        <sql_statement>SELECT &#13;
+	tblSqlServers.sqlServerId&#13;
+	, tblASsets.AssetID&#13;
+	, 'Lansweeper' AS DiscoverySource&#13;
+	, 'Resource' AS Category&#13;
+	, 'Database' AS Subcategory&#13;
+	, tAssetComments.Comment AS Comments&#13;
+&#13;
+	, tblSqlServers.dataPath AS config_directory&#13;
+	, tblSqlServers.installPath AS install_directory&#13;
+	, CAST(tblSqlServers.sqlServerId AS VARCHAR) + ':' + CAST(tblSqlServers.AssetID AS VARCHAR) AS CorrelationID&#13;
+	, CAST(tblAssets.AssetID AS VARCHAR) + ':' + COALESCE(RTRIM(LTRIM(tblAssets.Mac)), '') AS Parent_CorrelationID&#13;
+	, tblSqlServers.skuName AS edition&#13;
+	, tnetwork.DNSDomain&#13;
+	, tblAssets.Firstseen AS FirstDiscovered&#13;
+	, tblAssets.Lastseen AS MostRecentDiscovery&#13;
+	, tblSqlServers.IsClustered AS is_clustered&#13;
+&#13;
+	, tblState.Statename AS OperationalStatus&#13;
+&#13;
+	, tblSqlServers.version AS [version]&#13;
+	, tblSqlServers.displayVersion AS [version_name]&#13;
+	, 1 AS InstallStatus&#13;
+	, tblAssets.AssetName + CASE WHEN COALESCE(tblSQLServers.InstanceName, '') = '' THEN '' ELSE '\' + COALESCE(tblSQLServers.InstanceName, '') END AS [Name]&#13;
+	, tblAssets.AssetName + CASE WHEN COALESCE(tblSQLServers.InstanceName, '') = '' THEN '' ELSE '\' + COALESCE(tblSQLServers.InstanceName, '') END AS [short_description]&#13;
+	, COALESCE(tblSQLServers.InstanceName, '') AS InstanceName&#13;
+	, tblSQLServers.spLevel&#13;
+	, tblSQLServers.serviceName&#13;
+	------------&#13;
+	, 'MSFTSqlInstance' AS SourceName&#13;
+	, CASE &#13;
+		WHEN tblComputersystem.Domainrole IS NULL THEN tsysAssetTypes.AssetTypename&#13;
+		WHEN tsysAssetTypes.AssetTypename = 'Windows' AND tblComputersystem.Domainrole &gt; 1 THEN 'WindowsServer'&#13;
+		WHEN tsysAssetTypes.AssetTypename = 'Windows' AND tblComputersystem.Domainrole IN (0,1) THEN 'WindowsPC'&#13;
+		END AS ParentAssetType&#13;
+&#13;
+	, tblAssets.AssetName AS ParentName&#13;
+	, tblAssets.Mac AS ParentMACAddress&#13;
+	, tblAssetCustom.Serialnumber AS ParentSerialNumber&#13;
+	, 'Runs on::Runs' AS RelationType&#13;
+&#13;
+&#13;
+FROM&#13;
+	tblSqlServers&#13;
+	INNER JOIN tblAssets&#13;
+		ON tblSqlServers.AssetID = tblAssets.AssetID&#13;
+	LEFT OUTER JOIN tblAssetCustom &#13;
+		ON tblAssets.AssetID = tblAssetCustom.AssetID&#13;
+    LEFT OUTER JOIN tblState on tblState.State = tblAssetCustom.State&#13;
+	LEFT OUTER JOIN (&#13;
+		SELECT &#13;
+			AssetID&#13;
+			, MAX(Added) AS Added&#13;
+			, MAX(Comment) AS Comment&#13;
+		FROM&#13;
+			tblAssetComments &#13;
+		GROUP BY&#13;
+			AssetId&#13;
+	)tAssetComments&#13;
+		ON tAssetComments.AssetID = tblAssets.AssetID&#13;
+	&#13;
+	LEFT OUTER JOIN (&#13;
+		SELECT &#13;
+			tblNetwork.AssetID&#13;
+			, tblNetwork.IPAddress&#13;
+			, tblNetwork.Description&#13;
+			, DefaultIPGateway&#13;
+			, DNSDomain&#13;
+			, ROW_NUMBER() OVER(PARTITION BY AssetID ORDER BY Description ASC) AS tNetworkRowNo&#13;
+		FROM &#13;
+			tblNetwork&#13;
+		WHERE &#13;
+			tblNetwork.IPEnabled = 1&#13;
+			and tblNetwork.DHCPenabled = 1 /* check this */&#13;
+			and (tblNetwork.DefaultIPGateway IS NOT NULL OR tblNetwork.DNSDomain IS NOT NULL)&#13;
+		) tNetwork &#13;
+			ON tblAssets.AssetID = tNetwork.AssetID&#13;
+	INNER JOIN tsysAssetTypes&#13;
+		ON tsysAssetTypes.AssetType = tblASsets.AssetType&#13;
+	LEFT OUTER JOIN tblComputersystem &#13;
+		ON tblAssets.AssetID = tblComputersystem.AssetID&#13;
+WHERE&#13;
+	-- multiNics were causing duplicates&#13;
+	tNetworkRowNo = 1</sql_statement>
+        <ssh_keyfile_path/>
+        <support_pagination>false</support_pagination>
+        <sys_class_name>sys_data_source</sys_class_name>
+        <sys_created_by>scott.webster</sys_created_by>
+        <sys_created_on>2020-11-16 06:43:43</sys_created_on>
+        <sys_id>4efa7c05db6c6450613ecc303996192e</sys_id>
+        <sys_mod_count>87</sys_mod_count>
+        <sys_name>Lansweeper MSFT SQL Instance</sys_name>
+        <sys_package display_value="CI Synchronizer (Lansweeper On-Prem Edition)" source="x_38710_lansweeper">f46467d4db50a410613ecc303996191d</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="CI Synchronizer (Lansweeper On-Prem Edition)">f46467d4db50a410613ecc303996191d</sys_scope>
+        <sys_update_name>sys_data_source_4efa7c05db6c6450613ecc303996192e</sys_update_name>
+        <sys_updated_by>cisync</sys_updated_by>
+        <sys_updated_on>2021-06-15 02:17:55</sys_updated_on>
+        <table_name/>
+        <type>JDBC</type>
+        <use_batch_import>false</use_batch_import>
+        <use_integrated_authentication>true</use_integrated_authentication>
+        <use_last_run_datetime>false</use_last_run_datetime>
+        <xpath_root_node/>
+        <zipped>false</zipped>
+    </sys_data_source>
+    <sys_variable_value action="delete_multiple" query="document_key=4efa7c05db6c6450613ecc303996192e"/>
+</record_update>

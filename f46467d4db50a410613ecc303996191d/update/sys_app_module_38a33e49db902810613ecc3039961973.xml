@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_app_module">
+    <sys_app_module action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <application display_value="System Import Sets">import_sets</application>
+        <assessment/>
+        <device_type/>
+        <filter/>
+        <hint/>
+        <homepage/>
+        <image/>
+        <link_type>LIST</link_type>
+        <map_page/>
+        <mobile_title>Lansweeper IP Firewall</mobile_title>
+        <mobile_view_name>Mobile</mobile_view_name>
+        <name>x_38710_lansweeper_ip_firewall</name>
+        <order>1100</order>
+        <override_menu_roles>false</override_menu_roles>
+        <query/>
+        <report/>
+        <roles/>
+        <sys_class_name>sys_app_module</sys_class_name>
+        <sys_created_by>mario.quinones</sys_created_by>
+        <sys_created_on>2020-11-04 05:15:13</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>38a33e49db902810613ecc3039961973</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Lansweeper IP Firewall</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="CI Synchronizer (Lansweeper On-Prem Edition)" source="x_38710_lansweeper">f46467d4db50a410613ecc303996191d</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="CI Synchronizer (Lansweeper On-Prem Edition)">f46467d4db50a410613ecc303996191d</sys_scope>
+        <sys_update_name>sys_app_module_38a33e49db902810613ecc3039961973</sys_update_name>
+        <sys_updated_by>mario.quinones</sys_updated_by>
+        <sys_updated_on>2020-11-04 05:15:13</sys_updated_on>
+        <timeline_page/>
+        <title>Lansweeper IP Firewall</title>
+        <uncancelable>false</uncancelable>
+        <view_name/>
+        <window_name/>
+    </sys_app_module>
+</record_update>

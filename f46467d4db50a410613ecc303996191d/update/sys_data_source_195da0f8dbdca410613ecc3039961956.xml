@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_data_source">
+    <sys_data_source action="INSERT_OR_UPDATE">
+        <batch_size/>
+        <category/>
+        <connection_timeout>0</connection_timeout>
+        <connection_url>jdbc:sqlserver://vmpipefishdev01;selectMethod=cursor;databaseName=lansweeperdb_gen_sm;integratedSecurity=true</connection_url>
+        <connection_url_parameters/>
+        <csv_delimiter/>
+        <data_in_single_column>false</data_in_single_column>
+        <data_loader><![CDATA[(function loadData(import_set_table) {
+
+	// Add your code here to insert data to import_set_table
+
+})(import_set_table);]]></data_loader>
+        <data_stream_action/>
+        <data_stream_action_inputs/>
+        <database_name/>
+        <database_port/>
+        <discard_arrays>true</discard_arrays>
+        <expand_node_children>false</expand_node_children>
+        <file_path/>
+        <file_retrieval_method>Attachment</file_retrieval_method>
+        <format>com.microsoft.sqlserver.jdbc.SQLServerDriver</format>
+        <glide_keystore>false</glide_keystore>
+        <header_row>0</header_row>
+        <import_set_table_label/>
+        <import_set_table_name>x_38710_lansweeper_linux_server</import_set_table_name>
+        <instance_name/>
+        <jdbc_password/>
+        <jdbc_server/>
+        <jdbc_user_name/>
+        <jpath_root_node/>
+        <last_run_database_field/>
+        <last_run_datetime/>
+        <last_success_import_time/>
+        <ldap_target/>
+        <ldapprobe_result_set_rows>200</ldapprobe_result_set_rows>
+        <limit/>
+        <maximum_rows/>
+        <mid_server/>
+        <name>Lansweeper Linux Server</name>
+        <offset>0</offset>
+        <oracle_port>1521</oracle_port>
+        <oracle_sid>orcl</oracle_sid>
+        <parsing_script><![CDATA[// The input value can be accessed through the variables named "line", "lineNumber" and "result"
+// The function uses result variable to return parse result back. 
+(function(line,lineNumber,result) {
+	// add code here
+})(line,lineNumber,result);]]></parsing_script>
+        <properties/>
+        <query>Specific SQL</query>
+        <query_timeout>0</query_timeout>
+        <request_action/>
+        <scp_authentication>Username and Password</scp_authentication>
+        <scp_password/>
+        <scp_port/>
+        <scp_server/>
+        <scp_user_name/>
+        <sheet_number>0</sheet_number>
+        <sql_statement>SELECT &#13;
+	tblAssets.AssetID&#13;
+	, tblLinuxEnclosure.SMBIOSAssetTag AS AssetTag&#13;
+	, 'Hardware' AS Category&#13;
+	, TsysChassisTypes.ChassisName AS ChassisType &#13;
+	, tAssetComments.Comment AS Comments&#13;
+	, CAST(tblAssets.AssetID AS VARCHAR) + ':' + COALESCE(RTRIM(LTRIM(tblAssets.Mac)), '') AS CorrelationID&#13;
+	, tblAssets.NrProcessors AS CPUCount&#13;
+&#13;
+	, tmpProcessor.Manufacturer AS CpuManufacturer&#13;
+	, tmpProcessor.CPUName AS CpuName&#13;
+	, tmpProcessor.MaxClockSpeed AS CpuSpeedMhz&#13;
+	, tblAssets.Processor AS CPUType&#13;
+	, 'Lansweeper' AS DiscoverySource&#13;
+	, tDiskDrives.TotalDiskSpace AS DiskSpaceGB -- confirm conversion&#13;
+	, tblAssets.Firstseen AS FirstDiscovered&#13;
+&#13;
+	, TsysChassisTypes.ChassisName  AS FormFactor&#13;
+	, tblAssets.FQDN AS FQDN&#13;
+	, 'installed' AS HardwareStatus&#13;
+	, 'in_use' AS SubStatus&#13;
+	, 1 AS InstallStatus&#13;
+	, tblAssets.IPAddress AS IPAddress&#13;
+	, tLinuxSystem.KernelRelease&#13;
+	, tblAssets.Lastseen AS MostRecentDiscovery&#13;
+	, tblAssets.Mac AS MACAddress&#13;
+	, tblAssetCustom.Manufacturer AS Manufacturer&#13;
+	, tblAssetCustom.Model AS ModelID&#13;
+	, tblAssetCustom.Model AS ModelNumber&#13;
+	, tblAssets.AssetName AS [Name]&#13;
+	, tblState.Statename AS OperationalStatus&#13;
+	, COALESCE(tsysOS.OSname, tLinuxSystem.OperatingSystem) AS OperatingSystem&#13;
+	, CASE &#13;
+		WHEN tLinuxSystem.ProcessorType LIKE '%x86_32%' THEN 32&#13;
+		WHEN tLinuxSystem.ProcessorType LIKE '%x86_64%' THEN 64&#13;
+	  END AS OSAddressWidth&#13;
+&#13;
+	, tblAssets.Domain AS OSDomain&#13;
+	-- , tblAssets.SP As OSServicePack -- No Mapping&#13;
+	, tLinuxSystem.KernelVersion AS OSVersion&#13;
+	, tblAssetCustom.PurchaseDate AS Purchased&#13;
+	, tblAssets.Memory AS RAM_MB&#13;
+	, tblAssetCustom.Serialnumber AS SerialNumber&#13;
+	, tblAssets.Description AS ShortDescription&#13;
+	, 'Computer' AS Subcategory&#13;
+	, tblAssetCustom.Warrantydate AS WarrantyExpiration&#13;
+	, tsysAssetTypes.AssetTypename AS SourceName&#13;
+FROM&#13;
+	tblAssets&#13;
+	LEFT OUTER JOIN tblAssetCustom &#13;
+		ON tblAssets.AssetID = tblAssetCustom.AssetID&#13;
+	LEFT OUTER JOIN tsysAssetTypes&#13;
+		ON tblAssets.Assettype = tsysAssetTypes.assettype&#13;
+&#13;
+    LEFT OUTER JOIN tblState &#13;
+		ON tblState.State = tblAssetCustom.State&#13;
+	LEFT OUTER JOIN tsysIPLocations On tsysIPLocations.StartIP &lt;= tblAssets.IPNumeric&#13;
+		AND tsysIPLocations.EndIP &gt;= tblAssets.IPNumeric&#13;
+	LEFT OUTER JOIN (&#13;
+		SELECT &#13;
+			AssetID&#13;
+			, MAX(Added) AS Added&#13;
+			, MAX(Comment) AS Comment&#13;
+		FROM&#13;
+			tblAssetComments &#13;
+		GROUP BY&#13;
+			AssetId&#13;
+	)tAssetComments&#13;
+		ON tAssetComments.AssetID = tblAssets.AssetID&#13;
+	LEFT OUTER JOIN tblLinuxEnclosure &#13;
+		On tblAssets.AssetID = tblLinuxEnclosure.AssetID&#13;
+	LEFT OUTER JOIN TsysChassisTypes	&#13;
+		ON tblLinuxEnclosure.ChassisTypes = TsysChassisTypes.Chassistype&#13;
+	LEFT OUTER JOIN tsysOS On tblAssets.OScode = tsysOS.OScode&#13;
+&#13;
+	LEFT OUTER JOIN (&#13;
+		SELECT&#13;
+			AssetId&#13;
+			, KernelName&#13;
+			, KernelRelease&#13;
+			, KernelVersion&#13;
+			, ProcessorType&#13;
+			, OperatingSystem&#13;
+			, OSRelease&#13;
+			, LastChanged&#13;
+		FROM&#13;
+			tblLinuxSystem&#13;
+		WHERE&#13;
+			LastChanged = (SELECT MAX(LastChanged) FROM tblLinuxSystem it WHERE it.AssetID = tblLinuxSystem.AssetID)&#13;
+	) tLinuxSystem&#13;
+		ON tblAssets.AssetID = tLinuxSystem.AssetID&#13;
+&#13;
+	LEFT OUTER JOIN (&#13;
+		SELECT &#13;
+			AssetID&#13;
+			, MAX(MaxSpeed) as MaxClockSpeed&#13;
+			, MAX(Manufacturer) as Manufacturer &#13;
+			, MAX(Version) as CPUName &#13;
+		FROM&#13;
+			tblLinuxProcessors &#13;
+		GROUP BY AssetID&#13;
+	) as tmpProcessor &#13;
+		ON tblAssets.AssetID = tmpProcessor.AssetID &#13;
+&#13;
+	LEFT OUTER JOIN  (&#13;
+		SELECT&#13;
+			AssetID&#13;
+			, SUM(CAST(Size AS BIGINT)) / 1024 / 1024  AS TotalDiskSpace&#13;
+		FROM&#13;
+			tblLinuxHardDisks&#13;
+		GROUP BY &#13;
+			AssetID&#13;
+	) tDiskDrives&#13;
+		ON tDiskDrives.AssetID = tblAssets.AssetID&#13;
+&#13;
+WHERE&#13;
+	tblAssets.Assettype = (SELECT assettype FROM tsysAssetTypes WHERE AssetTypeName = 'Linux')</sql_statement>
+        <ssh_keyfile_path/>
+        <support_pagination>false</support_pagination>
+        <sys_class_name>sys_data_source</sys_class_name>
+        <sys_created_by>mario.quinones</sys_created_by>
+        <sys_created_on>2020-11-03 00:49:58</sys_created_on>
+        <sys_id>195da0f8dbdca410613ecc3039961956</sys_id>
+        <sys_mod_count>104</sys_mod_count>
+        <sys_name>Lansweeper Linux Server</sys_name>
+        <sys_package display_value="CI Synchronizer (Lansweeper On-Prem Edition)" source="x_38710_lansweeper">f46467d4db50a410613ecc303996191d</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="CI Synchronizer (Lansweeper On-Prem Edition)">f46467d4db50a410613ecc303996191d</sys_scope>
+        <sys_update_name>sys_data_source_195da0f8dbdca410613ecc3039961956</sys_update_name>
+        <sys_updated_by>cisync</sys_updated_by>
+        <sys_updated_on>2021-06-15 02:17:55</sys_updated_on>
+        <table_name/>
+        <type>JDBC</type>
+        <use_batch_import>false</use_batch_import>
+        <use_integrated_authentication>true</use_integrated_authentication>
+        <use_last_run_datetime>false</use_last_run_datetime>
+        <xpath_root_node/>
+        <zipped>false</zipped>
+    </sys_data_source>
+    <sys_variable_value action="delete_multiple" query="document_key=195da0f8dbdca410613ecc3039961956"/>
+</record_update>

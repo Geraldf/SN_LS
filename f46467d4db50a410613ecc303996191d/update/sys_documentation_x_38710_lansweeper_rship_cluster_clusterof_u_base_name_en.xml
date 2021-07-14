@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_documentation element="u_base_name" label="Base_Name" language="en" table="x_38710_lansweeper_rship_cluster_clusterof">
+        <sys_documentation action="INSERT_OR_UPDATE">
+            <element>u_base_name</element>
+            <help/>
+            <hint/>
+            <label>Base_Name</label>
+            <language>en</language>
+            <name>x_38710_lansweeper_rship_cluster_clusterof</name>
+            <plural>Base_Names</plural>
+            <sys_class_name>sys_documentation</sys_class_name>
+            <sys_created_by>scott.webster</sys_created_by>
+            <sys_created_on>2020-11-27 02:31:39</sys_created_on>
+            <sys_id>38ca6c60db38a090613ecc303996197d</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>Base_Name</sys_name>
+            <sys_package display_value="CI Synchronizer (Lansweeper On-Prem Edition)" source="x_38710_lansweeper">f46467d4db50a410613ecc303996191d</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="CI Synchronizer (Lansweeper On-Prem Edition)">f46467d4db50a410613ecc303996191d</sys_scope>
+            <sys_update_name>sys_documentation_x_38710_lansweeper_rship_cluster_clusterof_u_base_name_en</sys_update_name>
+            <sys_updated_by>scott.webster</sys_updated_by>
+            <sys_updated_on>2020-11-27 02:31:39</sys_updated_on>
+            <url/>
+            <url_target/>
+        </sys_documentation>
+    </sys_documentation>
+</record_update>

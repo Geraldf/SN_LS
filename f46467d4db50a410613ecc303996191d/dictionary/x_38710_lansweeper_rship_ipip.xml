@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element extends="sys_import_set_row" label="Lansweeper rship IP:IP" max_length="40" name="x_38710_lansweeper_rship_ipip" type="collection">
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=AssetMacAddress" label="AssetMacAddress" max_length="50" name="u_assetmacaddress" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="AssetTypename" max_length="40" name="u_assettypename" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="Base_AssetType" max_length="40" name="u_base_assettype" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=Base_CorrelationID" label="Base_CorrelationID" max_length="51" name="u_base_correlationid" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="Base_MACAddress" max_length="40" name="u_base_macaddress" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="Base_Name" max_length="40" name="u_base_name" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="Base_SerialNumber" max_length="40" name="u_base_serialnumber" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=connectedAssetId" label="connectedAssetId" max_length="40" name="u_connectedassetid" type="integer"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=ConnectedMac" label="ConnectedMac" max_length="40" name="u_connectedmac" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="Dependant_AssetType" max_length="40" name="u_dependant_assettype" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="Dependant_AssetTypename" max_length="40" name="u_dependant_assettypename" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=Dependant_CorrelationID" label="Dependant_CorrelationID" max_length="51" name="u_dependant_correlationid" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="Dependant_MACAddress" max_length="40" name="u_dependant_macaddress" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="Dependant_Name" max_length="40" name="u_dependant_name" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="Dependant_SerialNumber" max_length="40" name="u_dependant_serialnumber" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=relationship" label="relationship" max_length="40" name="u_relationship" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="source_feed" max_length="40" name="u_source_feed" type="string"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=switchAssetId" label="switchAssetId" max_length="40" name="u_switchassetid" type="integer"/>
+        <element attributes="edge_encryption_enabled=true,import_attribute_name=switchAssetType" label="switchAssetType" max_length="100" name="u_switchassettype" type="string"/>
+    </element>
+</database>

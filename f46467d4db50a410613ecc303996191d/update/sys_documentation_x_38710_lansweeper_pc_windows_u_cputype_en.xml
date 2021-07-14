@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_documentation element="u_cputype" label="CPUType" language="en" table="x_38710_lansweeper_pc_windows">
+        <sys_documentation action="INSERT_OR_UPDATE">
+            <element>u_cputype</element>
+            <help/>
+            <hint/>
+            <label>CPUType</label>
+            <language>en</language>
+            <name>x_38710_lansweeper_pc_windows</name>
+            <plural>CPUTypes</plural>
+            <sys_class_name>sys_documentation</sys_class_name>
+            <sys_created_by>scott.webster</sys_created_by>
+            <sys_created_on>2021-02-01 03:02:29</sys_created_on>
+            <sys_id>14cae87d2fce2810f41a93acf699b6d2</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>CPUType</sys_name>
+            <sys_package display_value="CI Synchronizer (Lansweeper On-Prem Edition)" source="x_38710_lansweeper">f46467d4db50a410613ecc303996191d</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="CI Synchronizer (Lansweeper On-Prem Edition)">f46467d4db50a410613ecc303996191d</sys_scope>
+            <sys_update_name>sys_documentation_x_38710_lansweeper_pc_windows_u_cputype_en</sys_update_name>
+            <sys_updated_by>scott.webster</sys_updated_by>
+            <sys_updated_on>2021-02-01 03:02:29</sys_updated_on>
+            <url/>
+            <url_target/>
+        </sys_documentation>
+    </sys_documentation>
+</record_update>

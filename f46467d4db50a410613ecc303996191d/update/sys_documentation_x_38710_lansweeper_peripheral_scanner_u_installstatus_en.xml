@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_documentation element="u_installstatus" label="InstallStatus" language="en" table="x_38710_lansweeper_peripheral_scanner">
+        <sys_documentation action="INSERT_OR_UPDATE">
+            <element>u_installstatus</element>
+            <help/>
+            <hint/>
+            <label>InstallStatus</label>
+            <language>en</language>
+            <name>x_38710_lansweeper_peripheral_scanner</name>
+            <plural>InstallStatus</plural>
+            <sys_class_name>sys_documentation</sys_class_name>
+            <sys_created_by>scott.webster</sys_created_by>
+            <sys_created_on>2020-11-09 04:24:14</sys_created_on>
+            <sys_id>e2e7d0badbd86c10613ecc3039961992</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>InstallStatus</sys_name>
+            <sys_package display_value="CI Synchronizer (Lansweeper On-Prem Edition)" source="x_38710_lansweeper">f46467d4db50a410613ecc303996191d</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="CI Synchronizer (Lansweeper On-Prem Edition)">f46467d4db50a410613ecc303996191d</sys_scope>
+            <sys_update_name>sys_documentation_x_38710_lansweeper_peripheral_scanner_u_installstatus_en</sys_update_name>
+            <sys_updated_by>scott.webster</sys_updated_by>
+            <sys_updated_on>2020-11-09 04:24:14</sys_updated_on>
+            <url/>
+            <url_target/>
+        </sys_documentation>
+    </sys_documentation>
+</record_update>

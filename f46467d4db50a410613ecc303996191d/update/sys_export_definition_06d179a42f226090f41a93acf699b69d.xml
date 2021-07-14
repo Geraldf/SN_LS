@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_export_definition">
+    <sys_export_definition action="INSERT_OR_UPDATE">
+        <field_list>last_run_updated,ci_name,last_run_skipped,last_run_end,last_run_processed,class_name,last_run_ignored,last_run_start,last_run_errors,last_run_state,last_run_inserts,add_to_counters,default_method,identification_method,identifier_metric,last_run_date</field_list>
+        <filter/>
+        <name>lansweeper_supported_classes</name>
+        <sys_class_name>sys_export_definition</sys_class_name>
+        <sys_created_by>scott.webster</sys_created_by>
+        <sys_created_on>2021-02-22 07:32:17</sys_created_on>
+        <sys_id>06d179a42f226090f41a93acf699b69d</sys_id>
+        <sys_mod_count>5</sys_mod_count>
+        <sys_name>lansweeper_supported_classes</sys_name>
+        <sys_package display_value="CI Synchronizer (Lansweeper On-Prem Edition)" source="x_38710_lansweeper">f46467d4db50a410613ecc303996191d</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="CI Synchronizer (Lansweeper On-Prem Edition)">f46467d4db50a410613ecc303996191d</sys_scope>
+        <sys_update_name>sys_export_definition_06d179a42f226090f41a93acf699b69d</sys_update_name>
+        <sys_updated_by>scott.webster</sys_updated_by>
+        <sys_updated_on>2021-02-24 06:27:53</sys_updated_on>
+        <table_name>x_38710_lansweeper_supported_classes</table_name>
+        <view display_value="Exp_d06d179a42f226090f41a93acf699b69d" name="exp_d06d179a42f226090f41a93acf699b69d">c5e1f5a42f226090f41a93acf699b603</view>
+    </sys_export_definition>
+</record_update>

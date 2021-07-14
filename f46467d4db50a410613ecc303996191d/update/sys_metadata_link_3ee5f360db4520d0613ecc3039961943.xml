@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_metadata_link">
+    <sys_metadata_link action="INSERT_OR_UPDATE">
+        <directory>update</directory>
+        <documentkey>1dd2391bdb902050613ecc30399619d4</documentkey>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="x_38710_lansweeper_supported_classes">
+    <x_38710_lansweeper_supported_classes action="INSERT_OR_UPDATE">
+        <add_to_counters>true</add_to_counters>
+        <ci_name>cmdb_ci_ip_firewall</ci_name>
+        <class_name>IP Firewall</class_name>
+        <default_method>ire</default_method>
+        <identification_method>ire</identification_method>
+        <last_run_date/>
+        <last_run_end/>
+        <last_run_errors/>
+        <last_run_ignored/>
+        <last_run_inserts/>
+        <last_run_processed/>
+        <last_run_skipped/>
+        <last_run_start/>
+        <last_run_state/>
+        <last_run_updated/>
+        <scheduled_data_import display_value="Lansweeper IP Firewall">5191b5d7db902050613ecc30399619c6</scheduled_data_import>
+        <sys_class_name>x_38710_lansweeper_supported_classes</sys_class_name>
+        <sys_created_by>mario.quinones</sys_created_by>
+        <sys_created_on>2020-11-11 00:18:36</sys_created_on>
+        <sys_id>1dd2391bdb902050613ecc30399619d4</sys_id>
+        <sys_mod_count>619</sys_mod_count>
+        <sys_updated_by>luis.cyrillo</sys_updated_by>
+        <sys_updated_on>2021-01-29 02:57:52</sys_updated_on>
+    </x_38710_lansweeper_supported_classes>
+</record_update>
+]]></payload>
+        <sys_class_name>sys_metadata_link</sys_class_name>
+        <sys_created_by>luis.cyrillo</sys_created_by>
+        <sys_created_on>2020-12-10 03:34:57</sys_created_on>
+        <sys_id>3ee5f360db4520d0613ecc3039961943</sys_id>
+        <sys_mod_count>7</sys_mod_count>
+        <sys_name>Created 2020-11-11 10:18:36</sys_name>
+        <sys_package display_value="CI Synchronizer (Lansweeper On-Prem Edition)" source="x_38710_lansweeper">f46467d4db50a410613ecc303996191d</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="CI Synchronizer (Lansweeper On-Prem Edition)">f46467d4db50a410613ecc303996191d</sys_scope>
+        <sys_update_name>sys_metadata_link_3ee5f360db4520d0613ecc3039961943</sys_update_name>
+        <sys_updated_by>luis.cyrillo</sys_updated_by>
+        <sys_updated_on>2021-01-29 04:33:06</sys_updated_on>
+        <tablename>x_38710_lansweeper_supported_classes</tablename>
+    </sys_metadata_link>
+</record_update>

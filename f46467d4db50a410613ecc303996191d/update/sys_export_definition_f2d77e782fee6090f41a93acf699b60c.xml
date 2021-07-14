@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_export_definition">
+    <sys_export_definition action="INSERT_OR_UPDATE">
+        <field_list>sys_class_name,sys_id</field_list>
+        <filter/>
+        <name>cmdb_ci</name>
+        <sys_class_name>sys_export_definition</sys_class_name>
+        <sys_created_by>scott.webster</sys_created_by>
+        <sys_created_on>2021-02-23 07:17:43</sys_created_on>
+        <sys_id>f2d77e782fee6090f41a93acf699b60c</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name>cmdb_ci</sys_name>
+        <sys_package display_value="CI Synchronizer (Lansweeper On-Prem Edition)" source="x_38710_lansweeper">f46467d4db50a410613ecc303996191d</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="CI Synchronizer (Lansweeper On-Prem Edition)">f46467d4db50a410613ecc303996191d</sys_scope>
+        <sys_update_name>sys_export_definition_f2d77e782fee6090f41a93acf699b60c</sys_update_name>
+        <sys_updated_by>scott.webster</sys_updated_by>
+        <sys_updated_on>2021-02-23 07:17:43</sys_updated_on>
+        <table_name>cmdb_ci</table_name>
+        <view display_value="Exp_df2d77e782fee6090f41a93acf699b60c" name="exp_df2d77e782fee6090f41a93acf699b60c">952832b82fee6090f41a93acf699b6af</view>
+    </sys_export_definition>
+</record_update>

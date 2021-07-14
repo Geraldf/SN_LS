@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_view">
+    <sys_ui_view action="INSERT_OR_UPDATE">
+        <group/>
+        <hidden>false</hidden>
+        <name>exp_df2d77e782fee6090f41a93acf699b60c</name>
+        <roles/>
+        <sys_class_name>sys_ui_view</sys_class_name>
+        <sys_created_by>scott.webster</sys_created_by>
+        <sys_created_on>2021-02-23 07:17:43</sys_created_on>
+        <sys_id>952832b82fee6090f41a93acf699b6af</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Exp_df2d77e782fee6090f41a93acf699b60c</sys_name>
+        <sys_package display_value="CI Synchronizer (Lansweeper On-Prem Edition)" source="x_38710_lansweeper">f46467d4db50a410613ecc303996191d</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="CI Synchronizer (Lansweeper On-Prem Edition)">f46467d4db50a410613ecc303996191d</sys_scope>
+        <sys_update_name>sys_ui_view_952832b82fee6090f41a93acf699b6af</sys_update_name>
+        <sys_updated_by>scott.webster</sys_updated_by>
+        <sys_updated_on>2021-02-23 07:17:43</sys_updated_on>
+        <title>Exp_df2d77e782fee6090f41a93acf699b60c</title>
+        <user/>
+    </sys_ui_view>
+</record_update>

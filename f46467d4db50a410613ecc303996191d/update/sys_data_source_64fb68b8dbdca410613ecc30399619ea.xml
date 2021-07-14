@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_data_source">
+    <sys_data_source action="INSERT_OR_UPDATE">
+        <batch_size/>
+        <category/>
+        <connection_timeout>0</connection_timeout>
+        <connection_url>jdbc:sqlserver://vmpipefishdev01;selectMethod=cursor;databaseName=lansweeperdb_gen_sm;integratedSecurity=true</connection_url>
+        <connection_url_parameters/>
+        <csv_delimiter/>
+        <data_in_single_column>false</data_in_single_column>
+        <data_loader><![CDATA[(function loadData(import_set_table) {
+
+	// Add your code here to insert data to import_set_table
+
+})(import_set_table);]]></data_loader>
+        <data_stream_action/>
+        <data_stream_action_inputs/>
+        <database_name/>
+        <database_port/>
+        <discard_arrays>true</discard_arrays>
+        <expand_node_children>false</expand_node_children>
+        <file_path/>
+        <file_retrieval_method>Attachment</file_retrieval_method>
+        <format>com.microsoft.sqlserver.jdbc.SQLServerDriver</format>
+        <glide_keystore>false</glide_keystore>
+        <header_row>0</header_row>
+        <import_set_table_label/>
+        <import_set_table_name>x_38710_lansweeper_printer</import_set_table_name>
+        <instance_name/>
+        <jdbc_password/>
+        <jdbc_server/>
+        <jdbc_user_name/>
+        <jpath_root_node/>
+        <last_run_database_field/>
+        <last_run_datetime/>
+        <last_success_import_time/>
+        <ldap_target/>
+        <ldapprobe_result_set_rows>200</ldapprobe_result_set_rows>
+        <limit/>
+        <maximum_rows/>
+        <mid_server/>
+        <name>Lansweeper Printer</name>
+        <offset>0</offset>
+        <oracle_port>1521</oracle_port>
+        <oracle_sid>orcl</oracle_sid>
+        <parsing_script><![CDATA[// The input value can be accessed through the variables named "line", "lineNumber" and "result"
+// The function uses result variable to return parse result back. 
+(function(line,lineNumber,result) {
+	// add code here
+})(line,lineNumber,result);]]></parsing_script>
+        <properties/>
+        <query>Specific SQL</query>
+        <query_timeout>0</query_timeout>
+        <request_action/>
+        <scp_authentication>Username and Password</scp_authentication>
+        <scp_password/>
+        <scp_port/>
+        <scp_server/>
+        <scp_user_name/>
+        <sheet_number>0</sheet_number>
+        <sql_statement>SELECT &#13;
+	tblAssets.AssetID&#13;
+	, tblSystemEnclosure.SMBIOSAssetTag AS AssetTag&#13;
+	, 1 AS CanPrint&#13;
+	, 'Hardware' AS Category&#13;
+	, CASE &#13;
+		WHEN CHARINDEX('Color', tblPrinters.Capabilitydescriptions, 0) &gt; -1 &#13;
+		THEN 1 ELSE 0 &#13;
+		END AS Color&#13;
+	, tAssetComments.Comment AS Comments&#13;
+	, CAST(tblAssets.AssetID AS VARCHAR) + ':' + COALESCE(RTRIM(LTRIM(tblAssets.Mac)), '') AS CorrelationID&#13;
+	, 'Lansweeper' AS DiscoverySource&#13;
+	, tblAssets.Firstseen AS FirstDiscovered&#13;
+	, tblAssets.FQDN AS FQDN&#13;
+	, 'installed' AS HardwareStatus&#13;
+	, 'in_use' AS SubStatus&#13;
+	, tblPrinters.Horizontalresolution AS HorizontalResolution&#13;
+	, 1 AS InstallStatus&#13;
+	, tblAssets.IPAddress AS IPAddress&#13;
+	, tblAssets.Lastseen AS MostRecentDiscovery&#13;
+	, tblAssets.Mac AS MACAddress&#13;
+	, tblAssetCustom.Manufacturer AS Manufacturer&#13;
+	, tblAssetCustom.Model AS ModelID&#13;
+	, tblAssetCustom.Model AS ModelNumber&#13;
+	, tblAssets.AssetName AS [Name]&#13;
+	, tblState.Statename AS OperationalStatus&#13;
+	, tblAssetCustom.PurchaseDate AS Purchased&#13;
+	, tblAssetCustom.Serialnumber AS SerialNumber&#13;
+	, tblAssets.Description AS ShortDescription&#13;
+	, 'Printer' AS Subcategory&#13;
+	, tblAssets.Domain AS Domain&#13;
+	, tblPrinters.verticalresolution AS VerticalResolution&#13;
+	, tblAssetCustom.Warrantydate AS WarrantyExpiration&#13;
+	, tsysAssetTypes.AssetTypename AS SourceName&#13;
+FROM&#13;
+	tblAssets&#13;
+	LEFT OUTER JOIN tblAssetCustom &#13;
+		ON tblAssets.AssetID = tblAssetCustom.AssetID&#13;
+	LEFT OUTER JOIN tsysAssetTypes&#13;
+		ON tblAssets.Assettype = tsysAssetTypes.assettype&#13;
+	LEFT OUTER JOIN tblPrinters&#13;
+		ON tblAssets.AssetID = tblPrinters.PrinterID&#13;
+	LEFT OUTER JOIN tblSystemEnclosure &#13;
+		ON tblAssets.AssetID = tblSystemEnclosure.AssetID&#13;
+    LEFT OUTER JOIN tblState &#13;
+		ON tblState.State = tblAssetCustom.State&#13;
+	LEFT OUTER JOIN (&#13;
+		SELECT &#13;
+			AssetID&#13;
+			, MAX(Added) AS Added&#13;
+			, MAX(Comment) AS Comment&#13;
+		FROM&#13;
+			tblAssetComments &#13;
+		GROUP BY&#13;
+			AssetId&#13;
+	)tAssetComments&#13;
+		ON tAssetComments.AssetID = tblAssets.AssetID&#13;
+&#13;
+WHERE&#13;
+	tblAssets.Assettype = (SELECT Assettype FROM tsysAssetTypes WHERE AssetTypeName = 'Printer')&#13;
+	</sql_statement>
+        <ssh_keyfile_path/>
+        <support_pagination>false</support_pagination>
+        <sys_class_name>sys_data_source</sys_class_name>
+        <sys_created_by>mario.quinones</sys_created_by>
+        <sys_created_on>2020-11-03 00:43:54</sys_created_on>
+        <sys_id>64fb68b8dbdca410613ecc30399619ea</sys_id>
+        <sys_mod_count>92</sys_mod_count>
+        <sys_name>Lansweeper Printer</sys_name>
+        <sys_package display_value="CI Synchronizer (Lansweeper On-Prem Edition)" source="x_38710_lansweeper">f46467d4db50a410613ecc303996191d</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="CI Synchronizer (Lansweeper On-Prem Edition)">f46467d4db50a410613ecc303996191d</sys_scope>
+        <sys_update_name>sys_data_source_64fb68b8dbdca410613ecc30399619ea</sys_update_name>
+        <sys_updated_by>cisync</sys_updated_by>
+        <sys_updated_on>2021-06-15 02:17:55</sys_updated_on>
+        <table_name/>
+        <type>JDBC</type>
+        <use_batch_import>false</use_batch_import>
+        <use_integrated_authentication>true</use_integrated_authentication>
+        <use_last_run_datetime>false</use_last_run_datetime>
+        <xpath_root_node/>
+        <zipped>false</zipped>
+    </sys_data_source>
+    <sys_variable_value action="delete_multiple" query="document_key=64fb68b8dbdca410613ecc30399619ea"/>
+</record_update>

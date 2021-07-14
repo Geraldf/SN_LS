@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_properties">
+    <sys_properties action="INSERT_OR_UPDATE">
+        <choices/>
+        <description>Password</description>
+        <ignore_cache>false</ignore_cache>
+        <is_private>false</is_private>
+        <name>x_38710_lansweeper.integration.config.pwd</name>
+        <read_roles/>
+        <suffix>integration.config.pwd</suffix>
+        <sys_class_name>sys_properties</sys_class_name>
+        <sys_created_by>luis.cyrillo</sys_created_by>
+        <sys_created_on>2020-11-03 01:21:55</sys_created_on>
+        <sys_id>4474b8b0db10e410613ecc3039961927</sys_id>
+        <sys_mod_count>27</sys_mod_count>
+        <sys_name>x_38710_lansweeper.integration.config.pwd</sys_name>
+        <sys_package display_value="CI Synchronizer (Lansweeper On-Prem Edition)" source="x_38710_lansweeper">f46467d4db50a410613ecc303996191d</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="CI Synchronizer (Lansweeper On-Prem Edition)">f46467d4db50a410613ecc303996191d</sys_scope>
+        <sys_update_name>sys_properties_4474b8b0db10e410613ecc3039961927</sys_update_name>
+        <sys_updated_by>cisync</sys_updated_by>
+        <sys_updated_on>2021-04-30 07:20:45</sys_updated_on>
+        <type>password</type>
+        <value/>
+        <write_roles>x_38710_lansweeper.admin,admin</write_roles>
+    </sys_properties>
+    <sys_translated_text action="delete_multiple" query="documentkey=4474b8b0db10e410613ecc3039961927"/>
+</record_update>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_app_module">
+    <sys_app_module action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <application display_value="CI Synchronizer (Lansweeper On-Prem Ed.)">e5de247cdbdca410613ecc30399619ff</application>
+        <assessment/>
+        <device_type/>
+        <filter/>
+        <hint/>
+        <homepage/>
+        <image/>
+        <link_type>LIST</link_type>
+        <map_page/>
+        <mobile_title>Supported Classes</mobile_title>
+        <mobile_view_name>Mobile</mobile_view_name>
+        <name>x_38710_lansweeper_supported_classes_history</name>
+        <order>145</order>
+        <override_menu_roles>false</override_menu_roles>
+        <query/>
+        <report/>
+        <roles>x_38710_lansweeper.admin</roles>
+        <sys_class_name>sys_app_module</sys_class_name>
+        <sys_created_by>luis.cyrillo</sys_created_by>
+        <sys_created_on>2020-11-20 04:23:39</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>1d4141d6db6ce850613ecc3039961942</sys_id>
+        <sys_mod_count>3</sys_mod_count>
+        <sys_name>Execution History</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="CI Synchronizer (Lansweeper On-Prem Edition)" source="x_38710_lansweeper">f46467d4db50a410613ecc303996191d</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="CI Synchronizer (Lansweeper On-Prem Edition)">f46467d4db50a410613ecc303996191d</sys_scope>
+        <sys_update_name>sys_app_module_1d4141d6db6ce850613ecc3039961942</sys_update_name>
+        <sys_updated_by>luis.cyrillo</sys_updated_by>
+        <sys_updated_on>2020-11-20 04:54:44</sys_updated_on>
+        <timeline_page/>
+        <title>Execution History</title>
+        <uncancelable>false</uncancelable>
+        <view_name/>
+        <window_name/>
+    </sys_app_module>
+</record_update>

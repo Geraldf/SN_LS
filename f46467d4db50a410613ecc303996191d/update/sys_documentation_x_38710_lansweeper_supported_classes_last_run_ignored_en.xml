@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_documentation element="last_run_ignored" label="Last Run Ignored" language="en" table="x_38710_lansweeper_supported_classes">
+        <sys_documentation action="INSERT_OR_UPDATE">
+            <element>last_run_ignored</element>
+            <help/>
+            <hint/>
+            <label>Last Run Ignored</label>
+            <language>en</language>
+            <name>x_38710_lansweeper_supported_classes</name>
+            <plural>Last Run Ignored</plural>
+            <sys_class_name>sys_documentation</sys_class_name>
+            <sys_created_by>luis.cyrillo</sys_created_by>
+            <sys_created_on>2020-11-06 05:44:53</sys_created_on>
+            <sys_id>329d09bddb94a810613ecc30399619a8</sys_id>
+            <sys_mod_count>4</sys_mod_count>
+            <sys_name>Last Run Ignored</sys_name>
+            <sys_package display_value="CI Synchronizer (Lansweeper On-Prem Edition)" source="x_38710_lansweeper">f46467d4db50a410613ecc303996191d</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="CI Synchronizer (Lansweeper On-Prem Edition)">f46467d4db50a410613ecc303996191d</sys_scope>
+            <sys_update_name>sys_documentation_x_38710_lansweeper_supported_classes_last_run_ignored_en</sys_update_name>
+            <sys_updated_by>luis.cyrillo</sys_updated_by>
+            <sys_updated_on>2020-11-20 05:21:38</sys_updated_on>
+            <url/>
+            <url_target/>
+        </sys_documentation>
+    </sys_documentation>
+</record_update>

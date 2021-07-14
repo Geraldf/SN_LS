@@ -1,0 +1,612 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_page">
+    <sys_ui_page action="INSERT_OR_UPDATE">
+        <category>general</category>
+        <client_script/>
+        <description/>
+        <direct>false</direct>
+        <endpoint>x_38710_lansweeper_ci_lan_getting_started.do</endpoint>
+        <html><![CDATA[<?xml version="1.0" encoding="utf-8" ?>
+<j:jelly trim="false" xmlns:j="jelly:core" xmlns:g="glide" xmlns:j2="null" xmlns:g2="null">
+	<style>
+		
+		.wrapper {
+			padding-bottom: 150px;
+		}
+		
+		.header {
+			color:#255ea8;
+		    padding-top: 15px;
+		}
+
+		.infobox {
+            width: 100%;
+		    border: 1px solid;
+	    }
+
+        .infobox td[scope=col1] {
+			padding-top: 5px;
+			padding-bottom: 5px;
+			padding-left: 8px;
+			padding-right: 5px;
+		}
+	
+		.infobox td[scope=col2] {
+			padding-top: 5px;
+			padding-bottom: 5px;
+			padding-left: 8px;
+			padding-right: 15px;
+			text-align: left;
+		}		
+		
+        .tblbordered {
+            width: 100%;
+		    border: 1px solid;
+	    }
+
+        .tblbordered td[scope=col1] {
+			padding-top: 5px;
+			padding-bottom: 5px;
+			padding-left: 8px;
+		    text-align: left;
+			border: 1px solid;
+			width: 280px;
+			vertical-align: text-top;
+		}
+	
+		.tblbordered td[scope=col2] {
+			padding-top: 5px;
+			padding-bottom: 5px;
+			padding-left: 8px;
+			text-align: top;
+			border: 1px solid;
+			vertical-align: text-top;
+		}
+		
+		.tblbordered td[scope=col_img] {
+			border: 1px solid;
+		}
+		
+        .tblbordered th[scope=col1] {
+			padding-top: 5px;
+			padding-bottom: 5px;
+			padding-left: 8px;
+			text-align: left;
+			border: 1px solid;
+		    width: 280px;
+		}
+	
+		.tblbordered th[scope=col2] {
+			padding-top: 5px;
+			padding-bottom: 5px;
+			padding-left: 8px;
+			text-align: left;
+			border: 1px solid;
+		}
+
+		.sublevel1 {
+			padding-left: 15px;
+		}
+		
+		.sublevel2 {
+			padding-left: 30px;
+		}
+	
+    </style>
+	
+<div class="wrapper">
+    <g:requires name="styles/pa/welcome_page.css"/>
+	
+	<g2:evaluate var="jvar_app_info" object="true">
+	var util = new x_38710_lansweeper.LansweeperIntegrationUtils();
+	var appinfo = util.appInfo();
+	appinfo
+	</g2:evaluate>
+			
+<div id="paCanvas">
+	<div id="info">
+			<div id="infoLeft">
+				<a href="https://pipefish.com.au/home" target="_blank" title="Click to get started"><img src="pf_logo_small.png" width="94" height="99"/></a>
+			</div>
+			
+			<div id="infoLeft">
+				<h1>CI Synchronizer (Lansweeper On-Prem Edition)</h1>
+			</div>	
+	</div>
+		
+	<div>
+			<h2 class="header">Introduction</h2>
+			
+			<j2:if test="$[jvar_app_info.isFullVersion]">
+				<p>The CI Synchronizer "Full" edition provides for the synchronization of the most popular asset classes from Lansweeper into ServiceNow CMDB CI records. This includes related lists and derived relationships between assets.</p>
+				<p>The Lansweeper Asset Types, related lists and relationships to be synchronized and the Identification method used to correlate to existing CMDB CI records are all configurable per CI Class.</p>
+			</j2:if>
+				
+			<j2:if test="$[!jvar_app_info.isFullVersion]">
+				<p>The CI Synchronizer "Preview" edition is configured to synchronize the Windows Server Lansweeper asset type with the ServiceNow Windows Server CI class. The Preview edition also synchronizes the Network Adapter, Memory Module and Storage Device related lists for the synchronized Windows Server records from Lansweeper into the corresponding records in the ServiceNow CMDB.</p>
+				<p>The preview edition is provided for free and does not require registration and is intended to demonstrate the functionality of the Full edition. You can upgrade to the Full edition at any time for free by registering for the download via the Pipefish CI Synchronizer product page$[SP]<a href="$[jvar_app_info.url]" target="_blank" rel="noopener noreferrer"> here</a></p>
+			</j2:if>
+	</div>
+	
+	<div>
+		<h2 class="header">ServiceNow Edition Support</h2>
+		<div>
+			<p>The CI Synchronizer is supported under ServiceNow Editions: $[SP]<b>Orlando$[SP]</b>and$[SP]<b>Paris</b>.</p>
+		</div>
+	</div>
+	
+		 <div>
+		<h2 class="header">Custom Table Entitlements</h2>
+        <p>CI Synchronizer employs non-ServiceNow tables and therefore when installing on a production instance the system administrator must ensure appropriate mapping of the following custom tables in Subscription Management.</p>
+		 
+		 <table class="tblbordered">
+            <thead>
+                <tr>
+                    <th scope="col1"><b>Custom Table</b></th>
+					<th scope="col2"><b>Table Name</b></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td scope="col1">
+                        <p>Supported Classes</p>
+                    </td>
+					<td scope="col2">
+                        <p>x_38710_lansweeper_supported_classes</p>
+                    </td>
+                </tr>                
+                
+                <tr>
+                    <td scope="col1">
+                        <p>Supported Classes History</p>
+                    </td>
+					<td scope="col2">
+                        <p>x_38710_lansweeper_supported_classes_history</p>
+                    </td>
+                </tr>                
+                
+                <tr>
+                    <td scope="col1">
+                        <p>Supported Classes History Counters</p>
+                    </td>
+					<td scope="col2">
+                        <p>x_38710_lansweeper_supported_classes_history_counters</p>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+	
+	<div>
+			<h2 class="header">Getting Started</h2>
+			
+			<table class="infobox"><tbody><tr>
+				<td scope="col1"><img src="ci_lan_warn.png" width="48" height="48"/></td>
+				<td scope="col2"><p>It is recommended that you install CI Synchronizer and run the synchronization on a pre-production instance of ServiceNow to ensure records are correlated as expected before synchronising Lansweeper with your production instance.  NB: This is best performed against a restored copy of your production database so you can evaluate what will occur when Lansweeper is synchronised with your production CMDB.</p></td>
+			</tr></tbody></table>	
+	</div>
+		
+	<div>
+			<h4 class="header">EULA</h4>
+			
+			By installing or using this application you are agreeing to be bound by the terms and conditions of the$[SP]<b>End User Licence Agreement$[SP]</b>located$[SP]<a href="$[jvar_app_info.eula]" target="_blank" rel="noopener noreferrer"> here</a>
+	</div>
+		
+	<div>
+			<h4 class="header">Prerequisites</h4>
+			
+			<p class="sublevel1">1. ServiceNow Mid-Server Installed with connectivity to your Lansweeper SQL Server</p>
+			<p class="sublevel1">2. Lansweeper SQL Server must be running Express edition or higher. </p>
+			
+			<table class="infobox"><tbody><tr>
+				<td scope="col1"><img src="ci_lan_warn.png" width="48" height="48"/></td>
+				<td scope="col2"><p>Lansweeper ships with an instance of SQL Server LocalDB which does not support the connectivity method required by the ServiceNow JDBC drivers. You will need to migrate to an instance of SQL Express, Standard or Enterprise edition if you have not already done so.</p></td>
+			</tr></tbody></table>	
+		
+			<j2:if test="$[!jvar_app_info.isFullVersion]">
+				<div style="padding-top: 25px;">
+				<table class="infobox"><tbody><tr>
+					<td scope="col1"><img src="ci_lan_info.png" width="48" height="48"/></td>
+					<td scope="col2">
+						<p>The instructions below are applicable to both the Preview and Full Editions of CI Synchronizer. If running the Preview Edition, the number of available classes will be limited.</p></td>
+				</tr></tbody></table>
+				</div>
+			</j2:if>
+	</div>
+		
+	<div>
+			<h4 class="header">Step 1 - Configuration</h4>
+			<p>Navigate to the$[SP]<b>CI Synchronizer / Administration / Configure</b>$[SP]menu on your ServiceNow instance:</p>
+				<p class="sublevel1">1. Set the$[SP]<b>Server name, Database name</b>$[SP]and the following options to provide connectivity to your Lansweeper SQL Server database:</p>
+		<p class="sublevel2">a) Tick the$[SP]<b>Use integrated authentication</b>$[SP]checkbox - to use this option the mid-server user must be configured with read permission on the Lansweeper SQL server instance; or</p>
+		<p class="sublevel2">b)$[SP]Set the$[SP]<b>Username</b>$[SP]and$[SP]<b>Password</b>$[SP]values</p>
+				<p class="sublevel1">2. Select the ServiceNow$[SP]<b>mid-server</b>$[SP]with access to your Lansweeper SQL Server database from the drop-down list.</p>
+		<p class="sublevel1">3. Review the$[SP]<b>General$[SP]</b>settings. NB: tick the$[SP]<b>Synchronize Status Fields$[SP]</b>checkbox if you would like status fields to be overwritten/created with Lansweeper values e.g: install_status, operational_status, hardware_status and hardware_substatus.</p>
+		<p class="sublevel1">4. Review the$[SP]<b>Schedule$[SP]</b>settings. NB: if you want to run the first few synchronizations manually, untick the$[SP]<b>Active$[SP]</b>checkbox.</p>
+		
+				<table class="infobox"><tbody><tr>
+					<td scope="col1"><img src="ci_lan_warn.png" width="48" height="48"/></td>
+					<td scope="col2"><p>When changing the Configuration Settings values, be sure to change the Application Scope to$[SP]<b>CI Synchronizer (Lansweeper On-Prem Edition)</b></p></td>
+				</tr></tbody></table>
+		
+			 <img style="padding-top: 25px;" src="ci_lan_configure.png" width="944" height="529"/>
+	</div>
+		
+	<div>
+			<h4 class="header">Step 2 - First time Synchronization</h4>
+			<p>Navigate to$[SP]<b>CI Synchronizer / Administration / Execute</b>$[SP]page on your ServiceNow instance:</p>
+			<p class="sublevel1">1. $[SP]<b>Select$[SP]</b> the Asset Types/CI Classes you want to synchronize.</p>
+			<p class="sublevel1">2. If you want to$[SP]<b>synchronize immediately, click$[SP]</b>the$[SP]<b>Synchronize$[SP]</b>button; or</p>
+			<p class="sublevel1">3. If you want to$[SP]<b>schedule$[SP]</b>the$[SP]<b>synchronisation$[SP]</b>to execute at a$[SP]<b>later$[SP]</b>time,$[SP]<b>click$[SP]</b>the$[SP]<b>Update$[SP]</b>button and make sure you have enabled the schedule on the Configuration page (see Step 1 above).</p>
+			 <img src="ci_lan_execute.png" width="944" height="529"/>
+	</div>
+	
+	<div style="padding-top: 25px;">
+		<table class="infobox"><tbody><tr>
+			<td scope="col1"><img src="ci_lan_info.png" width="48" height="48"/></td>
+			<td scope="col2">
+				<p>Some of the CI Classes may take some time to synchronize and this will be dependent on your environment and ServiceNow instance.</p>
+				<p>Software and Software Instance may take longer than other classes to synchronize.</p></td>
+		</tr></tbody></table>
+	</div>
+			
+	<div>
+			<h4 class="header">Step 3 - Review Results</h4>
+			<p>Navigate to$[SP]<b>CI Synchronizer / Dashboard</b>$[SP]page on your ServiceNow instance:</p>
+			<table class="infobox"><tbody><tr>
+				<td scope="col1"><img src="ci_lan_info.png" width="48" height="48"/></td>
+				<td scope="col2"><p>If you chose to synchronize immediately on the Execute page, you will have been automatically redirected to the Dashboard page.</p></td>
+			</tr></tbody></table>	
+			<p class="sublevel1" style="padding-top: 15px;">1. The count of synchronised records per CI class will be displayed on corresponding real-time single score widgets. NB: clicking on a real-time single score widget will navigate to the list of records that make up the record count.</p>
+			 <img src="ci_lan_dashboard_01.png" width="944" height="497"/>
+	</div>
+	
+	<div style="padding-top: 25px;">
+			<p class="sublevel1">2. A summary of the last run date/time and synchronisation statistics are displayed in a table below the real-time CI Class counter tiles. The table contains the following columns:</p>
+			<p class="sublevel2">a. CI Class: the name of the ServiceNow CI class (or Relationship type) that is being written to from Lansweeper records of corresponding asset types.</p>
+			<p class="sublevel2">b. Last Run: the date and time of the last synchronisation run for that CI class.</p>
+			<p class="sublevel2">c. Processed: The count of records read from Lansweeper.</p>
+			<p class="sublevel2">d. Inserted: The count of records that were inserted as new CI records.</p>
+			<p class="sublevel2">e. Ignored: The count of records that were ignored by the transform process.</p>
+			<p class="sublevel2">f. Errors: The count of records that failed to transform due to record-level data errors.</p>
+			<p class="sublevel2">g. Updated: The count of CI records that were updated by the transform process.</p>
+		</div>
+	
+		<div>
+			<img src="ci_lan_dashboard_03.png" width="944" height="497"/>
+	    </div>
+		
+		<div>
+			<h4 class="header">Recommended Next Steps</h4>
+			<p>Review a sample of records created per CI Class and determine if:</p>
+			<p class="sublevel1">1. Records are NOT correlating as expected with existing records in the CMDB:</p>
+			<p class="sublevel2">a. Review if CI Synchronizer is using IRE for the CI Class (review$[SP]<b>Identification Method</b>$[SP]on the appropriate$[SP]<b>Supported Class</b>$[SP]record); if so:</p>
+			<p class="sublevel2">b. Review the IRE rules to determine why records are NOT being matched (Via the ServiceNow CI Class Manager, find the CI Class and review the Identification Rules).</p>
+			<p class="sublevel1">2. Record attributes are NOT populated as expected:</p>
+			<p class="sublevel2">a. Review the CI Synchronizer transform maps which can be found under$[SP]<b>CI Synchronizer / Transform Maps / All</b>.</p>
+				
+			<table class="infobox"><tbody><tr>
+				<td scope="col1"><img src="ci_lan_info.png" width="48" height="48"/></td>
+				<td scope="col2"><p>When you are satisfied with the synchronization results in your pre-prod environment, install and repeat the process in your Production instance. Make sure you apply any IRE or CI Synchronizer configuration changes in your production instance before synchronising.</p></td>
+			</tr></tbody></table>
+	</div>
+		
+	<div>
+			<h2 class="header">Regular Synchronisation</h2>
+			<p>Once you have successfully completed the initial synchronisation it will be necessary to configure a scheduled synchronisation to keep your CMDB update with changes detected by Lansweeper.</p>
+			<p>Navigate to the$[SP]<b>CI Synchronizer / Administration / Configure</b>$[SP]menu on your ServiceNow instance:</p>
+			<p class="sublevel1">1. Under$[SP]<b>Schedule$[SP]</b>section,$[SP]<b>Tick$[SP]</b>the$[SP]<b>Active$[SP]</b>checkbox.</p>
+			<p class="sublevel1">2.$[SP]<b>Select$[SP]</b> the desired$[SP]<b>Frequency$[SP]</b>and complete the required scheduling fields corresponding to your selected frequency and click Update. Your schedule will now be created.</p>
+			<table class="infobox"><tbody><tr>
+				<td scope="col1"><img src="ci_lan_info.png" width="48" height="48"/></td>
+				<td scope="col2"><p>The CI Classes enabled for scheduled synchronisation will be the items selected on the$[SP]<b>CI Synchronizer / Administration / Execute$[SP]</b>page on your ServiceNow instance. If you want to change which items are included for scheduled synchronisation you will need to navigate to this page, tick the CI Classes you wish to include in the schedule and click the$[SP]<b>Update$[SP]</b>button.</p></td>
+			</tr></tbody></table>
+			
+			<p style="padding-top: 15px;">The Dashboard page will be updated with the statistics for the previous scheduled execution. Historical synchronisation statistics are available from the Execution History page located under the CI Synchronizer / Administration menu.</p>
+	</div>
+	
+	<div>
+			<h2 class="header">Support</h2>
+			<p>Knowledge based articles are available on our website$[SP]<a href="$[jvar_app_info.support]" target="_blank" rel="noopener noreferrer"> here</a></p>
+			<p>If you need assistance with installing or configuring CI Synchronizer please contact us via our website$[SP]<a href="$[jvar_app_info.url]" target="_blank" rel="noopener noreferrer"> here</a></p>
+	</div>
+			
+	<div>
+			<h2 class="header">IRE and Record Correlation</h2>
+			<p>CI Synchronizer correlates records using either the ServiceNow Identification and Reconciliation Engine (IRE) or via the Custom method which matches a unique id derived from Lansweeper attributes (NB: the derived unique id from Lansweeper varies by asset class).</p>
+			<p>The Supported Classes table (accessible from the CI Synchronizer / Administration menu) defines which Identification Method is applied per CI Class. NB: Changing the value against a record in this table will change the Identification Method used the next synchronization run.</p>
+			<p>Where ServiceNow does not ship with a correlation rule for a given CI Class, CI Synchronizer will have been configured to use the Custom Identification Method. If you want to enable IRE for one of these CI Classes, you will need to create appropriate IRE rule/s first.</p>
+			<p>NOTE: If you change from IRE to Custom you can expect the following behaviour:</p>
+			<p class="sublevel1">1. Existing records that have been imported from Lansweeper will continue to update the same CI in the CMDB.</p>
+			<p class="sublevel1">2. New records that are detected in Lansweeper will NOT be matched to any existing CI records in CMDB. i.e. You may end up with duplicate records in your CMDB under this scenario.</p>
+			<p>Recommendations for using IRE:</p>
+			<p class="sublevel1">1. If Lansweeper is your only source of CI data in your CMDB, then using IRE is optional.</p>
+			<p class="sublevel1">2. If you have CI records in your CMDB that have been sourced from systems other than Lansweeper (e.g. Manually entered or from another integration source) then it is recommended that you use IRE to avoid duplicate CI records from being created in your CMDB.</p>
+			<table class="infobox"><tbody><tr>
+				<td scope="col1"><img src="ci_lan_warn.png" width="48" height="48"/></td>
+				<td scope="col2"><p>When making changes to the CI Synchronizer Identification Method or changing your IRE rules we recommend that you perform the changes in a non-production instance and verify that the system behaves as expected before making the changes in production</p></td>
+			</tr></tbody></table>
+	</div>	
+
+	<div>
+		<h2 class="header">IRE Supported Identification Rules</h2>
+		<p>The table below indicates the Target CI Classes and the standard ServiceNow Identification Rules configured which CI Synchronizer assumes are active.</p>
+        
+        <table class="tblbordered">
+            <thead>
+                <tr>
+                    <th scope="col1"><b>Target CI Class</b></th>
+                    <th scope="col2"><b>Search Table [Attributes]</b></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td scope="col1">
+                        <p>cmdb_ci_ip_firewall</p> 
+                        <p>cmdb_ci_ip_router</p> 
+                        <p>cmdb_ci_ip_switch</p> 
+                        <p>cmdb_ci_linux_server</p> 
+                        <p>cmdb_ci_pc_hardware</p> 
+                        <p>cmdb_ci_printer</p> 
+                        <p>cmdb_ci_unix_server</p> 
+                        <p>cmdb_ci_win_server</p> 
+                    </td>
+                    <td scope="col2">
+                        <p>Hardware [Serial Number]</p>  
+                        <p>Hardware [Name]</p> 
+                        <p>Network Adapter [MAC Address, Name]</p> 
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td scope="col1">
+                        <p>cmdb_ci_memory_module</p>
+                    </td>
+                    <td scope="col2">
+                        <p>Memory Module [Name, Serial Number]</p>
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td scope="col1">
+                        <p>cmdb_ci_network_adapter</p>
+                    </td>
+                    <td scope="col2">
+                        <p>Network Adapter [MAC Address, Name]</p>
+                    </td>
+                </tr>                
+                
+                <tr>
+                    <td scope="col1">
+                        <p>cmdb_ci_storage_device</p>
+                    </td>
+                    <td scope="col2">
+                        <p>Storage Device [Name]</p>
+                    </td>
+                </tr>                               
+                
+                <tr>
+                    <td scope="col1">
+                        <p>cmdb_ci_spkg</p>
+                    </td>
+                    <td scope="col2">
+                        <p>Software [Key]</p>
+                    </td>
+                </tr>                
+                
+                <tr>
+                    <td scope="col1">
+                        <p>cmdb_ci_win_cluster</p>
+                    </td>
+                    <td scope="col2">
+                        <p>Cluster [Cluster ID, Name]</p>
+                    </td>
+                </tr>                
+                
+                <tr>
+                    <td scope="col1">
+                        <p>cmdb_ci_win_cluster_node</p>
+                    </td>
+                    <td scope="col2">
+                        <p>Cluster Node [Name]</p>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+	</div>
+	
+	<div style="padding-top: 25px;">
+		<table class="infobox"><tbody><tr>
+				<td scope="col1"><img src="ci_lan_warn.png" width="48" height="48"/></td>
+				<td scope="col2"><p>This version of CI Synchronizer has been designed to work with the standard Identification Rules provided by ServiceNow.$[SP]<u>If these standard Identification Rules have been$[SP]<b>deactivated</b>$[SP]or$[SP]<b>modified</b></u>,$[SP]identification accuracy$[SP]<u>may be impacted</u>.</p></td>
+			</tr></tbody></table>
+    </div>
+    
+    <div>
+		<h2 class="header">CI Classes not natively supported for IRE</h2>
+        <p>The CI Classes below do not currently have standard Identification Rules compatible with Lansweeper. The rules are either incompatible with Lansweeper data or not present.</p>
+        
+        <table class="tblbordered">
+            <thead>
+                <tr>
+                    <th scope="col1"><b>Target CI Class</b></th>
+                    <th scope="col2"><b>Search Table [Attributes]</b></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td scope="col1">
+                        <p>cmdb_ci_db_mssql_database </p>
+                    </td>
+                    <td scope="col2">
+                        <p>Coming soon</p>
+                    </td>
+                </tr>                
+                
+                <tr>
+                    <td scope="col1">
+                        <p>cmdb_ci_db_mssql_instance </p>
+                    </td>
+                    <td scope="col2">
+                        <p>Coming soon</p>
+                    </td>
+                </tr>                
+                
+                <tr>
+                    <td scope="col1">
+                        <p>cmdb_ci_peripheral</p>
+                    </td>
+                    <td scope="col2">
+                        <p>Hardware [Serial Number, MAC Address, Name] </p>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+	
+	<div style="padding-top: 25px;">
+		<p>To configure$[SP]<b>Peripherals$[SP]</b>with IRE for CI Synchronizer</p>
+        <table class="tblbordered">
+            <tbody>
+                <tr>
+                    <td scope="col1">
+                        <p>Create a new independent Identification Rule on Computer Peripheral</p>
+                    </td>
+                    <td scope="col_img">
+                        <p><img src="ci_lan_ire_peripheral_01.png" width="553" height="314"/></p>
+                    </td>
+                </tr>                
+                
+                <tr>
+                    <td scope="col1">
+                        <p>Add a new Identifier Entry</p>
+                    </td>
+                    <td scope="col_img">
+                        <p><img src="ci_lan_ire_peripheral_02.png" width="398" height="253"/></p>
+						<p>$[SP]Note: Peripherals can often be quite generically described. Peripheral syncrhonization using IRE will work best if Serial Numbers are present.</p>
+                    </td>
+                </tr>                
+                
+                <tr>
+                    <td scope="col1">
+                        <p>Configured as</p>
+                    </td>
+                    <td scope="col_img">
+                        <p><img src="ci_lan_ire_peripheral_03.png" width="665" height="446"/></p>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+	
+	<div>
+		<h2 class="header">CI Classes unsupported by IRE</h2>
+        <p>The CI Classes below are not supported by IRE as they do not descend from cmdb_ci. Either of the Identification Methods (IRE or Custom) on the Supported Class will be acceptable to process these classes. </p>
+        
+        <table class="tblbordered">
+            <thead>
+                <tr>
+                    <th scope="col1"><b>Target CI Class</b></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td scope="col1">
+                        <p>cmdb_rel_ci</p>
+                    </td>
+                </tr>                
+                
+                <tr>
+                    <td scope="col1">
+                        <p>cmdb_software_instance</p>
+                    </td>
+                </tr>                
+            </tbody>
+        </table>
+
+    </div>
+
+    <div>
+		<h2 class="header">Using Field and Data Normalization Services with CI Synchronizer</h2>
+        <p>The Ci Synchronizer supports the use of the ServiceNow Normalization Data Service and Field Normalization plugins when transforming your data from Lansweeper into ServiceNow.</p>
+        <p>For more information on these plugins and how to configure them, please refer to the ServiceNow documentation here:</p>
+		<p class="sublevel1"><a href="https://docs.servicenow.com/bundle/paris-platform-administration/page/administer/normalization/concept/c_NormalizationOverview.html" target="_blank" rel="noopener noreferrer">ServiceNow Normalization Data Services</a></p>
+		
+		<p class="sublevel1"><a href="https://docs.servicenow.com/bundle/paris-platform-administration/page/administer/field-administration/concept/c_FieldNormalization.html " target="_blank" rel="noopener noreferrer">ServiceNow Field Normalization and Transformation</a></p>
+		
+		<p style="padding-top: 25px;">A summary of the key master data fields that would benefit from Field and/or Data Normalisation Services are below, including the level of CI Class where the configurations might be best place.</p>
+		
+		<div>
+		<table class="tblbordered">
+            <thead>
+                <tr>
+                    <th scope="col1"><b>CI Attributes</b></th>
+                    <th scope="col2"><b>Configuration Item Class</b></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td scope="col1">
+                        <p>Chassis Type</p> 
+                        <p>CPU Manufacturer</p> 
+                        <p>Form Factor</p> 
+                        <p>Manufacturer</p> 
+                        <p>Operational Status</p> 
+                        <p>Operating System</p> 
+                    </td>
+                    <td scope="col2">
+                        <p>cmdb_ci_hardware</p>  
+                    </td>
+                </tr>                
+                
+                <tr>
+                    <td scope="col1">
+                        <p>Firmware Manufacturer</p>
+						<p>Device Type</p>
+                    </td>
+                    <td scope="col2">
+                        <p>cmdb_ci_netgear</p>
+                    </td>
+                </tr>                
+                
+                <tr>
+                    <td scope="col1">
+                        <p>Version Name</p>
+                    </td>
+                    <td scope="col2">
+                        <p>cmdb_ci_db_mssql_instance</p>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+		</div>
+		
+		<div style="padding-top: 25px;">
+		<table class="infobox"><tbody><tr>
+				<td scope="col1"><img src="ci_lan_warn.png" width="48" height="48"/></td>
+				<td scope="col2"><p>Please review the above recommended configuration and determine whether these configurations are helpful for your environment and use. Be aware that configuration changes may impact other services that may be utilising the ServiceNow normalisation services.</p></td>
+			</tr></tbody></table>
+    </div>
+		
+    </div>
+
+</div>
+</div>
+</j:jelly>]]></html>
+        <name>ci_lan_getting_started</name>
+        <processing_script/>
+        <sys_class_name>sys_ui_page</sys_class_name>
+        <sys_created_by>mario.quinones</sys_created_by>
+        <sys_created_on>2020-11-11 23:09:41</sys_created_on>
+        <sys_id>5e8c22abdbd06050613ecc303996191f</sys_id>
+        <sys_mod_count>204</sys_mod_count>
+        <sys_name>ci_lan_getting_started</sys_name>
+        <sys_package display_value="CI Synchronizer (Lansweeper On-Prem Edition)" source="x_38710_lansweeper">f46467d4db50a410613ecc303996191d</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="CI Synchronizer (Lansweeper On-Prem Edition)">f46467d4db50a410613ecc303996191d</sys_scope>
+        <sys_update_name>sys_ui_page_5e8c22abdbd06050613ecc303996191f</sys_update_name>
+        <sys_updated_by>luis.cyrillo</sys_updated_by>
+        <sys_updated_on>2021-02-03 00:03:01</sys_updated_on>
+    </sys_ui_page>
+</record_update>

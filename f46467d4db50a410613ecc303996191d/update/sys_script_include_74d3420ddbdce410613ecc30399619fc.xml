@@ -1,0 +1,1643 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>public</access>
+        <active>true</active>
+        <api_name>x_38710_lansweeper.LansweeperIntegrationUtils</api_name>
+        <caller_access/>
+        <client_callable>false</client_callable>
+        <description>CI Synchonizer - Lansweeper Integration Utils</description>
+        <name>LansweeperIntegrationUtils</name>
+        <script><![CDATA[var LansweeperIntegrationUtils = Class.create();
+LansweeperIntegrationUtils.prototype = {
+    initialize: function() {
+		// set debug to true to see calls to _debugMsg() as logs..
+		this.debug = gs.getProperty('x_38710_lansweeper.application.debug.on') == 'true';
+		// .. and showDebugOnUI will show also as infoMessage on UI
+		this.showDebugOnUI = false;
+
+		// initialize config property names
+		this.pSrv = 'x_38710_lansweeper.integration.config.server_name';
+		this.pDBa = 'x_38710_lansweeper.integration.config.db_name';
+		this.pAut = 'x_38710_lansweeper.application.integrated.auth';
+		this.pUsr = 'x_38710_lansweeper.integration.config.user_name';
+		this.pPwd = 'x_38710_lansweeper.integration.config.pwd';
+		this.pRat = 'x_38710_lansweeper.integration.dasboard.refresh.rate';
+		this.pMid = 'x_38710_lansweeper.integration.config.mid_server';
+		this.pSta = 'x_38710_lansweeper.application.synchronize.status';
+		// inactive scheduled job pre-script tags to be replaced when activating/deactivating jobs
+		this.inactive_script = 'cancel=true;';
+		this.active_script = 'cancel=false;';
+		// master schedule data import name 
+		this.master_scheduled_data_import = 'Lansweeper CMDB Integration';
+		// info message prefix on try-catch errors
+		this.ls_msg = 'LS exception ';
+		// supported identification method values
+		this.ire = 'ire';
+		this.custom = 'custom';
+		// check if user has ls admin and/or ls user
+		this.isAdmin = this._hasSpecificRole('x_38710_lansweeper.admin') || this._hasSpecificRole('admin');
+		this.isUser = this._hasSpecificRole('x_38710_lansweeper.user');
+		this.Lansweeper = "Lansweeper";
+		// determine if ire identification rules should be recorded or not
+		this.logIdentificationRules = gs.getProperty('x_38710_lansweeper.analysis.log.ire.rules') == 'true';
+		// this is the object definition to store identifier rules count on suppported class
+		this.emptyIdentifierObject = '{"identifiers":[],"sys_object_source_match":0}';
+    },
+	
+	// shows info message when debug variable is initialized to true 
+	_debugMsg: function(msg) {
+		var debugOn = 'DEBUG ON: ';
+		if (this.debug) {
+			gs.info(debugOn + msg);
+			if (this.showDebugOnUI)
+				gs.addInfoMessage(debugOn + msg);
+		}
+	},
+	
+	// verify if user has specific role rather than returning always true for sys admins
+	_hasSpecificRole: function(role) {
+		var result = false;
+		var roles = gs.getUser().getRoles();
+		for (item in roles) {
+			if (roles[item] == role) {
+				result = true;
+				break;
+			}
+		}
+		return result;
+	},
+	
+	appInfo: function() {
+		var edition = '';
+		var full = gs.getProperty('x_38710_lansweeper.application.edition.full') == 'true';
+		if (full) 
+			edition = 'Full Edition';
+		else 
+			edition = 'Preview Edition';
+
+		var app = {
+				"name": "",
+				"scope": "",
+				"version":"",
+				"displayName":"",
+				"allowSettingsUpdate":"",
+				"appSelectionRequired":"",
+				"displayEdition": edition,
+				"isFullVersion": full,
+				"eula": gs.getProperty('x_38710_lansweeper.application.eula.url'),
+				"support": gs.getProperty('x_38710_lansweeper.application.support.url'),
+				"url": gs.getProperty('x_38710_lansweeper.application.download.url'),
+				"urlText": "To experience the Full Version supporting all CI Classes download here",
+				"product": gs.getProperty('x_38710_lansweeper.product.family'),
+				"id": ""
+				};
+		grApp = new GlideRecord('sys_app');
+		grApp.addEncodedQuery('scope=x_38710_lansweeper^active=true');
+		grApp.query();
+		if (grApp.next()) {
+			app.name = grApp.name;
+			app.version = grApp.version;
+			app.scope = grApp.scope;
+			app.displayName = 'Lansweeper On-Prem ' + app.displayEdition + ' ' + app.version; 
+			app.allowSettingsUpdate = this._hasSpecificRole('x_38710_lansweeper.admin') || (grApp.sys_id == gs.getCurrentApplicationId() && this._hasSpecificRole('admin'));
+			app.appSelectionRequired = (grApp.sys_id != gs.getCurrentApplicationId()  && !this._hasSpecificRole('x_38710_lansweeper.admin') && this._hasSpecificRole('admin'));
+			app.id = grApp.sys_id;
+		}
+		
+		return app;
+	},
+	
+	// run integration by executing the main scheduled job in the chain..
+	runNow: function() {
+		try 
+			{
+			this._debugMsg('runNow called');
+			if (this.activeJobExist()) {
+				// Execute a scheduled script job			
+				var grSch = new GlideRecord('scheduled_import_set');
+				if (grSch.get('name', this.master_scheduled_data_import)) {
+					gs.executeNow(grSch);
+					return true;
+				}
+			} else 
+				return false;
+		}
+		catch(err) {
+			var message = this.ls_msg + " on runNow: " + err;
+			gs.info(message);
+			return false;
+		}
+	},
+	
+	activatePreScript: function(pre_script) {
+		return pre_script.replace(this.inactive_script,this.active_script);
+	},
+	
+	deactivatePreScript: function(pre_script) {
+		return pre_script.replace(this.active_script,this.inactive_script);
+	},
+
+	isPreScriptActive: function(pre_script) {
+		return (pre_script.includes(this.active_script)); 
+	},
+	
+	activeJobExist: function() {
+		try 
+			{
+			// verifies if at least one job linked to supported classes is able to run		
+			var gr = new GlideRecord('x_38710_lansweeper_supported_classes');
+			gr.addQuery('sys_class_name', 'x_38710_lansweeper_supported_classes');
+			gr.query(); 
+
+			while (gr.next()) {
+				gsh = gr.scheduled_data_import.getRefRecord();
+				if (this.isPreScriptActive(gsh.pre_script)) 
+					return true;
+			}
+			return false;
+		}
+		catch(err) {
+			var message = this.ls_msg + " on activeJobExist: " + err;
+			gs.info(message);
+			return false;
+		}
+	},
+	
+	updateSupportedClasses: function(updObj) {
+		this._debugMsg('updateSupportedClasses called: ' + updObj); 
+		var obj = JSON.parse(updObj);
+		
+		// activate schedule jobs
+		for (a in obj.classes.active) {
+			this._debugMsg('active: ' + obj.classes.active[a]);
+			var schActive = new GlideRecord('scheduled_import_set');
+			if (schActive.get(obj.classes.active[a])) {
+				// only update if job is inactive..
+				if (!this.isPreScriptActive(schActive.pre_script)) {
+					this._debugMsg("updated to active: " + schActive.name);
+					schActive.setValue('pre_script',this.activatePreScript(schActive.pre_script));
+					schActive.update();
+				}
+			}				
+		}
+		// de-activate schedule jobs
+		for (i in obj.classes.inactive) {
+			this._debugMsg('inactive: ' + obj.classes.inactive[i]);
+			var schInactive = new GlideRecord('scheduled_import_set');
+			if (schInactive.get(obj.classes.inactive[i])) {
+				// only update if job is active..
+				if (this.isPreScriptActive(schInactive.pre_script)) {
+					this._debugMsg("updated to inactive: " + schInactive.name);
+					schInactive.setValue('pre_script',this.deactivatePreScript(schInactive.pre_script));
+					schInactive.update();
+				}
+			}
+		}			
+	},
+	
+	updateSettings: function(updObj) {
+		try {
+			this._debugMsg('updateSettings called: ' + updObj); 
+			var obj = JSON.parse(updObj);
+
+			// verify if any property value has changed - if so, update property 			
+			var srvUpd = gs.getProperty(this.pSrv) != obj.sv;
+			if (srvUpd && this.isAdmin)
+				gs.setProperty(this.pSrv, obj.sv);
+
+			var dbaUpd = gs.getProperty(this.pDBa) != obj.db;
+			if (dbaUpd && this.isAdmin)
+				gs.setProperty(this.pDBa, obj.db);
+			
+			var autUpd = gs.getProperty(this.pAut) != obj.au;
+			if (autUpd && this.isAdmin)
+				gs.setProperty(this.pAut, obj.au);
+			
+			// the username must have something other than empty value to satisfy integrated auth
+			var usrUpd = gs.getProperty(this.pUsr) != obj.ur || obj.ur == '';
+			if (usrUpd && this.isAdmin) {
+				if (obj.ur == '')
+					obj.ur = '<enter_username>';
+				gs.setProperty(this.pUsr, obj.ur);
+			}
+
+			var pwdUpd = (obj.pw != '' && gs.getProperty(this.pPwd) != obj.pw);
+			if (pwdUpd && this.isAdmin)
+				gs.setProperty(this.pPwd, obj.pw);	
+            
+            var midUpd = gs.getProperty(this.pMid) != obj.mid;
+            if (midUpd && this.isAdmin)
+                gs.setProperty(this.pMid, obj.mid);
+			
+			var ratUpd = gs.getProperty(this.pRat) != obj.rt;
+			if (ratUpd)
+                gs.setProperty(this.pRat, obj.rt);
+            
+			var staUpd = gs.getProperty(this.pSta) != obj.sta;
+			if (staUpd)
+                gs.setProperty(this.pSta, obj.sta);
+
+			// update all data sources linked to supported classes..
+			if (this.isAdmin && (srvUpd || dbaUpd || autUpd || usrUpd || pwdUpd || midUpd)) {
+				var gr = new GlideRecord('x_38710_lansweeper_supported_classes');
+				gr.addQuery('sys_class_name', 'x_38710_lansweeper_supported_classes');
+				gr.query();	
+				while (gr.next()) {
+					// get the data source record linked to each scheduled data import..
+					var dsRec = gr.scheduled_data_import.data_source.getRefRecord();
+					
+					if (srvUpd) 
+						dsRec.jdbc_server = gs.getProperty(this.pSrv);
+
+					if (dbaUpd) 
+						dsRec.database_name = gs.getProperty(this.pDBa);
+					
+					if (autUpd)
+						dsRec.use_integrated_authentication = (gs.getProperty(this.pAut) == 'true');
+						
+					if (usrUpd) 
+						dsRec.jdbc_user_name = gs.getProperty(this.pUsr);
+
+					if (pwdUpd) 
+                        dsRec.jdbc_password = gs.getProperty(this.pPwd);
+                    
+                    if (midUpd) 
+                        dsRec.mid_server = gs.getProperty(this.pMid);
+                    
+					dsRec.update();	
+
+				}
+			}
+
+			if (this.isAdmin && (midUpd)){
+				//update the Mid Server on the Export Set Targets to use new mid server
+				
+				var objApp = this.appInfo();
+				
+				var grExpSets = new GlideRecord('sys_export_target');
+				grExpSets.addQuery('sys_scope', objApp.id);
+				grExpSets.query();	
+				while (grExpSets.next()) {				
+					grExpSets.setValue('mid_server', gs.getProperty(this.pMid));
+					grExpSets.update();
+				}
+			}
+						
+			// update schedule..
+			var s = JSON.parse(updObj).schedule;
+			this._debugMsg('update schedule to: ' + JSON.stringify(s));
+			var grSch = new GlideRecord('scheduled_import_set');
+			if (grSch.get('name', this.master_scheduled_data_import)) {
+				this._debugMsg('schedule pre-update: run_type=' + grSch.getValue('run_type') + ' run_dayofweek=' + grSch.getValue('run_dayofweek') + ' run_dayofmonth=' + grSch.getValue('run_dayofmonth') + ' run_time=' + grSch.getDisplayValue('run_time'));
+				var activeUpd = grSch.getValue('active') != s.active;
+				if (activeUpd)
+					grSch.setValue('active', s.active);
+				
+				var typeUpd = grSch.getValue('run_type') != s.run_type;
+				if (typeUpd)
+					grSch.setValue('run_type', s.run_type);
+				
+				var wdUpd = grSch.getValue('run_dayofweek') != s.day_of_week;
+				if (wdUpd)
+					grSch.setValue('run_dayofweek', s.day_of_week);
+				
+				var mdUpd = grSch.getValue('run_dayofmonth') != s.day_of_month;
+				if (mdUpd)
+					grSch.setValue('run_dayofmonth', s.day_of_month);
+				
+				var timeUpd = grSch.getDisplayValue('run_time') != s.run_time;
+				if (timeUpd) {
+					var dt = new GlideDateTime();
+					dt.setDisplayValue(s.run_time, "HH:mm:ss"); 
+					grSch.run_time = dt;
+				}
+				
+				var runPeriodUpd = grSch.getDisplayValue('run_period') != s.duration_display;
+				if (runPeriodUpd) {
+					var duration = s.period_days + ' ' + s.period_hours + ':' + s.period_min + ':00';
+					var gd = new GlideDuration(duration);
+					grSch.run_period = gd;
+				}
+				
+				var runStartUpd = grSch.getDisplayValue('run_start') != s.period_start;
+				if (timeUpd) {
+					var gdt = new GlideDateTime(s.period_start);
+					grSch.run_start = gdt;
+				}
+
+				if (activeUpd || typeUpd || wdUpd || mdUpd || timeUpd || runPeriodUpd || runStartUpd) {
+					// do not set workflow false so proper next action on sys_trigger is created
+					grSch.update();	
+				}	
+			}		
+			gs.addInfoMessage("Lansweeper settings successfully updated!");
+			return true;
+		}
+		catch(err) {
+			var message = this.ls_msg + " on updateSettings: " + err;
+			gs.info(message);
+			return false;
+		}
+	},
+	
+	resetRunInfo: function(supported_class_sys_id) {
+		this._debugMsg('resetRunInfo called');
+		try 
+			{
+			var gr = new GlideRecord('x_38710_lansweeper_supported_classes');
+			gr.addQuery('sys_class_name', 'x_38710_lansweeper_supported_classes');
+			gr.addQuery('sys_id', supported_class_sys_id);
+			gr.query();
+			if (gr.next()) {	
+				// reset last run of active classes only
+				gsh = gr.scheduled_data_import.getRefRecord();
+				if (this.isPreScriptActive(gsh.pre_script)) {
+					this._debugMsg('resetRunInfo -> reset class = ' + gr.class_name);
+					gr.setValue('last_run_state','-');
+					gr.setValue('last_run_date', null);
+					gr.setValue('last_run_start', null);
+					gr.setValue('last_run_end', null);
+					gr.setValue('last_run_errors',0);
+					gr.setValue('last_run_ignored',0);
+					gr.setValue('last_run_inserts',0);
+					gr.setValue('last_run_processed',0);
+					gr.setValue('last_run_skipped',0);
+					gr.setValue('last_run_updated',0);
+					gr.update();
+				}
+			}
+		}
+		catch(err) {
+			var message = this.ls_msg + " on resetRunInfo: " + err;
+			gs.info(message);
+		}
+	},
+	
+	
+	isPreviewItem: function(item_id) {
+		this._debugMsg('isPreviewItem item_id: ' + item_id); 
+		result = false;
+		try {
+			// Lansweeper Windows Server
+			if (item_id == '8dc1f030db10e410613ecc303996198d')
+				result = true;
+			// Lansweeper RL Storage Device
+			else if (item_id == '8581404cdba4a050613ecc30399619a2')
+				result = true;
+			// Lansweeper RL Network Adapter
+			else if (item_id == 'cdf1844cdba4a050613ecc3039961923')
+				result = true;
+			// Lansweeper RL Memory Module
+			else if (item_id == '9a42c84cdba4a050613ecc303996196f')
+				result = true;
+		
+			return result;
+		}
+		catch(err) {
+			var message = this.ls_msg + " on isPreviewItem: " + err;
+			gs.info(message);
+			return false;
+		}
+	},
+	
+	generateRelatedValuePairs: function(source, relatedClass){
+		var relatedPairValues = {};
+		
+		switch (relatedClass) {
+			case 'WindowsServer': 
+				relatedPairValues["name"] = source.u_parentname.toString();
+				relatedPairValues["mac_address"] = source.u_parentmacaddress.toString();
+				relatedPairValues["serial_number"] = source.u_parentserialnumber.toString();
+				relatedPairValues["correlation_id"] = source.getValue('u_parent_correlationid');
+				
+				break;
+			case 'WindowsPC': 
+				relatedPairValues["name"] = source.u_parentname.toString();
+				relatedPairValues["mac_address"] = source.u_parentmacaddress.toString();
+				relatedPairValues["serial_number"] = source.u_parentserialnumber.toString();
+				relatedPairValues["correlation_id"] = source.getValue('u_parent_correlationid');
+				break;
+			case 'MSFTSqlInstance':
+				relatedPairValues["name"] = source.u_parentname.toString();
+				relatedPairValues["instance_name"] = source.u_instance_name.toString();
+				relatedPairValues["correlation_id"] = source.getValue('u_parent_correlationid');
+				break;
+				
+			default:
+				relatedPairValues["name"] = source.u_parentname.toString();
+				relatedPairValues["correlation_id"] = source.getValue('u_parent_correlationid');
+				break;
+		}
+			
+		return relatedPairValues;
+	},
+	
+	findCIClassFromAssetType: function(assetType){
+		var CIClass = null;
+		
+		switch (assetType) {
+			case 'WindowsServer': CIClass = 'cmdb_ci_win_server'; break; 
+			case 'WindowsPC': CIClass = 'cmdb_ci_pc_hardware'; break;
+			case 'Switch': CIClass = 'cmdb_ci_ip_switch'; break;		
+			case 'Firewall': CIClass = 'cmdb_ci_ip_firewall'; break;
+			case 'Printer': CIClass = 'cmdb_ci_printer'; break;
+			case 'Linux': CIClass = 'cmdb_ci_linux_server'; break;
+			case 'Unix': CIClass = 'cmdb_ci_unix_server'; break;			
+			case 'Router': CIClass = 'cmdb_ci_ip_router'; break;		
+			case 'WinCluster': CIClass = 'cmdb_ci_win_cluster'; break;
+			case 'WinClusterNode': CIClass = 'cmdb_ci_win_cluster_node'; break;
+			case 'MemoryModule': CIClass = 'cmdb_ci_memory_module'; break;
+			case 'MSFTSqlInstance': CIClass = 'cmdb_ci_db_mssql_instance'; break;
+			case 'NetworkAdapter': CIClass = 'cmdb_ci_network_adapter'; break;
+			case 'Peripheral': CIClass = 'cmdb_ci_peripheral'; break;
+			case 'Software': CIClass = 'cmdb_ci_spkg'; break;
+			case 'StorageDevice': CIClass = 'cmdb_ci_storage_device'; break;
+		}
+		return CIClass;
+	}, 
+	
+	getParentCIField: function(targetClass){
+		var ParentCIField = null;
+		
+		switch (targetClass) {
+			case 'cmdb_ci_memory_module': ParentCIField = 'cmdb_ci'; break;
+			case 'cmdb_ci_network_adapter': ParentCIField = 'cmdb_ci'; break;
+			case 'cmdb_ci_storage_device': ParentCIField = 'computer'; break;	
+			case 'cmdb_ci_win_cluster_node': ParentCIField = 'cluster'; break;	
+		}
+		return ParentCIField;
+	},
+
+	runTransform: function(source, map, log, target) {
+		try {
+			var context = gs.generateGUID();
+		
+			// identifies supported class dot walking from the source back to the scheduled job..
+			var gr = new GlideRecord('x_38710_lansweeper_supported_classes');
+			gr.addQuery('sys_class_name', 'x_38710_lansweeper_supported_classes');
+			gr.addQuery('scheduled_data_import.data_source.import_set_table_name', source.sys_class_name);
+			gr.query();	
+			if (gr.next()) {	
+				// verify identification method..
+				if ((gr.identification_method == this.ire) && this.IREEnabled(map)){
+					
+					this._debugMsg(context + ':proc_ire: ' + gr.identification_method + ':' + this.ire + ':' + this.IREEnabled(map));
+
+					var target_table = map.target_table;
+					var cmdbUtil = new global.CMDBTransformUtil();
+ 
+					var incomingPayload = cmdbUtil.buildInputPayload(source, map, log);
+					this._debugMsg('runTransform incomingPayload ootb: ' + JSON.stringify(incomingPayload));
+
+					// this method always uses correlation id
+					var sourceName = source.u_sourcename.toString();
+					this.injectSourceInfo(incomingPayload, sourceName, source.u_correlationid.getDisplayValue());
+
+					this.clearCorrelationOnUpdate(incomingPayload);
+					this._debugMsg(context + ":incomingPayload cleared correlation + sourceinfo: " + cmdbUtil.json.encode(incomingPayload)); 
+
+					cmdbUtil.identifyAndReconcileFromPayload(incomingPayload, map, log);				
+					
+					var tr = cmdbUtil.transformResult;
+					var op = cmdbUtil.getOutputPayload();
+					var id = cmdbUtil.getOutputRecordSysId();
+					var ds = source.sys_import_set.data_source;
+					var er = '';
+					if (cmdbUtil.hasError()) 
+						er = cmdbUtil.getError();
+
+					var transformOutput = {
+						"ci_class": target_table,
+						"ci_sys_id": id,
+						"transform_result": tr,
+						"data_source": ds,
+						"output_payload": op,
+						"error_msg": er
+					};
+
+					this.updateTransformRun(transformOutput);
+					return true;
+				} 
+				// there is only 'ls' for non-ire
+				else {
+					
+					// do nothing - return false as import set must be processed
+					return false;
+				}
+			}
+		}
+		catch(err) {
+			var message = this.ls_msg + " on runTransform: " + err;
+			gs.info(message);
+		}		
+	},
+	
+	runTransformRelated: function(source, map, log, target) {
+		try {
+			this._debugMsg('runTransformRelated source:' + source.sys_class_name + ' target:' +  map.target_table);
+			// identifies supported class dot walking from the source back to the scheduled job..
+			var gr = new GlideRecord('x_38710_lansweeper_supported_classes');
+			gr.addQuery('sys_class_name', 'x_38710_lansweeper_supported_classes');
+			gr.addQuery('scheduled_data_import.data_source.import_set_table_name', source.sys_class_name);
+			gr.query();	
+			if (gr.next()) {
+				// verify identification method..
+				this._debugMsg(gr.class_name + ':' + gr.identification_method);
+				if ((gr.identification_method == this.ire) && this.IREEnabled(map)) {
+					var target_table = map.target_table;
+					var cmdbUtil = new global.CMDBTransformUtil();
+					var incomingPayload = cmdbUtil.buildInputPayload(source, map, log);
+
+					// this method always uses correlation id
+					var sourceName = source.u_sourcename.toString();
+					this.injectSourceInfo(incomingPayload, sourceName, source.u_correlationid.getDisplayValue());
+
+					this._debugMsg("incomingPayload + sourceinfo: " + cmdbUtil.json.encode(incomingPayload));
+
+					var parentAssetType = source.u_parentassettype.toString();
+					var relatedPairValues = this.generateRelatedValuePairs(source, parentAssetType);
+					var parentAssetCIClass = this.findCIClassFromAssetType(parentAssetType);
+					
+					this._debugMsg('parentAssetType:' + parentAssetType);
+					this._debugMsg('parentAssetCIClass:' + parentAssetCIClass);
+					
+					this.injectRelatedCI(incomingPayload, parentAssetCIClass, relatedPairValues);
+					this.injectSourceInfo(incomingPayload, parentAssetType, source.u_parent_correlationid.getDisplayValue());
+					
+					var relationType = source.u_relationtype.toString(); 
+					this.injectRelation(incomingPayload, source, relationType);
+					
+					var parentCIField = this.getParentCIField(map.target_table);
+					this.setLoadedCIParent(incomingPayload, parentCIField);
+
+					this._debugMsg("runTransformRelated: " + cmdbUtil.json.encode(incomingPayload));
+					
+					this.clearCorrelationOnUpdate(incomingPayload);
+					
+					cmdbUtil.identifyAndReconcileFromPayload(incomingPayload, map, log);
+
+					var tr = cmdbUtil.transformResult;
+					var op = cmdbUtil.getOutputPayload();
+					this._debugMsg("cmdbUtil.getOutputPayload: " + op);
+					
+					this.updateChildwithParentIRE(op, parentCIField);
+					
+					var id = cmdbUtil.getOutputRecordSysId();
+					var ds = source.sys_import_set.data_source;
+					var er = '';
+					if (cmdbUtil.hasError()) 
+						er = cmdbUtil.getError();
+
+					var transformOutput = {
+						"ci_class": target_table,
+						"ci_sys_id": id,
+						"transform_result": tr,
+						"data_source": ds,
+						"output_payload": op,
+						"error_msg": er
+					};
+
+					this.updateTransformRun(transformOutput);
+					return true;
+				} 
+				// there is only 'ls' for non-ire
+				else {
+					// do nothing - return false as import set must be processed
+					return false;
+				}
+			}
+		}
+		catch(err) {
+			var message = this.ls_msg + " on runTransformRelated: " + err;
+			gs.info(message);
+		}		
+	},
+	
+	
+	preRunTransform: function(schedule_job_id) {
+		this._debugMsg('preRunTransform -> schedule_job_id=' + schedule_job_id);
+		
+		try 
+			{
+			// preparation to start new run for supported class record..
+			var gr = new GlideRecord('x_38710_lansweeper_supported_classes');
+			gr.addQuery('sys_class_name', 'x_38710_lansweeper_supported_classes');
+			gr.addQuery('scheduled_data_import', schedule_job_id);
+			gr.query();	
+			if (gr.next()) {
+				
+				// only prep start run for ire as stats are incremented by row..
+				if ((gr.identification_method == this.ire) && this.IREEnabledBySupportedClass(schedule_job_id)) 
+				{				
+					this.resetRunInfo(gr.sys_id);
+
+					var gdt = new GlideDateTime();
+					var runDate = new GlideDate(); 
+					runDate.setValue(gdt.getDisplayValue());
+
+					// update supported class record ...
+					gr.setValue('last_run_date',runDate);
+					gr.setValue('last_run_start',gdt);
+					gr.setValue('last_run_state','Started');
+					// reset identifier field to an empty object
+					var identifier_field = '';
+					gr.setValue('identifier_metric', this.emptyIdentifierObject);
+					
+					gr.update();
+				} 
+			}
+		}
+		catch(err) {
+			var message = this.ls_msg + " on preRunTransform: " + err;
+			gs.info(message);
+		}
+	},
+	
+	postRunTransform: function(schedule_job_id,import_set_sys_id) {
+		this._debugMsg('postRunTransform -> schedule_job_id=' + schedule_job_id);
+		
+		try
+			{
+			// add supported class record history and calculate counters..
+			var gr = new GlideRecord('x_38710_lansweeper_supported_classes');
+			gr.addQuery('sys_class_name', 'x_38710_lansweeper_supported_classes');
+			gr.addQuery('scheduled_data_import', schedule_job_id);
+			gr.query();	
+			if (gr.next()) {
+				// for ire complete run and create history
+				if ((gr.identification_method == this.ire) && this.IREEnabledBySupportedClass(schedule_job_id))
+				//if (gr.identification_method == this.ire) 
+				{	
+					var gdt = new GlideDateTime();
+					var runDate = new GlideDate(); 
+					runDate.setValue(gdt.getDisplayValue());
+
+					// update supported class record ...
+					gr.setValue('last_run_end', gdt);
+					gr.setValue('last_run_state','Complete');
+					
+					// update identifier metric attributes 
+					var idmetric = gr.identifier_metric;
+					var idMetricUpdated = this.updateIdentifierMetricAttributes(idmetric);
+					gr.setValue('identifier_metric', idMetricUpdated);	
+					
+					gr.update();
+
+					var grHistory = new GlideRecord('x_38710_lansweeper_supported_classes_history');
+					grHistory.initialize();
+					grHistory.setValue('class_name', gr.getValue('class_name'));
+					grHistory.setValue('scheduled_data_import', gr.getValue('scheduled_data_import'));
+					grHistory.setValue('identification_method', gr.getValue('identification_method'));
+					grHistory.setValue('add_to_counters', gr.getValue('add_to_counters'));
+					grHistory.setValue('last_run_state', gr.getValue('last_run_state'));
+					grHistory.setValue('last_run_date',runDate);
+					grHistory.setValue('last_run_start', gr.getValue('last_run_start'));
+					grHistory.setValue('last_run_end', gr.getValue('last_run_end'));
+					grHistory.setValue('last_run_errors', gr.getValue('last_run_errors'));
+					grHistory.setValue('last_run_ignored', gr.getValue('last_run_ignored'));
+					grHistory.setValue('last_run_inserts', gr.getValue('last_run_inserts'));
+					grHistory.setValue('last_run_processed', gr.getValue('last_run_processed'));
+					grHistory.setValue('last_run_skipped', gr.getValue('last_run_skipped'));
+					grHistory.setValue('last_run_updated', gr.getValue('last_run_updated'));
+					grHistory.setValue('identifier_metric', gr.identifier_metric);
+					grHistory.insert();
+
+					// update counters...
+					this.updateRunCounters(runDate);
+				}
+				// there is only 'ls' for non-ire
+				else {
+					// complete run based on import set..
+					this.updateRun(import_set_sys_id);
+				}
+			}
+		}
+		catch(err) {
+			var message = this.ls_msg + " on postRunTransform: " + err;
+			gs.info(message);
+		}
+	},
+	
+	/*
+	  used when running IRE onBefore script on the transform (import set is ignored)	  
+	*/
+	updateTransformRun: function(transformOutput) {
+		this._debugMsg('updateTransformRun -> transformOutput=' + JSON.stringify(transformOutput));
+		
+		try
+			{
+			var transformResult = transformOutput.transform_result;
+
+			var gr = new GlideRecord('x_38710_lansweeper_supported_classes');
+			gr.addQuery('sys_class_name', 'x_38710_lansweeper_supported_classes');
+			gr.addQuery('scheduled_data_import.data_source', transformOutput.data_source);
+			gr.query();	
+			if (gr.next()) {
+				this._debugMsg('updateTransformRun -> found supported class: ' + gr.class_name);
+
+				var ins = gr.getValue('last_run_inserts');
+				var upd = gr.getValue('last_run_updated');
+				var ign = gr.getValue('last_run_ignored');
+				var skp = gr.getValue('last_run_skipped');
+				var err = gr.getValue('last_run_errors');
+				var pro = gr.getValue('last_run_processed');
+				var idm = gr.identifier_metric;
+				
+				//----------------------------
+				// verify ci update
+				if (transformResult == 'u') {
+					var classname = transformOutput.ci_class;
+					var classid = transformOutput.ci_sys_id;
+					var grCI = new GlideRecord(classname);
+					if (grCI.get('sys_id', classid)) {
+						this._debugMsg('updateTransformRun -> verify ci update ' + classname + '=' + classid);
+						// ci updated date time
+						var ciUpd = new GlideDateTime(grCI.sys_updated_on);
+						// 2 minutes ago..
+						var gdt = new GlideDateTime();
+						gdt.addSeconds(-120);
+
+						this._debugMsg('updateTransformRun -> ci ' + classname + ':' + classid + ' updated on:' + ciUpd.getDisplayValue() + ' - check limit:' + gdt.getDisplayValue());
+
+						if (gdt > ciUpd) {
+							transformResult = 'g';
+							this._debugMsg('updateTransformRun -> ci ' + classname + ':' + classid + ' transformResult changed to ' + transformResult);
+						}
+					}
+				}
+				//----------------------------
+				switch (transformResult) {
+					case 'i': ins++; break;
+					case 'u': upd++; break;
+					case 'g': ign++; break;
+					case 's': skp++; break;
+					case 'e': err++; break;
+				}
+
+				pro++;
+				
+				gr.setValue('last_run_inserts',ins);
+				gr.setValue('last_run_updated',upd);
+				gr.setValue('last_run_ignored',ign);
+				gr.setValue('last_run_skipped',skp);
+				gr.setValue('last_run_errors',err);	
+				gr.setValue('last_run_processed',pro);
+				
+				// increment identificer metric
+				var identifierMetric = this.addIdentifierMetric(idm, transformOutput.output_payload);
+				gr.setValue('identifier_metric', identifierMetric);
+				
+				gr.update();
+			}
+		}
+		catch(err) {
+			var message = this.ls_msg + " on updateTransformRun: " + err;
+			gs.info(message);
+		}		
+	},	
+	
+	addIdentifierMetric: function(identifierObjStr, outputPayloadStr) {
+		result = '';
+		if (this.logIdentificationRules) {
+			if (identifierObjStr == '' ) {
+				this._debugMsg('addIdentifierMetric -> identifier object is empty!');
+				return result;
+			}
+			if (identifierObjStr == '' ) {
+				this._debugMsg('addIdentifierMetric -> output payload object is empty!');
+				return result;
+			}
+			
+			this._debugMsg('addIdentifierMetric -> identifierObjStr=' + identifierObjStr + ' outputPayloadStr=' + outputPayloadStr);
+			// the object persisted on supported class 
+			var idObj = JSON.parse(identifierObjStr);
+			this._debugMsg('addIdentifierMetric -> idObj='+JSON.stringify(idObj));
+			// the output payload 
+			var opo = JSON.parse(outputPayloadStr);
+			// assuming that only one item is in the array 
+			var outputObj = opo.items[0];
+			this._debugMsg('addIdentifierMetric -> outputObj=' + JSON.stringify(outputObj));
+			
+			if (outputObj.operation == 'UPDATE') {		
+				var identifierEntrySysId = outputObj.identifierEntrySysId;
+				this._debugMsg('addIdentifierMetric -> identifier identifierEntrySysId=' + identifierEntrySysId);
+				if (identifierEntrySysId != "Unknown") {
+					var found = false;
+					for (i in idObj.identifiers) {
+						var item = idObj.identifiers[i];
+						// if identifier found, increment count
+						if (item.identifierSysId == identifierEntrySysId) {
+							item.count = item.count + 1;
+							found = true;
+							this._debugMsg('addIdentifierMetric -> identifier incremented -> '+ identifierEntrySysId);
+						}
+					}
+					
+					// if identifier not found, add with count 1
+					if (found == false) {
+						var id = {"identifierSysId":identifierEntrySysId,"attributes":"","count":1};
+						idObj.identifiers.push(id);
+						this._debugMsg('addIdentifierMetric -> identifier added -> '+ identifierEntrySysId);
+					}
+				} 
+				// if 'Unknown' it must be identified by sys_object_source
+				else {
+					// verify if sys object matched 
+					var infoNode = outputObj.identificationAttempts[0];
+					if (infoNode.info == 'sys_object_source MATCHED') {
+						idObj.sys_object_source_match = idObj.sys_object_source_match + 1;
+						this._debugMsg('addIdentifierMetric -> identifier matched on sys_object_source');
+					}
+				}
+				
+			}
+			// convert to string to be persisted..
+			result = JSON.stringify(idObj);
+		}
+		return result;
+	},
+	
+	updateIdentifierMetricAttributes: function(idObjStr) {
+		result = '';
+		if (this.logIdentificationRules) {
+			this._debugMsg('updateIdentifierMetricAttributes -> idObjStr=' + idObjStr);
+			if (idObjStr == '' ) {
+				this._debugMsg('updateIdentifierMetricAttributes -> ERROR: identifier object is empty!');
+				return result;
+			}
+			
+			var obji = JSON.parse(idObjStr);
+			this._debugMsg('updateIdentifierMetricAttributes -> obji=' + idObjStr);
+			for (iIi in obji.identifiers) {
+				var ientry = new GlideRecord("cmdb_identifier_entry");
+				if (ientry.get(obji.identifiers[iIi].identifierSysId)) {
+					obji.identifiers[iIi].attributes = ientry.getValue('attributes');
+					this._debugMsg('updateIdentifierMetricAttributes -> identifier attributes =' + ientry.getValue('attributes'));
+				}	
+			}
+			result = JSON.stringify(obji);
+			this._debugMsg('updateIdentifierMetricAttributes -> updated object=' + result);
+		}
+		return result;
+	},
+	
+	/*
+	  used when the import set with stats is passed in on post script of the scheduled job.	  
+	*/
+	updateRun: function(import_set_sys_id) {
+		try {
+			this._debugMsg('updateRun -> import set = ' + import_set_sys_id);
+			var iset = new GlideRecord('sys_import_set');
+			if (iset.get(import_set_sys_id)) {
+				// get schedule data import linked to supported class record..
+				var schedDataImportId = iset.getValue('schedule_import');
+				this._debugMsg('updateRun -> schedule data import = '+ schedDataImportId);
+					
+				// get latest update set run.. 
+				var isetrun = new GlideRecord('sys_import_set_run');
+				isetrun.addQuery('set', iset.getValue('sys_id'));
+				isetrun.orderByDesc('completed');
+				isetrun.setLimit(1);
+				isetrun.query();
+				isetrun.next();
+				this._debugMsg('updateRun -> import set run = ' + isetrun.sys_id);
+				
+				// update last run on supported class record..
+				var gr = new GlideRecord('x_38710_lansweeper_supported_classes');
+				gr.addQuery('sys_class_name', 'x_38710_lansweeper_supported_classes');
+				gr.addQuery('scheduled_data_import', schedDataImportId);
+				gr.query();	
+				if (gr.next()) {
+					// reset stats
+					this._debugMsg('updateRun -> resetRunInfo for ' + gr.sys_id);
+					this.resetRunInfo(gr.sys_id);
+					
+					this._debugMsg('iset created: ' + iset.getValue('sys_created_on'));
+					this._debugMsg('isetrun total: ' + isetrun.getValue('total'));
+					
+					// extract date only from run 
+					var strDate = iset.getDisplayValue('sys_created_on').split(' ')[0];
+					var runDate = new GlideDate(); 
+					runDate.setValue(strDate);
+					
+					// update supported class record ...
+					gr.setValue('last_run_date',runDate);
+					gr.setValue('last_run_start',iset.getValue('sys_created_on'));
+					gr.setValue('last_run_end',iset.getValue('load_completed'));
+					gr.setValue('last_run_errors',isetrun.getValue('errors'));
+					gr.setValue('last_run_ignored',isetrun.getValue('ignored'));
+					gr.setValue('last_run_inserts',isetrun.getValue('inserts'));
+					gr.setValue('last_run_processed',isetrun.getValue('total'));
+					gr.setValue('last_run_skipped',isetrun.getValue('skipped'));
+					gr.setValue('last_run_updated',isetrun.getValue('updates'));
+					gr.setValue('last_run_state',isetrun.getDisplayValue('state'));
+					gr.update();
+					
+					// ... and also add to history 
+					this._debugMsg('updateRun -> add to history = ' + gr.class_name);
+					var grHistory = new GlideRecord('x_38710_lansweeper_supported_classes_history');
+					grHistory.initialize();
+					grHistory.setValue('class_name', gr.getValue('class_name'));
+					grHistory.setValue('scheduled_data_import', gr.getValue('scheduled_data_import'));
+					grHistory.setValue('identification_method', gr.getValue('identification_method'));
+					grHistory.setValue('add_to_counters', gr.getValue('add_to_counters'));
+					grHistory.setValue('last_run_state', gr.getValue('last_run_state'));
+					grHistory.setValue('last_run_date',runDate);
+					grHistory.setValue('last_run_start', gr.getValue('last_run_start'));
+					grHistory.setValue('last_run_end', gr.getValue('last_run_end'));
+					grHistory.setValue('last_run_errors', gr.getValue('last_run_errors'));
+					grHistory.setValue('last_run_ignored', gr.getValue('last_run_ignored'));
+					grHistory.setValue('last_run_inserts', gr.getValue('last_run_inserts'));
+					grHistory.setValue('last_run_processed', gr.getValue('last_run_processed'));
+					grHistory.setValue('last_run_skipped', gr.getValue('last_run_skipped'));
+					grHistory.setValue('last_run_updated', gr.getValue('last_run_updated'));
+					grHistory.insert();
+					
+					// update counters...
+					this.updateRunCounters(runDate);
+				}
+			} else {
+				this._debugMsg('Lansweeper import set not found!');
+			}
+		}
+		catch(err) {
+			var message = this.ls_msg + " on updateRun: " + err;
+			gs.info(message);
+		}
+	},
+	
+	updateRunCounters: function(run_date) {
+		try 
+			{
+			var grHist = new GlideAggregate('x_38710_lansweeper_supported_classes_history');
+			grHist.addQuery('last_run_date',run_date);
+			grHist.addQuery('add_to_counters', true);
+			grHist.addAggregate('SUM','last_run_processed');
+			grHist.addAggregate('SUM','last_run_updated');
+			grHist.addAggregate('SUM','last_run_inserts');
+			grHist.addAggregate('SUM','last_run_skipped');
+			grHist.addAggregate('SUM','last_run_ignored');
+			grHist.addAggregate('SUM','last_run_errors');
+			grHist.groupBy('last_run_date');
+			grHist.query();
+			while(grHist.next()){
+				var processed = grHist.getAggregate('SUM','last_run_processed');
+				var updated = grHist.getAggregate('SUM','last_run_updated');
+				var inserted = grHist.getAggregate('SUM','last_run_inserts');
+				var skipped = grHist.getAggregate('SUM','last_run_skipped');
+				var ignored = grHist.getAggregate('SUM','last_run_ignored');
+				var errors = grHist.getAggregate('SUM','last_run_errors');
+
+				this.updateCounterOperation(run_date, processed, 'Processed');
+				this.updateCounterOperation(run_date, updated, 'Updated');
+				this.updateCounterOperation(run_date, inserted, 'Inserted');
+				this.updateCounterOperation(run_date, skipped, 'Skipped');
+				this.updateCounterOperation(run_date, ignored, 'Ignored');
+				this.updateCounterOperation(run_date, errors, 'Errors');
+			}	
+		}
+		catch(err) {
+			var message = this.ls_msg + " on updateRunCounters: " + err;
+			gs.info(message);
+		}				
+	},
+	
+	updateCounterOperation: function(run_date, counter, operation) {
+		var query = "operation=" + operation + "^dateON" + run_date + "@javascript:gs.dateGenerate('" + run_date + "','start')@javascript:gs.dateGenerate('" + run_date + "','end');";
+		
+		try 
+			{
+			var grCnt = new GlideRecord('x_38710_lansweeper_supported_classes_history_counters');
+			grCnt.addEncodedQuery(query);
+			grCnt.query();
+
+			var insert = (!grCnt.next());
+
+			if (insert) 
+				grCnt.newRecord();
+
+			grCnt.date = run_date;
+			grCnt.operation = operation;
+			grCnt.counter = counter;
+
+			if (insert)
+				grCnt.insert();
+			else
+				grCnt.update();
+		}
+		catch(err) {
+			var message = this.ls_msg + " on updateCounterOperation: " + err;
+			gs.info(message);
+		}
+	},
+	
+	purgeSysObjectSource: function(ci_name) {
+		this._debugMsg('purgeSysObjectSource -> ci_name = ' + ci_name);
+		var grObjSource = new GlideRecord('sys_object_source');
+		grObjSource.addQuery('target_table', ci_name);
+		grObjSource.deleteMultiple();
+	},
+	
+	getStatusValue: function(sourceField, targetField) {
+		if (gs.getProperty('x_38710_lansweeper.application.synchronize.status') == 'true'){
+			return source.getValue(sourceField);
+		}else{
+			return target.getValue(targetField);
+		}		
+	},
+
+	findParentCI: function(correlationID) {
+		// Use: transform map fields to find parent or related CIs
+		// tries sys_object_source and falls back to correlationID
+		try
+		{
+			
+			//first try identifying the sys_object_source record populated by IRE
+			var target_sys_id = null;
+			var target_table = null;
+
+			this._debugMsg('start findParentCI CorrelationId = ' + correlationID + ' ; target_sys_id = ' + target_sys_id);				
+			
+			
+			var grSysSource = new GlideRecord('sys_object_source');
+			grSysSource.addEncodedQuery("id=" + correlationID);
+			grSysSource.orderByDesc('sys_updated_on');
+			grSysSource.setLimit(1);
+			grSysSource.query();
+			while (grSysSource.next()) {
+				target_sys_id = grSysSource.target_sys_id;
+				target_table = grSysSource.target_table;
+			}			
+
+			//confirm the target_id is valid
+			var gr = new GlideRecord(target_table);
+			if ((target_table) && (gr.get(target_sys_id))){
+				// do nothing
+			}else{
+				//CI not found by sys_object_source
+				target_sys_id = null;
+				
+				//if no sys_object_source is found, lookup by correlationid
+				var grCmdbCi = new GlideRecord('cmdb_ci');
+				if (grCmdbCi.get('correlation_id', correlationID)){
+					target_sys_id = grCmdbCi.sys_id;
+				}
+			}			
+			this._debugMsg('end findParentCI CorrelationId = ' + correlationID + ' ; target_sys_id = ' + target_sys_id);
+
+			return target_sys_id;			
+			
+		}
+		catch(err) {
+			var message = this.ls_msg + " on findParentCI: " + err;
+			gs.info(message);
+		}	
+	},	
+	
+	findCIBySourceAndCorrelationID: function(sourceName, correlationId){
+		
+		var logContext = gs.generateGUID();
+		
+		try
+		{
+			// identify the ci class name and verify if uses IRE - if so, exit as this is method is only relevant for custom
+			var ci_class_name = this.findCIClassFromAssetType(sourceName); 
+			if (ci_class_name) {
+				var q = 'sys_class_name=x_38710_lansweeper_supported_classes^identification_method=ire^ci_name=' + ci_class_name;
+				var grSupClass = new GlideRecord('x_38710_lansweeper_supported_classes');
+				grSupClass.addEncodedQuery(q);
+				grSupClass.query();
+				if (grSupClass.next()) {
+					this._debugMsg('findCIBySourceAndCorrelationID not executed for IRE class : ' + ci_class_name);
+					return null;
+				}
+			}
+
+			// if not IRE, Extends findParentCI with Source
+			//first try identifying the sys_object_source record populated by IRE
+			var target_sys_id = null;
+			var target_table = null;
+
+			this._debugMsg('findCIBySourceAndCorrelationID(' + logContext + '):start CorrelationId = ' + correlationId + ' ; sourceName = ' + sourceName);				
+			
+			var grSysSource = new GlideRecord('sys_object_source');
+			grSysSource.addEncodedQuery("source_feed=" + sourceName + "^id=" + correlationId);
+			grSysSource.orderByDesc('sys_updated_on');
+			grSysSource.setLimit(1);
+			grSysSource.query();
+			while (grSysSource.next()) {
+				target_sys_id = grSysSource.target_sys_id;
+				target_table = grSysSource.target_table;
+				this._debugMsg('findCIBySourceAndCorrelationID(' + logContext + '):found source record');				
+			}			
+
+			//confirm the target_id is valid
+			var gr = new GlideRecord(target_table);
+			if ((target_table) && (gr.get(target_sys_id))){
+				// do nothing
+				this._debugMsg('findCIBySourceAndCorrelationID(' + logContext + '):CI confirmed');				
+			}else{
+				//CI not found by sys_object_source
+				target_sys_id = null;
+				
+				//if no sys_object_source is found, lookup by correlationid
+				var grCmdbCi = new GlideRecord('cmdb_ci');
+				if (grCmdbCi.get('correlation_id', correlationId)){
+					target_sys_id = grCmdbCi.sys_id;
+					this._debugMsg('findCIBySourceAndCorrelationID(' + logContext + '):CI found by correlationid');				
+					
+				}
+			}			
+			this._debugMsg('findCIBySourceAndCorrelationID(' + logContext + ') CorrelationId = ' + correlationId + ' ; target_sys_id = ' + target_sys_id);
+
+			return target_sys_id;			
+			
+		}
+		catch(err) {
+			var message = this.ls_msg + " on findCIBySourceAndCorrelationID(' + logContext + '): " + err;
+			gs.info(message);
+		}	
+	},
+	
+	noPassOnUpdate: function(action, sourceField, targetField) {
+		
+		if (action == "update"){
+			return target.getValue(targetField);
+		}else{
+			return source.getValue(sourceField);
+		}		
+	},
+	
+	findRelationshipType: function(relationship_name) {
+		
+		try
+			{
+			var grRelType = new GlideRecord('cmdb_rel_type');
+			grRelType.addEncodedQuery("name=" + relationship_name);
+			grRelType.query();
+			while (grRelType.next()) {
+				return grRelType.sys_id;
+			}
+		}
+		catch(err) {
+			var message = this.ls_msg + " on findRelationshipType: " + err;
+			gs.info(message);
+		}
+		
+	},		
+	
+	findSoftwarePackage: function(correlation_id) {
+		//todo: likely to be deprecated
+		try
+			{
+			var grCmdbPkg = new GlideRecord('cmdb_ci_spkg');
+			grCmdbPkg.addEncodedQuery("correlation_id=" + correlation_id);
+			grCmdbPkg.query();
+			while (grCmdbPkg.next()) {
+				return grCmdbPkg.sys_id;
+			}
+		}
+		catch(err) {
+			var message = this.ls_msg + " on findSoftwarePackage: " + err;
+			gs.info(message);
+		}
+		
+	},		
+	
+// IRE functions --------------------------------------------------------------------
+
+	IREEnabled: function(map){
+		//don't use IRE on cmdb_rel_ci tables, will default to 'custom' behaviour
+
+		return ((map.target_table != 'cmdb_rel_ci') && (map.target_table != 'cmdb_software_instance'));
+	},
+	
+	IREEnabledBySupportedClass: function(schedule_job_id){
+		//don't use IRE on cmdb_rel_ci tables, will default to 'custom' behaviour
+
+		return ((schedule_job_id != 'd7f75d15db2ca450613ecc303996197c') && // Cluster 
+				(schedule_job_id != 'baec701ddba8a450613ecc303996190f') && // Contained
+				(schedule_job_id != '98ce3725db10a810613ecc303996190d') && // IP
+				(schedule_job_id != 'c62df41ddba8a450613ecc3039961903') && // Runs
+				(schedule_job_id != 'fa5739addb202850613ecc30399619a2') // Software Instance
+				);
+	},
+	
+	injectSourceInfo: function(source_payload, source_feed, source_key){
+		var itemIndex = source_payload.items.length - 1;
+
+		if (itemIndex >= 0){
+			source_payload.items[itemIndex].internal_id = source_key;
+			
+			source_payload.items[itemIndex].sys_object_source_info = {};
+			source_payload.items[itemIndex].sys_object_source_info.source_native_key = source_key;
+			source_payload.items[itemIndex].sys_object_source_info.source_name = "Lansweeper";
+			source_payload.items[itemIndex].sys_object_source_info.source_feed = source_feed;	
+		}
+	},
+
+	injectRelatedCI: function(source_payload, className, valuePairs){
+
+		var newItem = {};
+		newItem.className = className;
+		newItem.values = {};
+		
+		for (item in valuePairs){
+			newItem.values[item] = valuePairs[item];
+		}
+
+		source_payload.items.push(newItem);	
+	},
+	
+	injectRelation: function(source_payload, source, relationType){
+
+		source_payload.relations = [];
+
+		var newRelation = {};
+
+		newRelation.parent_id = source.u_parent_correlationid.toString();
+		newRelation.child_id = source.u_correlationid.toString();
+		newRelation.type = relationType;
+
+		source_payload.relations.push(newRelation);	
+	},
+	
+	
+	setLoadedCIParent: function(payload, parent){
+		
+		if (parent){
+			var identifyResult = sn_cmdb.IdentificationEngine.identifyCI(JSON.stringify(payload));
+			this._debugMsg('identifyResult = ' + JSON.stringify(identifyResult));
+			var parsedResult =JSON.parse(identifyResult);
+			//found the parent CI 
+			if (parsedResult.items[1].sysId){
+				payload.items[0].values[parent] = parsedResult.items[1].sysId;
+			}
+		}
+		
+	},
+	
+	updateChildwithParentIRE: function (outputPayload, parentField){
+		
+		//this is called post IRE operation to update the child with the parent CI, if the parent was inserted
+
+		this._debugMsg('updateChildwithParent-entry');
+		var output = JSON.parse(outputPayload);
+
+		
+		var child = output.items[0];
+		this._debugMsg('updateChildwithParent-child:' + child);
+		var parent = output.items[1];
+		this._debugMsg('updateChildwithParent-parent:' + parent);
+		
+		this._debugMsg('child:' + JSON.stringify(child));
+		this._debugMsg('parent:' + JSON.stringify(parent));
+
+		if ((parent.sysId) && (parent.operation == 'INSERT')){
+			var grChild = new GlideRecord(child.className);
+			if (grChild.get(child.sysId)) {
+				grChild.setValue(parentField, parent.sysId);
+				grChild.setWorkflow(false);
+				grChild.update();
+			}	
+		}
+	},	
+
+	updateChildwithParentCustom: function (source, target, parentField){
+		
+		var gr = new GlideRecord('x_38710_lansweeper_supported_classes');
+		gr.addQuery('sys_class_name', 'x_38710_lansweeper_supported_classes');
+		gr.addQuery('scheduled_data_import.data_source.import_set_table_name', source.sys_class_name);
+		gr.query();	
+		if (gr.next()) {
+			
+			if (gr.identification_method == this.custom){
+				
+				var parent_sysid = this.findParentCI(source.getValue('u_parent_correlationid'));	
+				this._debugMsg('updateChildwithParentCustom:parent_sysid = ' + parent_sysid);
+
+				if (parent_sysid){
+					var grChild = new GlideRecord(target.getTableName());
+					if (grChild.get(target.getValue('sys_id'))) {
+						grChild.setValue(parentField, parent_sysid);
+						grChild.setWorkflow(false);
+						grChild.update();
+					}	
+				}
+			}
+		}
+	},	
+	
+	checkonStartIfSupportedClass: function(map){
+
+		var isSelected = false;
+		var sourceTable = map.source_table;
+
+		var gr = new GlideRecord('scheduled_import_set');
+		gr.addQuery('data_source.import_set_table_name', sourceTable);
+		gr.query();	
+
+		if (gr.next()) {
+			isSelected = this.isPreScriptActive(gr.getValue('pre_script'));
+
+			if (!isSelected)
+				this._debugMsg('checkonStartIfSupportedClass: ' + map.source_table + ' is not a selected class');
+		}
+		
+		return isSelected;
+	},
+	
+	checkParentClassIsSupported: function(cacheClasses, parentAssetType){
+		
+		var parentCIClass = this.findCIClassFromAssetType(parentAssetType);
+		this._debugMsg('checkParentClassIsSupported:parentCIClass = ' + parentCIClass);
+		
+		var isSupported = false;
+
+			
+		var gr = new GlideRecord('sys_transform_map');
+		gr.addEncodedQuery('sys_package=f46467d4db50a410613ecc303996191d^target_table=' + parentCIClass);
+		gr.query();	
+
+		if (gr.next()){
+			isSupported = this.checkonStartIfSupportedClass(gr);
+		}
+
+		return isSupported;
+	},
+	
+	checkParentClassIsSupportedCached: function(cacheClasses, parentAssetType){
+		
+		var parentCIClass = this.findCIClassFromAssetType(parentAssetType);
+		this._debugMsg('checkParentClassIsSupported:parentCIClass = ' + parentCIClass);
+		
+		var isSupported = null;
+
+		// find in cache
+		for (var i = 0; i < cacheSupportedClasses.supported_classes.length; i++){
+			if (cacheSupportedClasses.supported_classes[i].class_name == parentCIClass){
+				isSupported = cacheSupportedClasses.supported_classes[i].selected;
+			}
+		}
+
+		if (isSupported){
+			this._debugMsg('checkParentClassIsSupported: isSupported = TRUE');			
+		}
+		else if (isSupported == null){
+			this._debugMsg('checkParentClassIsSupported: populating cacheSupportedClasses with ' + parentCIClass);				
+			
+			var gr = new GlideRecord('sys_transform_map');
+			gr.addEncodedQuery('sys_package=f46467d4db50a410613ecc303996191d^target_table=' + parentCIClass);
+			gr.query();	
+
+			if (gr.next()){
+				isSupported = util.checkonStartIfSupportedClass(gr);
+
+				this._debugMsg('populating cacheSupportedClasses with ' + parentCIClass);
+				var newClass = {};
+				newClass.class_name = parentCIClass;
+				newClass.selected = isSupported;
+				cacheClasses.supported_classes.push(newClass);
+				
+			}
+		}
+		else{
+			this._debugMsg('checkParentClassIsSupported: isSupported = FALSE');
+
+		}
+		return isSupported;
+	},
+	
+	fieldMapFindComputer: function(source, correlationField){
+		
+		var className = this.findCIClassFromAssetType(source.u_assettype.toString());
+		
+		var payload = {};
+		payload.items = [];
+		payload.items[0] = {};
+		payload.items[0].className = className;
+		payload.items[0].values = {};
+		payload.items[0].values.name = source.u_assetname.getDisplayValue();
+		payload.items[0].values.serial_number = source.u_serialnumber.getDisplayValue();
+		payload.items[0].values.mac_address = source.u_macaddress.getDisplayValue();
+		
+		payload.items[0].sys_object_source_info = {};
+		payload.items[0].sys_object_source_info.source_name = 'Lansweeper';	
+		payload.items[0].sys_object_source_info.source_feed = source.u_assettype.toString();	
+		payload.items[0].sys_object_source_info.source_native_key = source.getValue(correlationField);
+	
+		var sysID = this.identifyCI(payload);
+		this._debugMsg('JSON payload (computer: ' + sysID + ') = ' + JSON.stringify(payload));
+		
+		return sysID;
+	},
+
+	fieldMapFindSoftwarePackage: function(source, correlationField){
+		this._debugMsg('JSON payload (software: start)');
+		var payload = {};
+		payload.items = [];
+		payload.items[0] = {};
+		payload.items[0].className = 'cmdb_ci_spkg';
+		payload.items[0].values = {};
+		payload.items[0].values.key = source.u_key.getDisplayValue();
+		payload.items[0].sys_object_source_info = {};
+		payload.items[0].sys_object_source_info.source_feed = 'Software';	
+		payload.items[0].sys_object_source_info.source_name = 'Lansweeper';	
+		payload.items[0].sys_object_source_info.source_native_key = source.getValue(correlationField);
+		
+		var sysID = this.identifyCI(payload); 
+
+		this._debugMsg('JSON payload (software: ' + sysID + ') = ' + JSON.stringify(payload));
+		
+		return sysID;
+	},
+	
+	insertSysObjectSource: function(source, target){
+		
+		//if current identification method is IRE - exit
+		var gr = new GlideRecord('x_38710_lansweeper_supported_classes');
+		gr.addQuery('sys_class_name', 'x_38710_lansweeper_supported_classes');
+		gr.addQuery('scheduled_data_import.data_source.import_set_table_name', source.sys_class_name);
+		gr.query();	
+		if (gr.next()) {
+			this._debugMsg(gr.class_name + ':' + gr.identification_method);
+			if ((gr.identification_method == this.ire) && this.IREEnabled(map)){
+				//already handled by IRE - exit
+				return;
+			} 
+		}
+		
+		this._debugMsg('insertSysObjectSource:entry');
+		
+		var feed = source.getValue('u_sourcename');
+		var corrId = source.getValue('u_correlationid');
+		var target_table = target.getTableName();
+		var target_sys_id = target.sys_id;
+		
+		this._debugMsg('insertSysObjectSource:entry target_table=' + target_table + '; target_sys_id=' + target_sys_id + ')');
+		
+		try
+		{
+			var grSysSource = new GlideRecord('sys_object_source');
+			grSysSource.addEncodedQuery("source_feed=" + feed + "^id=" + corrId + "^target_table=" + target_table + "^target_sys_id=" + target_sys_id);
+			grSysSource.orderByDesc('sys_updated_on');
+			grSysSource.setLimit(1);
+			grSysSource.query();
+			
+			if (grSysSource.next())
+			{
+				this._debugMsg('insertSysObjectSource: found source (' + corrId + ')');
+			}else
+			{
+				var obj = new global.ObjectSource(this.Lansweeper, target_table, target_sys_id, corrId);
+				obj.setValue("source_feed", feed);
+				obj.setValue("last_scan", new GlideDateTime().getDisplayValue());
+				obj.process();
+				
+				this._debugMsg('insertSysObjectSource: added source)');
+			}
+		}
+		catch(err) {
+			var message = this.ls_msg + " on insertSysObjectSource: " + err;
+			gs.info(message);
+		}		
+	},	
+	
+	identifyCI: function(payload){
+		var strPayload = JSON.stringify(payload);
+
+		//scoped
+		var output = sn_cmdb.IdentificationEngine.identifyCI(strPayload);
+		
+		var JSONOut = JSON.parse(output);
+		var result = null;
+		
+		if (JSONOut.items[0].sysId){
+			result = JSONOut.items[0].sysId;	
+		}
+		
+		return result;
+	},
+
+	clearCorrelationOnUpdate: function(payload){
+
+		//alternatively a Reconciliation rule can be put in place for IRE use to achieve this
+		
+		var sysId = this.identifyCI(payload);
+		if (sysId){
+			// this is an update - clear the DiscoverySource / CorrelationID
+			// DiscoverySource is considered a system field and IRE has full access to update - no exclusions
+			
+			delete payload.items[0].values.discovery_source;
+			delete payload.items[0].values.correlation_id;
+			
+		//else don't
+		}	
+		
+	},
+	
+// ENd IRE functions -----------------------------------------------------------------
+	
+	createMockStats: function(startPeriod, deleteHistory) {
+		try
+			{
+			if (deleteHistory) {
+				var grHist = new GlideRecord('x_38710_lansweeper_supported_classes_history');
+				grHist.deleteMultiple();	
+
+				var grCount = new GlideRecord('x_38710_lansweeper_supported_classes_history_counters');
+				grCount.deleteMultiple();
+				
+				/* delete sources?
+				var grObjSource = new GlideRecord('sys_object_source');
+				grObjSource.deleteMultiple();*/	
+			}
+
+			var today = new GlideDateTime();
+			var start_mock_period = startPeriod;
+
+			var run_start = new GlideDateTime(start_mock_period);
+			var run_errors = 0;
+			var run_ignored = 0;
+			var run_inserts = 0;
+			var run_processed = 0;
+			var run_skipped = 0;
+			var run_updated = 0;
+
+			while (run_start.getLocalDate() != today.getLocalDate()) {
+
+				var gr = new GlideRecord('x_38710_lansweeper_supported_classes');
+				gr.addQuery('sys_class_name', 'x_38710_lansweeper_supported_classes');
+				gr.query(); 
+
+				while (gr.next()) {
+					this._debugMsg('MOCKDATA: ' + gr.class_name + ' - ' + run_start);
+					var grHistory = new GlideRecord('x_38710_lansweeper_supported_classes_history');
+					grHistory.initialize();
+					// fixed values..
+					grHistory.setValue('class_name', gr.getValue('class_name'));
+					grHistory.setValue('scheduled_data_import', gr.getValue('scheduled_data_import'));
+					grHistory.setValue('last_run_state', 'Mock Data');
+					grHistory.setValue('add_to_counters', gr.getValue('add_to_counters'));
+
+					// start always start at the same time..
+					grHistory.last_run_start = run_start;
+
+					grHistory.last_run_date = run_start.getDate();
+
+					// add random time taken for the end of this run.. 
+					var run_end = new GlideDateTime(run_start.getDisplayValue());
+					var time_taken_sec = Math.floor(Math.random() * 90);
+					run_end.addSeconds(time_taken_sec);
+					grHistory.last_run_end = run_end;
+
+					// possible inserts a day..
+					run_inserts = Math.floor(Math.random() * 250);
+					grHistory.setValue('last_run_inserts', run_inserts);
+
+					// possible updates a day..
+					run_updated = Math.floor(Math.random() * 100);
+					grHistory.setValue('last_run_updated', run_updated);
+
+					// always zeros for now..
+					grHistory.setValue('last_run_errors', run_errors);
+					grHistory.setValue('last_run_ignored', run_ignored);
+					grHistory.setValue('last_run_skipped', run_skipped);
+
+					// processed total is a sum of the other random values..
+					run_processed = run_inserts + run_updated + run_errors + run_ignored + run_skipped;
+					grHistory.setValue('last_run_processed', run_processed);
+
+					// add history record..
+					grHistory.insert();
+				}
+
+				// update counters...
+				this.updateRunCounters(run_start.getDate());
+
+				// assuming daily run - add another day to the start run..
+				run_start.addDaysLocalTime(1);
+			}	
+		}
+		catch(err) {
+			var message = this.ls_msg + " on createMockStats: " + err;
+			gs.info(message);
+		}
+	},
+	
+    type: 'LansweeperIntegrationUtils'
+};]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>luis.cyrillo</sys_created_by>
+        <sys_created_on>2020-11-04 01:47:01</sys_created_on>
+        <sys_id>74d3420ddbdce410613ecc30399619fc</sys_id>
+        <sys_mod_count>573</sys_mod_count>
+        <sys_name>LansweeperIntegrationUtils</sys_name>
+        <sys_package display_value="CI Synchronizer (Lansweeper On-Prem Edition)" source="x_38710_lansweeper">f46467d4db50a410613ecc303996191d</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="CI Synchronizer (Lansweeper On-Prem Edition)">f46467d4db50a410613ecc303996191d</sys_scope>
+        <sys_update_name>sys_script_include_74d3420ddbdce410613ecc30399619fc</sys_update_name>
+        <sys_updated_by>luis.cyrillo</sys_updated_by>
+        <sys_updated_on>2021-02-26 05:09:27</sys_updated_on>
+    </sys_script_include>
+</record_update>
